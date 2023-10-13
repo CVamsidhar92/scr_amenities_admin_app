@@ -1,0 +1,1 @@
+# scr_amenities_admin_app
