@@ -13,30 +13,30 @@
 13         to allow setting breakpoints, to provide hot reload, etc.
 14    -->
 15    <uses-permission android:name="android.permission.INTERNET" />
-15-->/Users/rohits/Public/Development/Flutter/Clones/scr_amenities_admin_app/android/app/src/main/AndroidManifest.xml:2:1-63
-15-->/Users/rohits/Public/Development/Flutter/Clones/scr_amenities_admin_app/android/app/src/main/AndroidManifest.xml:2:18-60
+15-->/Users/rohits/Public/Development/Flutter/Projects/scr_amenities_admin/android/app/src/main/AndroidManifest.xml:2:1-63
+15-->/Users/rohits/Public/Development/Flutter/Projects/scr_amenities_admin/android/app/src/main/AndroidManifest.xml:2:18-60
 16    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-16-->/Users/rohits/Public/Development/Flutter/Clones/scr_amenities_admin_app/android/app/src/main/AndroidManifest.xml:3:1-75
-16-->/Users/rohits/Public/Development/Flutter/Clones/scr_amenities_admin_app/android/app/src/main/AndroidManifest.xml:3:18-72
+16-->/Users/rohits/Public/Development/Flutter/Projects/scr_amenities_admin/android/app/src/main/AndroidManifest.xml:3:1-75
+16-->/Users/rohits/Public/Development/Flutter/Projects/scr_amenities_admin/android/app/src/main/AndroidManifest.xml:3:18-72
 17    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-17-->/Users/rohits/Public/Development/Flutter/Clones/scr_amenities_admin_app/android/app/src/main/AndroidManifest.xml:4:1-75
-17-->/Users/rohits/Public/Development/Flutter/Clones/scr_amenities_admin_app/android/app/src/main/AndroidManifest.xml:4:18-72
+17-->/Users/rohits/Public/Development/Flutter/Projects/scr_amenities_admin/android/app/src/main/AndroidManifest.xml:4:1-75
+17-->/Users/rohits/Public/Development/Flutter/Projects/scr_amenities_admin/android/app/src/main/AndroidManifest.xml:4:18-72
 18    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-18-->/Users/rohits/Public/Development/Flutter/Clones/scr_amenities_admin_app/android/app/src/main/AndroidManifest.xml:5:1-77
-18-->/Users/rohits/Public/Development/Flutter/Clones/scr_amenities_admin_app/android/app/src/main/AndroidManifest.xml:5:18-74
+18-->/Users/rohits/Public/Development/Flutter/Projects/scr_amenities_admin/android/app/src/main/AndroidManifest.xml:5:1-77
+18-->/Users/rohits/Public/Development/Flutter/Projects/scr_amenities_admin/android/app/src/main/AndroidManifest.xml:5:18-74
 19    <uses-permission android:name="android.permission.CALL_PHONE" />
-19-->/Users/rohits/Public/Development/Flutter/Clones/scr_amenities_admin_app/android/app/src/main/AndroidManifest.xml:6:1-64
-19-->/Users/rohits/Public/Development/Flutter/Clones/scr_amenities_admin_app/android/app/src/main/AndroidManifest.xml:6:18-62
+19-->/Users/rohits/Public/Development/Flutter/Projects/scr_amenities_admin/android/app/src/main/AndroidManifest.xml:6:1-64
+19-->/Users/rohits/Public/Development/Flutter/Projects/scr_amenities_admin/android/app/src/main/AndroidManifest.xml:6:18-62
 20    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
-20-->[:geolocator_android] /Users/rohits/Public/Development/Flutter/Clones/scr_amenities_admin_app/build/geolocator_android/intermediates/merged_manifest/debug/AndroidManifest.xml:9:5-77
-20-->[:geolocator_android] /Users/rohits/Public/Development/Flutter/Clones/scr_amenities_admin_app/build/geolocator_android/intermediates/merged_manifest/debug/AndroidManifest.xml:9:22-74
+20-->[:geolocator_android] /Users/rohits/Public/Development/Flutter/Projects/scr_amenities_admin/build/geolocator_android/intermediates/merged_manifest/debug/AndroidManifest.xml:9:5-77
+20-->[:geolocator_android] /Users/rohits/Public/Development/Flutter/Projects/scr_amenities_admin/build/geolocator_android/intermediates/merged_manifest/debug/AndroidManifest.xml:9:22-74
 21
 22    <uses-feature
-22-->[:flutter_phone_direct_caller] /Users/rohits/Public/Development/Flutter/Clones/scr_amenities_admin_app/build/flutter_phone_direct_caller/intermediates/merged_manifest/debug/AndroidManifest.xml:11:5-13:36
+22-->[:flutter_phone_direct_caller] /Users/rohits/Public/Development/Flutter/Projects/scr_amenities_admin/build/flutter_phone_direct_caller/intermediates/merged_manifest/debug/AndroidManifest.xml:11:5-13:36
 23        android:name="android.hardware.telephony"
-23-->[:flutter_phone_direct_caller] /Users/rohits/Public/Development/Flutter/Clones/scr_amenities_admin_app/build/flutter_phone_direct_caller/intermediates/merged_manifest/debug/AndroidManifest.xml:12:9-50
+23-->[:flutter_phone_direct_caller] /Users/rohits/Public/Development/Flutter/Projects/scr_amenities_admin/build/flutter_phone_direct_caller/intermediates/merged_manifest/debug/AndroidManifest.xml:12:9-50
 24        android:required="false" />
-24-->[:flutter_phone_direct_caller] /Users/rohits/Public/Development/Flutter/Clones/scr_amenities_admin_app/build/flutter_phone_direct_caller/intermediates/merged_manifest/debug/AndroidManifest.xml:13:9-33
+24-->[:flutter_phone_direct_caller] /Users/rohits/Public/Development/Flutter/Projects/scr_amenities_admin/build/flutter_phone_direct_caller/intermediates/merged_manifest/debug/AndroidManifest.xml:13:9-33
 25    <uses-feature
 25-->[com.google.android.gms:play-services-maps:18.1.0] /Users/rohits/.gradle/caches/transforms-3/d7f7973f000d5c8945a05a4db1417b66/transformed/jetified-play-services-maps-18.1.0/AndroidManifest.xml:26:5-28:35
 26        android:glEsVersion="0x00020000"
@@ -103,61 +103,64 @@
 76        <meta-data
 77            android:name="flutterEmbedding"
 78            android:value="2" />
-79
-80        <service
-80-->[:geolocator_android] /Users/rohits/Public/Development/Flutter/Clones/scr_amenities_admin_app/build/geolocator_android/intermediates/merged_manifest/debug/AndroidManifest.xml:12:9-16:56
-81            android:name="com.baseflow.geolocator.GeolocatorLocationService"
-81-->[:geolocator_android] /Users/rohits/Public/Development/Flutter/Clones/scr_amenities_admin_app/build/geolocator_android/intermediates/merged_manifest/debug/AndroidManifest.xml:13:13-77
-82            android:enabled="true"
-82-->[:geolocator_android] /Users/rohits/Public/Development/Flutter/Clones/scr_amenities_admin_app/build/geolocator_android/intermediates/merged_manifest/debug/AndroidManifest.xml:14:13-35
-83            android:exported="false"
-83-->[:geolocator_android] /Users/rohits/Public/Development/Flutter/Clones/scr_amenities_admin_app/build/geolocator_android/intermediates/merged_manifest/debug/AndroidManifest.xml:15:13-37
-84            android:foregroundServiceType="location" />
-84-->[:geolocator_android] /Users/rohits/Public/Development/Flutter/Clones/scr_amenities_admin_app/build/geolocator_android/intermediates/merged_manifest/debug/AndroidManifest.xml:16:13-53
-85
-86        <activity
-86-->[:url_launcher_android] /Users/rohits/Public/Development/Flutter/Clones/scr_amenities_admin_app/build/url_launcher_android/intermediates/merged_manifest/debug/AndroidManifest.xml:10:9-13:74
-87            android:name="io.flutter.plugins.urllauncher.WebViewActivity"
-87-->[:url_launcher_android] /Users/rohits/Public/Development/Flutter/Clones/scr_amenities_admin_app/build/url_launcher_android/intermediates/merged_manifest/debug/AndroidManifest.xml:11:13-74
-88            android:exported="false"
-88-->[:url_launcher_android] /Users/rohits/Public/Development/Flutter/Clones/scr_amenities_admin_app/build/url_launcher_android/intermediates/merged_manifest/debug/AndroidManifest.xml:12:13-37
-89            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
-89-->[:url_launcher_android] /Users/rohits/Public/Development/Flutter/Clones/scr_amenities_admin_app/build/url_launcher_android/intermediates/merged_manifest/debug/AndroidManifest.xml:13:13-71
-90
-91        <uses-library
-91-->[androidx.window:window:1.0.0-beta04] /Users/rohits/.gradle/caches/transforms-3/25cee5f028ac2a6b79fd6278ff5b59e2/transformed/jetified-window-1.0.0-beta04/AndroidManifest.xml:25:9-27:40
-92            android:name="androidx.window.extensions"
-92-->[androidx.window:window:1.0.0-beta04] /Users/rohits/.gradle/caches/transforms-3/25cee5f028ac2a6b79fd6278ff5b59e2/transformed/jetified-window-1.0.0-beta04/AndroidManifest.xml:26:13-54
-93            android:required="false" />
-93-->[androidx.window:window:1.0.0-beta04] /Users/rohits/.gradle/caches/transforms-3/25cee5f028ac2a6b79fd6278ff5b59e2/transformed/jetified-window-1.0.0-beta04/AndroidManifest.xml:27:13-37
+79        <meta-data
+80            android:name="com.google.android.geo.API_KEY"
+81            android:value="AIzaSyAC2MG5XPZdHjahoQCi8mZawbB3VHbrfC0" />
+82
+83        <service
+83-->[:geolocator_android] /Users/rohits/Public/Development/Flutter/Projects/scr_amenities_admin/build/geolocator_android/intermediates/merged_manifest/debug/AndroidManifest.xml:12:9-16:56
+84            android:name="com.baseflow.geolocator.GeolocatorLocationService"
+84-->[:geolocator_android] /Users/rohits/Public/Development/Flutter/Projects/scr_amenities_admin/build/geolocator_android/intermediates/merged_manifest/debug/AndroidManifest.xml:13:13-77
+85            android:enabled="true"
+85-->[:geolocator_android] /Users/rohits/Public/Development/Flutter/Projects/scr_amenities_admin/build/geolocator_android/intermediates/merged_manifest/debug/AndroidManifest.xml:14:13-35
+86            android:exported="false"
+86-->[:geolocator_android] /Users/rohits/Public/Development/Flutter/Projects/scr_amenities_admin/build/geolocator_android/intermediates/merged_manifest/debug/AndroidManifest.xml:15:13-37
+87            android:foregroundServiceType="location" />
+87-->[:geolocator_android] /Users/rohits/Public/Development/Flutter/Projects/scr_amenities_admin/build/geolocator_android/intermediates/merged_manifest/debug/AndroidManifest.xml:16:13-53
+88
+89        <activity
+89-->[:url_launcher_android] /Users/rohits/Public/Development/Flutter/Projects/scr_amenities_admin/build/url_launcher_android/intermediates/merged_manifest/debug/AndroidManifest.xml:10:9-13:74
+90            android:name="io.flutter.plugins.urllauncher.WebViewActivity"
+90-->[:url_launcher_android] /Users/rohits/Public/Development/Flutter/Projects/scr_amenities_admin/build/url_launcher_android/intermediates/merged_manifest/debug/AndroidManifest.xml:11:13-74
+91            android:exported="false"
+91-->[:url_launcher_android] /Users/rohits/Public/Development/Flutter/Projects/scr_amenities_admin/build/url_launcher_android/intermediates/merged_manifest/debug/AndroidManifest.xml:12:13-37
+92            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
+92-->[:url_launcher_android] /Users/rohits/Public/Development/Flutter/Projects/scr_amenities_admin/build/url_launcher_android/intermediates/merged_manifest/debug/AndroidManifest.xml:13:13-71
+93
 94        <uses-library
-94-->[androidx.window:window:1.0.0-beta04] /Users/rohits/.gradle/caches/transforms-3/25cee5f028ac2a6b79fd6278ff5b59e2/transformed/jetified-window-1.0.0-beta04/AndroidManifest.xml:28:9-30:40
-95            android:name="androidx.window.sidecar"
-95-->[androidx.window:window:1.0.0-beta04] /Users/rohits/.gradle/caches/transforms-3/25cee5f028ac2a6b79fd6278ff5b59e2/transformed/jetified-window-1.0.0-beta04/AndroidManifest.xml:29:13-51
-96            android:required="false" /> <!-- Needs to be explicitly declared on P+ -->
-96-->[androidx.window:window:1.0.0-beta04] /Users/rohits/.gradle/caches/transforms-3/25cee5f028ac2a6b79fd6278ff5b59e2/transformed/jetified-window-1.0.0-beta04/AndroidManifest.xml:30:13-37
+94-->[androidx.window:window:1.0.0-beta04] /Users/rohits/.gradle/caches/transforms-3/25cee5f028ac2a6b79fd6278ff5b59e2/transformed/jetified-window-1.0.0-beta04/AndroidManifest.xml:25:9-27:40
+95            android:name="androidx.window.extensions"
+95-->[androidx.window:window:1.0.0-beta04] /Users/rohits/.gradle/caches/transforms-3/25cee5f028ac2a6b79fd6278ff5b59e2/transformed/jetified-window-1.0.0-beta04/AndroidManifest.xml:26:13-54
+96            android:required="false" />
+96-->[androidx.window:window:1.0.0-beta04] /Users/rohits/.gradle/caches/transforms-3/25cee5f028ac2a6b79fd6278ff5b59e2/transformed/jetified-window-1.0.0-beta04/AndroidManifest.xml:27:13-37
 97        <uses-library
-97-->[com.google.android.gms:play-services-maps:18.1.0] /Users/rohits/.gradle/caches/transforms-3/d7f7973f000d5c8945a05a4db1417b66/transformed/jetified-play-services-maps-18.1.0/AndroidManifest.xml:39:9-41:40
-98            android:name="org.apache.http.legacy"
-98-->[com.google.android.gms:play-services-maps:18.1.0] /Users/rohits/.gradle/caches/transforms-3/d7f7973f000d5c8945a05a4db1417b66/transformed/jetified-play-services-maps-18.1.0/AndroidManifest.xml:40:13-50
-99            android:required="false" />
-99-->[com.google.android.gms:play-services-maps:18.1.0] /Users/rohits/.gradle/caches/transforms-3/d7f7973f000d5c8945a05a4db1417b66/transformed/jetified-play-services-maps-18.1.0/AndroidManifest.xml:41:13-37
-100
-101        <activity
-101-->[com.google.android.gms:play-services-base:18.0.1] /Users/rohits/.gradle/caches/transforms-3/aba8f806953ea3dd8f794da3aeb78a12/transformed/jetified-play-services-base-18.0.1/AndroidManifest.xml:20:9-22:45
-102            android:name="com.google.android.gms.common.api.GoogleApiActivity"
-102-->[com.google.android.gms:play-services-base:18.0.1] /Users/rohits/.gradle/caches/transforms-3/aba8f806953ea3dd8f794da3aeb78a12/transformed/jetified-play-services-base-18.0.1/AndroidManifest.xml:20:19-85
-103            android:exported="false"
-103-->[com.google.android.gms:play-services-base:18.0.1] /Users/rohits/.gradle/caches/transforms-3/aba8f806953ea3dd8f794da3aeb78a12/transformed/jetified-play-services-base-18.0.1/AndroidManifest.xml:22:19-43
-104            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
-104-->[com.google.android.gms:play-services-base:18.0.1] /Users/rohits/.gradle/caches/transforms-3/aba8f806953ea3dd8f794da3aeb78a12/transformed/jetified-play-services-base-18.0.1/AndroidManifest.xml:21:19-78
-105
-106        <meta-data
-106-->[com.google.android.gms:play-services-basement:18.0.0] /Users/rohits/.gradle/caches/transforms-3/f64fba6e6efbe26a4b67f791bcfc957f/transformed/jetified-play-services-basement-18.0.0/AndroidManifest.xml:21:9-23:69
-107            android:name="com.google.android.gms.version"
-107-->[com.google.android.gms:play-services-basement:18.0.0] /Users/rohits/.gradle/caches/transforms-3/f64fba6e6efbe26a4b67f791bcfc957f/transformed/jetified-play-services-basement-18.0.0/AndroidManifest.xml:22:13-58
-108            android:value="@integer/google_play_services_version" />
-108-->[com.google.android.gms:play-services-basement:18.0.0] /Users/rohits/.gradle/caches/transforms-3/f64fba6e6efbe26a4b67f791bcfc957f/transformed/jetified-play-services-basement-18.0.0/AndroidManifest.xml:23:13-66
-109    </application>
-110
-111</manifest>
+97-->[androidx.window:window:1.0.0-beta04] /Users/rohits/.gradle/caches/transforms-3/25cee5f028ac2a6b79fd6278ff5b59e2/transformed/jetified-window-1.0.0-beta04/AndroidManifest.xml:28:9-30:40
+98            android:name="androidx.window.sidecar"
+98-->[androidx.window:window:1.0.0-beta04] /Users/rohits/.gradle/caches/transforms-3/25cee5f028ac2a6b79fd6278ff5b59e2/transformed/jetified-window-1.0.0-beta04/AndroidManifest.xml:29:13-51
+99            android:required="false" /> <!-- Needs to be explicitly declared on P+ -->
+99-->[androidx.window:window:1.0.0-beta04] /Users/rohits/.gradle/caches/transforms-3/25cee5f028ac2a6b79fd6278ff5b59e2/transformed/jetified-window-1.0.0-beta04/AndroidManifest.xml:30:13-37
+100        <uses-library
+100-->[com.google.android.gms:play-services-maps:18.1.0] /Users/rohits/.gradle/caches/transforms-3/d7f7973f000d5c8945a05a4db1417b66/transformed/jetified-play-services-maps-18.1.0/AndroidManifest.xml:39:9-41:40
+101            android:name="org.apache.http.legacy"
+101-->[com.google.android.gms:play-services-maps:18.1.0] /Users/rohits/.gradle/caches/transforms-3/d7f7973f000d5c8945a05a4db1417b66/transformed/jetified-play-services-maps-18.1.0/AndroidManifest.xml:40:13-50
+102            android:required="false" />
+102-->[com.google.android.gms:play-services-maps:18.1.0] /Users/rohits/.gradle/caches/transforms-3/d7f7973f000d5c8945a05a4db1417b66/transformed/jetified-play-services-maps-18.1.0/AndroidManifest.xml:41:13-37
+103
+104        <activity
+104-->[com.google.android.gms:play-services-base:18.0.1] /Users/rohits/.gradle/caches/transforms-3/aba8f806953ea3dd8f794da3aeb78a12/transformed/jetified-play-services-base-18.0.1/AndroidManifest.xml:20:9-22:45
+105            android:name="com.google.android.gms.common.api.GoogleApiActivity"
+105-->[com.google.android.gms:play-services-base:18.0.1] /Users/rohits/.gradle/caches/transforms-3/aba8f806953ea3dd8f794da3aeb78a12/transformed/jetified-play-services-base-18.0.1/AndroidManifest.xml:20:19-85
+106            android:exported="false"
+106-->[com.google.android.gms:play-services-base:18.0.1] /Users/rohits/.gradle/caches/transforms-3/aba8f806953ea3dd8f794da3aeb78a12/transformed/jetified-play-services-base-18.0.1/AndroidManifest.xml:22:19-43
+107            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+107-->[com.google.android.gms:play-services-base:18.0.1] /Users/rohits/.gradle/caches/transforms-3/aba8f806953ea3dd8f794da3aeb78a12/transformed/jetified-play-services-base-18.0.1/AndroidManifest.xml:21:19-78
+108
+109        <meta-data
+109-->[com.google.android.gms:play-services-basement:18.0.0] /Users/rohits/.gradle/caches/transforms-3/f64fba6e6efbe26a4b67f791bcfc957f/transformed/jetified-play-services-basement-18.0.0/AndroidManifest.xml:21:9-23:69
+110            android:name="com.google.android.gms.version"
+110-->[com.google.android.gms:play-services-basement:18.0.0] /Users/rohits/.gradle/caches/transforms-3/f64fba6e6efbe26a4b67f791bcfc957f/transformed/jetified-play-services-basement-18.0.0/AndroidManifest.xml:22:13-58
+111            android:value="@integer/google_play_services_version" />
+111-->[com.google.android.gms:play-services-basement:18.0.0] /Users/rohits/.gradle/caches/transforms-3/f64fba6e6efbe26a4b67f791bcfc957f/transformed/jetified-play-services-basement-18.0.0/AndroidManifest.xml:23:13-66
+112    </application>
+113
+114</manifest>

@@ -1,10 +1,10 @@
 -- Merging decision tree log ---
 application
-INJECTED from /Users/rohits/Public/Development/Flutter/Clones/scr_amenities_admin_app/android/app/src/main/AndroidManifest.xml:7:5-37:19
-MERGED from [:geolocator_android] /Users/rohits/Public/Development/Flutter/Clones/scr_amenities_admin_app/build/geolocator_android/intermediates/merged_manifest/debug/AndroidManifest.xml:11:5-17:19
-MERGED from [:geolocator_android] /Users/rohits/Public/Development/Flutter/Clones/scr_amenities_admin_app/build/geolocator_android/intermediates/merged_manifest/debug/AndroidManifest.xml:11:5-17:19
-MERGED from [:url_launcher_android] /Users/rohits/Public/Development/Flutter/Clones/scr_amenities_admin_app/build/url_launcher_android/intermediates/merged_manifest/debug/AndroidManifest.xml:9:5-14:19
-MERGED from [:url_launcher_android] /Users/rohits/Public/Development/Flutter/Clones/scr_amenities_admin_app/build/url_launcher_android/intermediates/merged_manifest/debug/AndroidManifest.xml:9:5-14:19
+INJECTED from /Users/rohits/Public/Development/Flutter/Projects/scr_amenities_admin/android/app/src/main/AndroidManifest.xml:7:5-41:19
+MERGED from [:geolocator_android] /Users/rohits/Public/Development/Flutter/Projects/scr_amenities_admin/build/geolocator_android/intermediates/merged_manifest/debug/AndroidManifest.xml:11:5-17:19
+MERGED from [:geolocator_android] /Users/rohits/Public/Development/Flutter/Projects/scr_amenities_admin/build/geolocator_android/intermediates/merged_manifest/debug/AndroidManifest.xml:11:5-17:19
+MERGED from [:url_launcher_android] /Users/rohits/Public/Development/Flutter/Projects/scr_amenities_admin/build/url_launcher_android/intermediates/merged_manifest/debug/AndroidManifest.xml:9:5-14:19
+MERGED from [:url_launcher_android] /Users/rohits/Public/Development/Flutter/Projects/scr_amenities_admin/build/url_launcher_android/intermediates/merged_manifest/debug/AndroidManifest.xml:9:5-14:19
 MERGED from [androidx.window:window:1.0.0-beta04] /Users/rohits/.gradle/caches/transforms-3/25cee5f028ac2a6b79fd6278ff5b59e2/transformed/jetified-window-1.0.0-beta04/AndroidManifest.xml:24:5-31:19
 MERGED from [androidx.window:window:1.0.0-beta04] /Users/rohits/.gradle/caches/transforms-3/25cee5f028ac2a6b79fd6278ff5b59e2/transformed/jetified-window-1.0.0-beta04/AndroidManifest.xml:24:5-31:19
 MERGED from [com.google.android.gms:play-services-location:17.0.0] /Users/rohits/.gradle/caches/transforms-3/66b0041439e8822f9b33c14e9dfd6828/transformed/jetified-play-services-location-17.0.0/AndroidManifest.xml:7:5-20
@@ -26,21 +26,21 @@ MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] /Users/rohi
 	android:appComponentFactory
 		ADDED from [androidx.core:core:1.10.1] /Users/rohits/.gradle/caches/transforms-3/c4988ff80110f75080a936fc6f044848/transformed/core-1.10.1/AndroidManifest.xml:28:18-86
 	android:name
-		INJECTED from /Users/rohits/Public/Development/Flutter/Clones/scr_amenities_admin_app/android/app/src/main/AndroidManifest.xml
+		INJECTED from /Users/rohits/Public/Development/Flutter/Projects/scr_amenities_admin/android/app/src/main/AndroidManifest.xml
 manifest
-ADDED from /Users/rohits/Public/Development/Flutter/Clones/scr_amenities_admin_app/android/app/src/main/AndroidManifest.xml:1:1-38:12
-INJECTED from /Users/rohits/Public/Development/Flutter/Clones/scr_amenities_admin_app/android/app/src/main/AndroidManifest.xml:1:1-38:12
-INJECTED from /Users/rohits/Public/Development/Flutter/Clones/scr_amenities_admin_app/android/app/src/main/AndroidManifest.xml:1:1-38:12
-INJECTED from /Users/rohits/Public/Development/Flutter/Clones/scr_amenities_admin_app/android/app/src/main/AndroidManifest.xml:1:1-38:12
-MERGED from /Users/rohits/Public/Development/Flutter/Clones/scr_amenities_admin_app/android/app/src/main/AndroidManifest.xml:1:1-38:12
-MERGED from [:permission_handler_android] /Users/rohits/Public/Development/Flutter/Clones/scr_amenities_admin_app/build/permission_handler_android/intermediates/merged_manifest/debug/AndroidManifest.xml:2:1-9:12
-MERGED from [:geolocator_android] /Users/rohits/Public/Development/Flutter/Clones/scr_amenities_admin_app/build/geolocator_android/intermediates/merged_manifest/debug/AndroidManifest.xml:2:1-19:12
-MERGED from [:google_maps_flutter_android] /Users/rohits/Public/Development/Flutter/Clones/scr_amenities_admin_app/build/google_maps_flutter_android/intermediates/merged_manifest/debug/AndroidManifest.xml:2:1-9:12
-MERGED from [:flutter_plugin_android_lifecycle] /Users/rohits/Public/Development/Flutter/Clones/scr_amenities_admin_app/build/flutter_plugin_android_lifecycle/intermediates/merged_manifest/debug/AndroidManifest.xml:2:1-9:12
-MERGED from [:flutter_keyboard_visibility] /Users/rohits/Public/Development/Flutter/Clones/scr_amenities_admin_app/build/flutter_keyboard_visibility/intermediates/merged_manifest/debug/AndroidManifest.xml:2:1-9:12
-MERGED from [:url_launcher_android] /Users/rohits/Public/Development/Flutter/Clones/scr_amenities_admin_app/build/url_launcher_android/intermediates/merged_manifest/debug/AndroidManifest.xml:2:1-16:12
-MERGED from [:flutter_phone_direct_caller] /Users/rohits/Public/Development/Flutter/Clones/scr_amenities_admin_app/build/flutter_phone_direct_caller/intermediates/merged_manifest/debug/AndroidManifest.xml:2:1-15:12
-MERGED from [:webview_flutter_android] /Users/rohits/Public/Development/Flutter/Clones/scr_amenities_admin_app/build/webview_flutter_android/intermediates/merged_manifest/debug/AndroidManifest.xml:2:1-9:12
+ADDED from /Users/rohits/Public/Development/Flutter/Projects/scr_amenities_admin/android/app/src/main/AndroidManifest.xml:1:1-42:12
+INJECTED from /Users/rohits/Public/Development/Flutter/Projects/scr_amenities_admin/android/app/src/main/AndroidManifest.xml:1:1-42:12
+INJECTED from /Users/rohits/Public/Development/Flutter/Projects/scr_amenities_admin/android/app/src/main/AndroidManifest.xml:1:1-42:12
+INJECTED from /Users/rohits/Public/Development/Flutter/Projects/scr_amenities_admin/android/app/src/main/AndroidManifest.xml:1:1-42:12
+MERGED from /Users/rohits/Public/Development/Flutter/Projects/scr_amenities_admin/android/app/src/main/AndroidManifest.xml:1:1-42:12
+MERGED from [:permission_handler_android] /Users/rohits/Public/Development/Flutter/Projects/scr_amenities_admin/build/permission_handler_android/intermediates/merged_manifest/debug/AndroidManifest.xml:2:1-9:12
+MERGED from [:geolocator_android] /Users/rohits/Public/Development/Flutter/Projects/scr_amenities_admin/build/geolocator_android/intermediates/merged_manifest/debug/AndroidManifest.xml:2:1-19:12
+MERGED from [:google_maps_flutter_android] /Users/rohits/Public/Development/Flutter/Projects/scr_amenities_admin/build/google_maps_flutter_android/intermediates/merged_manifest/debug/AndroidManifest.xml:2:1-9:12
+MERGED from [:flutter_plugin_android_lifecycle] /Users/rohits/Public/Development/Flutter/Projects/scr_amenities_admin/build/flutter_plugin_android_lifecycle/intermediates/merged_manifest/debug/AndroidManifest.xml:2:1-9:12
+MERGED from [:flutter_keyboard_visibility] /Users/rohits/Public/Development/Flutter/Projects/scr_amenities_admin/build/flutter_keyboard_visibility/intermediates/merged_manifest/debug/AndroidManifest.xml:2:1-9:12
+MERGED from [:url_launcher_android] /Users/rohits/Public/Development/Flutter/Projects/scr_amenities_admin/build/url_launcher_android/intermediates/merged_manifest/debug/AndroidManifest.xml:2:1-16:12
+MERGED from [:flutter_phone_direct_caller] /Users/rohits/Public/Development/Flutter/Projects/scr_amenities_admin/build/flutter_phone_direct_caller/intermediates/merged_manifest/debug/AndroidManifest.xml:2:1-15:12
+MERGED from [:webview_flutter_android] /Users/rohits/Public/Development/Flutter/Projects/scr_amenities_admin/build/webview_flutter_android/intermediates/merged_manifest/debug/AndroidManifest.xml:2:1-9:12
 MERGED from [androidx.window:window-java:1.0.0-beta04] /Users/rohits/.gradle/caches/transforms-3/ae81e06d24c799147c26814497a2a305/transformed/jetified-window-java-1.0.0-beta04/AndroidManifest.xml:17:1-23:12
 MERGED from [androidx.window:window:1.0.0-beta04] /Users/rohits/.gradle/caches/transforms-3/25cee5f028ac2a6b79fd6278ff5b59e2/transformed/jetified-window-1.0.0-beta04/AndroidManifest.xml:17:1-33:12
 MERGED from [com.google.android.gms:play-services-location:17.0.0] /Users/rohits/.gradle/caches/transforms-3/66b0041439e8822f9b33c14e9dfd6828/transformed/jetified-play-services-location-17.0.0/AndroidManifest.xml:2:1-9:12
@@ -67,71 +67,71 @@ MERGED from [androidx.lifecycle:lifecycle-livedata-core:2.0.0] /Users/rohits/.gr
 MERGED from [androidx.arch.core:core-runtime:2.1.0] /Users/rohits/.gradle/caches/transforms-3/d67fb65d423f69a271e62fa0f5833fa6/transformed/core-runtime-2.1.0/AndroidManifest.xml:17:1-24:12
 MERGED from [androidx.lifecycle:lifecycle-viewmodel:2.1.0] /Users/rohits/.gradle/caches/transforms-3/03b9b3b952540ee8cedf6c096276d934/transformed/lifecycle-viewmodel-2.1.0/AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.annotation:annotation-experimental:1.3.0] /Users/rohits/.gradle/caches/transforms-3/937d6edc8055f6701a18eeac1a67afe6/transformed/jetified-annotation-experimental-1.3.0/AndroidManifest.xml:17:1-22:12
-INJECTED from /Users/rohits/Public/Development/Flutter/Clones/scr_amenities_admin_app/android/app/src/debug/AndroidManifest.xml:1:1-7:12
-INJECTED from /Users/rohits/Public/Development/Flutter/Clones/scr_amenities_admin_app/android/app/src/debug/AndroidManifest.xml:1:1-7:12
-INJECTED from /Users/rohits/Public/Development/Flutter/Clones/scr_amenities_admin_app/android/app/src/debug/AndroidManifest.xml:1:1-7:12
+INJECTED from /Users/rohits/Public/Development/Flutter/Projects/scr_amenities_admin/android/app/src/debug/AndroidManifest.xml:1:1-7:12
+INJECTED from /Users/rohits/Public/Development/Flutter/Projects/scr_amenities_admin/android/app/src/debug/AndroidManifest.xml:1:1-7:12
+INJECTED from /Users/rohits/Public/Development/Flutter/Projects/scr_amenities_admin/android/app/src/debug/AndroidManifest.xml:1:1-7:12
 	package
-		INJECTED from /Users/rohits/Public/Development/Flutter/Clones/scr_amenities_admin_app/android/app/src/main/AndroidManifest.xml
-		ADDED from /Users/rohits/Public/Development/Flutter/Clones/scr_amenities_admin_app/android/app/src/main/AndroidManifest.xml:1:1-38:12
-		INJECTED from /Users/rohits/Public/Development/Flutter/Clones/scr_amenities_admin_app/android/app/src/debug/AndroidManifest.xml
+		INJECTED from /Users/rohits/Public/Development/Flutter/Projects/scr_amenities_admin/android/app/src/main/AndroidManifest.xml
+		ADDED from /Users/rohits/Public/Development/Flutter/Projects/scr_amenities_admin/android/app/src/main/AndroidManifest.xml:1:1-42:12
+		INJECTED from /Users/rohits/Public/Development/Flutter/Projects/scr_amenities_admin/android/app/src/debug/AndroidManifest.xml
 	android:versionName
-		INJECTED from /Users/rohits/Public/Development/Flutter/Clones/scr_amenities_admin_app/android/app/src/main/AndroidManifest.xml
-		ADDED from /Users/rohits/Public/Development/Flutter/Clones/scr_amenities_admin_app/android/app/src/main/AndroidManifest.xml:1:1-38:12
-		INJECTED from /Users/rohits/Public/Development/Flutter/Clones/scr_amenities_admin_app/android/app/src/debug/AndroidManifest.xml
+		INJECTED from /Users/rohits/Public/Development/Flutter/Projects/scr_amenities_admin/android/app/src/main/AndroidManifest.xml
+		ADDED from /Users/rohits/Public/Development/Flutter/Projects/scr_amenities_admin/android/app/src/main/AndroidManifest.xml:1:1-42:12
+		INJECTED from /Users/rohits/Public/Development/Flutter/Projects/scr_amenities_admin/android/app/src/debug/AndroidManifest.xml
 	android:versionCode
-		INJECTED from /Users/rohits/Public/Development/Flutter/Clones/scr_amenities_admin_app/android/app/src/main/AndroidManifest.xml
-		ADDED from /Users/rohits/Public/Development/Flutter/Clones/scr_amenities_admin_app/android/app/src/main/AndroidManifest.xml:1:1-38:12
-		INJECTED from /Users/rohits/Public/Development/Flutter/Clones/scr_amenities_admin_app/android/app/src/debug/AndroidManifest.xml
+		INJECTED from /Users/rohits/Public/Development/Flutter/Projects/scr_amenities_admin/android/app/src/main/AndroidManifest.xml
+		ADDED from /Users/rohits/Public/Development/Flutter/Projects/scr_amenities_admin/android/app/src/main/AndroidManifest.xml:1:1-42:12
+		INJECTED from /Users/rohits/Public/Development/Flutter/Projects/scr_amenities_admin/android/app/src/debug/AndroidManifest.xml
 	xmlns:android
-		ADDED from /Users/rohits/Public/Development/Flutter/Clones/scr_amenities_admin_app/android/app/src/main/AndroidManifest.xml:1:11-69
+		ADDED from /Users/rohits/Public/Development/Flutter/Projects/scr_amenities_admin/android/app/src/main/AndroidManifest.xml:1:11-69
 uses-permission#android.permission.INTERNET
-ADDED from /Users/rohits/Public/Development/Flutter/Clones/scr_amenities_admin_app/android/app/src/main/AndroidManifest.xml:2:1-63
-MERGED from /Users/rohits/Public/Development/Flutter/Clones/scr_amenities_admin_app/android/app/src/main/AndroidManifest.xml:2:1-63
-MERGED from /Users/rohits/Public/Development/Flutter/Clones/scr_amenities_admin_app/android/app/src/main/AndroidManifest.xml:2:1-63
+ADDED from /Users/rohits/Public/Development/Flutter/Projects/scr_amenities_admin/android/app/src/main/AndroidManifest.xml:2:1-63
+MERGED from /Users/rohits/Public/Development/Flutter/Projects/scr_amenities_admin/android/app/src/main/AndroidManifest.xml:2:1-63
+MERGED from /Users/rohits/Public/Development/Flutter/Projects/scr_amenities_admin/android/app/src/main/AndroidManifest.xml:2:1-63
 MERGED from [com.google.android.gms:play-services-maps:18.1.0] /Users/rohits/.gradle/caches/transforms-3/d7f7973f000d5c8945a05a4db1417b66/transformed/jetified-play-services-maps-18.1.0/AndroidManifest.xml:24:5-67
 MERGED from [com.google.android.gms:play-services-maps:18.1.0] /Users/rohits/.gradle/caches/transforms-3/d7f7973f000d5c8945a05a4db1417b66/transformed/jetified-play-services-maps-18.1.0/AndroidManifest.xml:24:5-67
 	android:name
-		ADDED from /Users/rohits/Public/Development/Flutter/Clones/scr_amenities_admin_app/android/app/src/main/AndroidManifest.xml:2:18-60
+		ADDED from /Users/rohits/Public/Development/Flutter/Projects/scr_amenities_admin/android/app/src/main/AndroidManifest.xml:2:18-60
 uses-permission#android.permission.ACCESS_NETWORK_STATE
-ADDED from /Users/rohits/Public/Development/Flutter/Clones/scr_amenities_admin_app/android/app/src/main/AndroidManifest.xml:3:1-75
+ADDED from /Users/rohits/Public/Development/Flutter/Projects/scr_amenities_admin/android/app/src/main/AndroidManifest.xml:3:1-75
 MERGED from [com.google.android.gms:play-services-maps:18.1.0] /Users/rohits/.gradle/caches/transforms-3/d7f7973f000d5c8945a05a4db1417b66/transformed/jetified-play-services-maps-18.1.0/AndroidManifest.xml:23:5-79
 MERGED from [com.google.android.gms:play-services-maps:18.1.0] /Users/rohits/.gradle/caches/transforms-3/d7f7973f000d5c8945a05a4db1417b66/transformed/jetified-play-services-maps-18.1.0/AndroidManifest.xml:23:5-79
 	android:name
-		ADDED from /Users/rohits/Public/Development/Flutter/Clones/scr_amenities_admin_app/android/app/src/main/AndroidManifest.xml:3:18-72
+		ADDED from /Users/rohits/Public/Development/Flutter/Projects/scr_amenities_admin/android/app/src/main/AndroidManifest.xml:3:18-72
 uses-permission#android.permission.ACCESS_FINE_LOCATION
-ADDED from /Users/rohits/Public/Development/Flutter/Clones/scr_amenities_admin_app/android/app/src/main/AndroidManifest.xml:4:1-75
+ADDED from /Users/rohits/Public/Development/Flutter/Projects/scr_amenities_admin/android/app/src/main/AndroidManifest.xml:4:1-75
 	android:name
-		ADDED from /Users/rohits/Public/Development/Flutter/Clones/scr_amenities_admin_app/android/app/src/main/AndroidManifest.xml:4:18-72
+		ADDED from /Users/rohits/Public/Development/Flutter/Projects/scr_amenities_admin/android/app/src/main/AndroidManifest.xml:4:18-72
 uses-permission#android.permission.ACCESS_COARSE_LOCATION
-ADDED from /Users/rohits/Public/Development/Flutter/Clones/scr_amenities_admin_app/android/app/src/main/AndroidManifest.xml:5:1-77
+ADDED from /Users/rohits/Public/Development/Flutter/Projects/scr_amenities_admin/android/app/src/main/AndroidManifest.xml:5:1-77
 	android:name
-		ADDED from /Users/rohits/Public/Development/Flutter/Clones/scr_amenities_admin_app/android/app/src/main/AndroidManifest.xml:5:18-74
+		ADDED from /Users/rohits/Public/Development/Flutter/Projects/scr_amenities_admin/android/app/src/main/AndroidManifest.xml:5:18-74
 uses-permission#android.permission.CALL_PHONE
-ADDED from /Users/rohits/Public/Development/Flutter/Clones/scr_amenities_admin_app/android/app/src/main/AndroidManifest.xml:6:1-64
-MERGED from [:flutter_phone_direct_caller] /Users/rohits/Public/Development/Flutter/Clones/scr_amenities_admin_app/build/flutter_phone_direct_caller/intermediates/merged_manifest/debug/AndroidManifest.xml:9:5-69
-MERGED from [:flutter_phone_direct_caller] /Users/rohits/Public/Development/Flutter/Clones/scr_amenities_admin_app/build/flutter_phone_direct_caller/intermediates/merged_manifest/debug/AndroidManifest.xml:9:5-69
+ADDED from /Users/rohits/Public/Development/Flutter/Projects/scr_amenities_admin/android/app/src/main/AndroidManifest.xml:6:1-64
+MERGED from [:flutter_phone_direct_caller] /Users/rohits/Public/Development/Flutter/Projects/scr_amenities_admin/build/flutter_phone_direct_caller/intermediates/merged_manifest/debug/AndroidManifest.xml:9:5-69
+MERGED from [:flutter_phone_direct_caller] /Users/rohits/Public/Development/Flutter/Projects/scr_amenities_admin/build/flutter_phone_direct_caller/intermediates/merged_manifest/debug/AndroidManifest.xml:9:5-69
 	android:name
-		ADDED from /Users/rohits/Public/Development/Flutter/Clones/scr_amenities_admin_app/android/app/src/main/AndroidManifest.xml:6:18-62
+		ADDED from /Users/rohits/Public/Development/Flutter/Projects/scr_amenities_admin/android/app/src/main/AndroidManifest.xml:6:18-62
 uses-sdk
-INJECTED from /Users/rohits/Public/Development/Flutter/Clones/scr_amenities_admin_app/android/app/src/main/AndroidManifest.xml reason: use-sdk injection requested
-INJECTED from /Users/rohits/Public/Development/Flutter/Clones/scr_amenities_admin_app/android/app/src/main/AndroidManifest.xml
-INJECTED from /Users/rohits/Public/Development/Flutter/Clones/scr_amenities_admin_app/android/app/src/main/AndroidManifest.xml
-MERGED from [:permission_handler_android] /Users/rohits/Public/Development/Flutter/Clones/scr_amenities_admin_app/build/permission_handler_android/intermediates/merged_manifest/debug/AndroidManifest.xml:5:5-7:41
-MERGED from [:permission_handler_android] /Users/rohits/Public/Development/Flutter/Clones/scr_amenities_admin_app/build/permission_handler_android/intermediates/merged_manifest/debug/AndroidManifest.xml:5:5-7:41
-MERGED from [:geolocator_android] /Users/rohits/Public/Development/Flutter/Clones/scr_amenities_admin_app/build/geolocator_android/intermediates/merged_manifest/debug/AndroidManifest.xml:5:5-7:41
-MERGED from [:geolocator_android] /Users/rohits/Public/Development/Flutter/Clones/scr_amenities_admin_app/build/geolocator_android/intermediates/merged_manifest/debug/AndroidManifest.xml:5:5-7:41
-MERGED from [:google_maps_flutter_android] /Users/rohits/Public/Development/Flutter/Clones/scr_amenities_admin_app/build/google_maps_flutter_android/intermediates/merged_manifest/debug/AndroidManifest.xml:5:5-7:41
-MERGED from [:google_maps_flutter_android] /Users/rohits/Public/Development/Flutter/Clones/scr_amenities_admin_app/build/google_maps_flutter_android/intermediates/merged_manifest/debug/AndroidManifest.xml:5:5-7:41
-MERGED from [:flutter_plugin_android_lifecycle] /Users/rohits/Public/Development/Flutter/Clones/scr_amenities_admin_app/build/flutter_plugin_android_lifecycle/intermediates/merged_manifest/debug/AndroidManifest.xml:5:5-7:41
-MERGED from [:flutter_plugin_android_lifecycle] /Users/rohits/Public/Development/Flutter/Clones/scr_amenities_admin_app/build/flutter_plugin_android_lifecycle/intermediates/merged_manifest/debug/AndroidManifest.xml:5:5-7:41
-MERGED from [:flutter_keyboard_visibility] /Users/rohits/Public/Development/Flutter/Clones/scr_amenities_admin_app/build/flutter_keyboard_visibility/intermediates/merged_manifest/debug/AndroidManifest.xml:5:5-7:41
-MERGED from [:flutter_keyboard_visibility] /Users/rohits/Public/Development/Flutter/Clones/scr_amenities_admin_app/build/flutter_keyboard_visibility/intermediates/merged_manifest/debug/AndroidManifest.xml:5:5-7:41
-MERGED from [:url_launcher_android] /Users/rohits/Public/Development/Flutter/Clones/scr_amenities_admin_app/build/url_launcher_android/intermediates/merged_manifest/debug/AndroidManifest.xml:5:5-7:41
-MERGED from [:url_launcher_android] /Users/rohits/Public/Development/Flutter/Clones/scr_amenities_admin_app/build/url_launcher_android/intermediates/merged_manifest/debug/AndroidManifest.xml:5:5-7:41
-MERGED from [:flutter_phone_direct_caller] /Users/rohits/Public/Development/Flutter/Clones/scr_amenities_admin_app/build/flutter_phone_direct_caller/intermediates/merged_manifest/debug/AndroidManifest.xml:5:5-7:41
-MERGED from [:flutter_phone_direct_caller] /Users/rohits/Public/Development/Flutter/Clones/scr_amenities_admin_app/build/flutter_phone_direct_caller/intermediates/merged_manifest/debug/AndroidManifest.xml:5:5-7:41
-MERGED from [:webview_flutter_android] /Users/rohits/Public/Development/Flutter/Clones/scr_amenities_admin_app/build/webview_flutter_android/intermediates/merged_manifest/debug/AndroidManifest.xml:5:5-7:41
-MERGED from [:webview_flutter_android] /Users/rohits/Public/Development/Flutter/Clones/scr_amenities_admin_app/build/webview_flutter_android/intermediates/merged_manifest/debug/AndroidManifest.xml:5:5-7:41
+INJECTED from /Users/rohits/Public/Development/Flutter/Projects/scr_amenities_admin/android/app/src/main/AndroidManifest.xml reason: use-sdk injection requested
+INJECTED from /Users/rohits/Public/Development/Flutter/Projects/scr_amenities_admin/android/app/src/main/AndroidManifest.xml
+INJECTED from /Users/rohits/Public/Development/Flutter/Projects/scr_amenities_admin/android/app/src/main/AndroidManifest.xml
+MERGED from [:permission_handler_android] /Users/rohits/Public/Development/Flutter/Projects/scr_amenities_admin/build/permission_handler_android/intermediates/merged_manifest/debug/AndroidManifest.xml:5:5-7:41
+MERGED from [:permission_handler_android] /Users/rohits/Public/Development/Flutter/Projects/scr_amenities_admin/build/permission_handler_android/intermediates/merged_manifest/debug/AndroidManifest.xml:5:5-7:41
+MERGED from [:geolocator_android] /Users/rohits/Public/Development/Flutter/Projects/scr_amenities_admin/build/geolocator_android/intermediates/merged_manifest/debug/AndroidManifest.xml:5:5-7:41
+MERGED from [:geolocator_android] /Users/rohits/Public/Development/Flutter/Projects/scr_amenities_admin/build/geolocator_android/intermediates/merged_manifest/debug/AndroidManifest.xml:5:5-7:41
+MERGED from [:google_maps_flutter_android] /Users/rohits/Public/Development/Flutter/Projects/scr_amenities_admin/build/google_maps_flutter_android/intermediates/merged_manifest/debug/AndroidManifest.xml:5:5-7:41
+MERGED from [:google_maps_flutter_android] /Users/rohits/Public/Development/Flutter/Projects/scr_amenities_admin/build/google_maps_flutter_android/intermediates/merged_manifest/debug/AndroidManifest.xml:5:5-7:41
+MERGED from [:flutter_plugin_android_lifecycle] /Users/rohits/Public/Development/Flutter/Projects/scr_amenities_admin/build/flutter_plugin_android_lifecycle/intermediates/merged_manifest/debug/AndroidManifest.xml:5:5-7:41
+MERGED from [:flutter_plugin_android_lifecycle] /Users/rohits/Public/Development/Flutter/Projects/scr_amenities_admin/build/flutter_plugin_android_lifecycle/intermediates/merged_manifest/debug/AndroidManifest.xml:5:5-7:41
+MERGED from [:flutter_keyboard_visibility] /Users/rohits/Public/Development/Flutter/Projects/scr_amenities_admin/build/flutter_keyboard_visibility/intermediates/merged_manifest/debug/AndroidManifest.xml:5:5-7:41
+MERGED from [:flutter_keyboard_visibility] /Users/rohits/Public/Development/Flutter/Projects/scr_amenities_admin/build/flutter_keyboard_visibility/intermediates/merged_manifest/debug/AndroidManifest.xml:5:5-7:41
+MERGED from [:url_launcher_android] /Users/rohits/Public/Development/Flutter/Projects/scr_amenities_admin/build/url_launcher_android/intermediates/merged_manifest/debug/AndroidManifest.xml:5:5-7:41
+MERGED from [:url_launcher_android] /Users/rohits/Public/Development/Flutter/Projects/scr_amenities_admin/build/url_launcher_android/intermediates/merged_manifest/debug/AndroidManifest.xml:5:5-7:41
+MERGED from [:flutter_phone_direct_caller] /Users/rohits/Public/Development/Flutter/Projects/scr_amenities_admin/build/flutter_phone_direct_caller/intermediates/merged_manifest/debug/AndroidManifest.xml:5:5-7:41
+MERGED from [:flutter_phone_direct_caller] /Users/rohits/Public/Development/Flutter/Projects/scr_amenities_admin/build/flutter_phone_direct_caller/intermediates/merged_manifest/debug/AndroidManifest.xml:5:5-7:41
+MERGED from [:webview_flutter_android] /Users/rohits/Public/Development/Flutter/Projects/scr_amenities_admin/build/webview_flutter_android/intermediates/merged_manifest/debug/AndroidManifest.xml:5:5-7:41
+MERGED from [:webview_flutter_android] /Users/rohits/Public/Development/Flutter/Projects/scr_amenities_admin/build/webview_flutter_android/intermediates/merged_manifest/debug/AndroidManifest.xml:5:5-7:41
 MERGED from [androidx.window:window-java:1.0.0-beta04] /Users/rohits/.gradle/caches/transforms-3/ae81e06d24c799147c26814497a2a305/transformed/jetified-window-java-1.0.0-beta04/AndroidManifest.xml:19:5-21:41
 MERGED from [androidx.window:window-java:1.0.0-beta04] /Users/rohits/.gradle/caches/transforms-3/ae81e06d24c799147c26814497a2a305/transformed/jetified-window-java-1.0.0-beta04/AndroidManifest.xml:19:5-21:41
 MERGED from [androidx.window:window:1.0.0-beta04] /Users/rohits/.gradle/caches/transforms-3/25cee5f028ac2a6b79fd6278ff5b59e2/transformed/jetified-window-1.0.0-beta04/AndroidManifest.xml:20:5-22:41
@@ -184,42 +184,42 @@ MERGED from [androidx.lifecycle:lifecycle-viewmodel:2.1.0] /Users/rohits/.gradle
 MERGED from [androidx.lifecycle:lifecycle-viewmodel:2.1.0] /Users/rohits/.gradle/caches/transforms-3/03b9b3b952540ee8cedf6c096276d934/transformed/lifecycle-viewmodel-2.1.0/AndroidManifest.xml:20:5-44
 MERGED from [androidx.annotation:annotation-experimental:1.3.0] /Users/rohits/.gradle/caches/transforms-3/937d6edc8055f6701a18eeac1a67afe6/transformed/jetified-annotation-experimental-1.3.0/AndroidManifest.xml:20:5-44
 MERGED from [androidx.annotation:annotation-experimental:1.3.0] /Users/rohits/.gradle/caches/transforms-3/937d6edc8055f6701a18eeac1a67afe6/transformed/jetified-annotation-experimental-1.3.0/AndroidManifest.xml:20:5-44
-INJECTED from /Users/rohits/Public/Development/Flutter/Clones/scr_amenities_admin_app/android/app/src/debug/AndroidManifest.xml
-INJECTED from /Users/rohits/Public/Development/Flutter/Clones/scr_amenities_admin_app/android/app/src/debug/AndroidManifest.xml
+INJECTED from /Users/rohits/Public/Development/Flutter/Projects/scr_amenities_admin/android/app/src/debug/AndroidManifest.xml
+INJECTED from /Users/rohits/Public/Development/Flutter/Projects/scr_amenities_admin/android/app/src/debug/AndroidManifest.xml
 	android:targetSdkVersion
-		INJECTED from /Users/rohits/Public/Development/Flutter/Clones/scr_amenities_admin_app/android/app/src/main/AndroidManifest.xml
-		INJECTED from /Users/rohits/Public/Development/Flutter/Clones/scr_amenities_admin_app/android/app/src/debug/AndroidManifest.xml
+		INJECTED from /Users/rohits/Public/Development/Flutter/Projects/scr_amenities_admin/android/app/src/main/AndroidManifest.xml
+		INJECTED from /Users/rohits/Public/Development/Flutter/Projects/scr_amenities_admin/android/app/src/debug/AndroidManifest.xml
 	android:minSdkVersion
-		INJECTED from /Users/rohits/Public/Development/Flutter/Clones/scr_amenities_admin_app/android/app/src/main/AndroidManifest.xml
-		INJECTED from /Users/rohits/Public/Development/Flutter/Clones/scr_amenities_admin_app/android/app/src/debug/AndroidManifest.xml
+		INJECTED from /Users/rohits/Public/Development/Flutter/Projects/scr_amenities_admin/android/app/src/main/AndroidManifest.xml
+		INJECTED from /Users/rohits/Public/Development/Flutter/Projects/scr_amenities_admin/android/app/src/debug/AndroidManifest.xml
 uses-permission#android.permission.FOREGROUND_SERVICE
-ADDED from [:geolocator_android] /Users/rohits/Public/Development/Flutter/Clones/scr_amenities_admin_app/build/geolocator_android/intermediates/merged_manifest/debug/AndroidManifest.xml:9:5-77
+ADDED from [:geolocator_android] /Users/rohits/Public/Development/Flutter/Projects/scr_amenities_admin/build/geolocator_android/intermediates/merged_manifest/debug/AndroidManifest.xml:9:5-77
 	android:name
-		ADDED from [:geolocator_android] /Users/rohits/Public/Development/Flutter/Clones/scr_amenities_admin_app/build/geolocator_android/intermediates/merged_manifest/debug/AndroidManifest.xml:9:22-74
+		ADDED from [:geolocator_android] /Users/rohits/Public/Development/Flutter/Projects/scr_amenities_admin/build/geolocator_android/intermediates/merged_manifest/debug/AndroidManifest.xml:9:22-74
 service#com.baseflow.geolocator.GeolocatorLocationService
-ADDED from [:geolocator_android] /Users/rohits/Public/Development/Flutter/Clones/scr_amenities_admin_app/build/geolocator_android/intermediates/merged_manifest/debug/AndroidManifest.xml:12:9-16:56
+ADDED from [:geolocator_android] /Users/rohits/Public/Development/Flutter/Projects/scr_amenities_admin/build/geolocator_android/intermediates/merged_manifest/debug/AndroidManifest.xml:12:9-16:56
 	android:enabled
-		ADDED from [:geolocator_android] /Users/rohits/Public/Development/Flutter/Clones/scr_amenities_admin_app/build/geolocator_android/intermediates/merged_manifest/debug/AndroidManifest.xml:14:13-35
+		ADDED from [:geolocator_android] /Users/rohits/Public/Development/Flutter/Projects/scr_amenities_admin/build/geolocator_android/intermediates/merged_manifest/debug/AndroidManifest.xml:14:13-35
 	android:exported
-		ADDED from [:geolocator_android] /Users/rohits/Public/Development/Flutter/Clones/scr_amenities_admin_app/build/geolocator_android/intermediates/merged_manifest/debug/AndroidManifest.xml:15:13-37
+		ADDED from [:geolocator_android] /Users/rohits/Public/Development/Flutter/Projects/scr_amenities_admin/build/geolocator_android/intermediates/merged_manifest/debug/AndroidManifest.xml:15:13-37
 	android:foregroundServiceType
-		ADDED from [:geolocator_android] /Users/rohits/Public/Development/Flutter/Clones/scr_amenities_admin_app/build/geolocator_android/intermediates/merged_manifest/debug/AndroidManifest.xml:16:13-53
+		ADDED from [:geolocator_android] /Users/rohits/Public/Development/Flutter/Projects/scr_amenities_admin/build/geolocator_android/intermediates/merged_manifest/debug/AndroidManifest.xml:16:13-53
 	android:name
-		ADDED from [:geolocator_android] /Users/rohits/Public/Development/Flutter/Clones/scr_amenities_admin_app/build/geolocator_android/intermediates/merged_manifest/debug/AndroidManifest.xml:13:13-77
+		ADDED from [:geolocator_android] /Users/rohits/Public/Development/Flutter/Projects/scr_amenities_admin/build/geolocator_android/intermediates/merged_manifest/debug/AndroidManifest.xml:13:13-77
 activity#io.flutter.plugins.urllauncher.WebViewActivity
-ADDED from [:url_launcher_android] /Users/rohits/Public/Development/Flutter/Clones/scr_amenities_admin_app/build/url_launcher_android/intermediates/merged_manifest/debug/AndroidManifest.xml:10:9-13:74
+ADDED from [:url_launcher_android] /Users/rohits/Public/Development/Flutter/Projects/scr_amenities_admin/build/url_launcher_android/intermediates/merged_manifest/debug/AndroidManifest.xml:10:9-13:74
 	android:exported
-		ADDED from [:url_launcher_android] /Users/rohits/Public/Development/Flutter/Clones/scr_amenities_admin_app/build/url_launcher_android/intermediates/merged_manifest/debug/AndroidManifest.xml:12:13-37
+		ADDED from [:url_launcher_android] /Users/rohits/Public/Development/Flutter/Projects/scr_amenities_admin/build/url_launcher_android/intermediates/merged_manifest/debug/AndroidManifest.xml:12:13-37
 	android:theme
-		ADDED from [:url_launcher_android] /Users/rohits/Public/Development/Flutter/Clones/scr_amenities_admin_app/build/url_launcher_android/intermediates/merged_manifest/debug/AndroidManifest.xml:13:13-71
+		ADDED from [:url_launcher_android] /Users/rohits/Public/Development/Flutter/Projects/scr_amenities_admin/build/url_launcher_android/intermediates/merged_manifest/debug/AndroidManifest.xml:13:13-71
 	android:name
-		ADDED from [:url_launcher_android] /Users/rohits/Public/Development/Flutter/Clones/scr_amenities_admin_app/build/url_launcher_android/intermediates/merged_manifest/debug/AndroidManifest.xml:11:13-74
+		ADDED from [:url_launcher_android] /Users/rohits/Public/Development/Flutter/Projects/scr_amenities_admin/build/url_launcher_android/intermediates/merged_manifest/debug/AndroidManifest.xml:11:13-74
 uses-feature#android.hardware.telephony
-ADDED from [:flutter_phone_direct_caller] /Users/rohits/Public/Development/Flutter/Clones/scr_amenities_admin_app/build/flutter_phone_direct_caller/intermediates/merged_manifest/debug/AndroidManifest.xml:11:5-13:36
+ADDED from [:flutter_phone_direct_caller] /Users/rohits/Public/Development/Flutter/Projects/scr_amenities_admin/build/flutter_phone_direct_caller/intermediates/merged_manifest/debug/AndroidManifest.xml:11:5-13:36
 	android:required
-		ADDED from [:flutter_phone_direct_caller] /Users/rohits/Public/Development/Flutter/Clones/scr_amenities_admin_app/build/flutter_phone_direct_caller/intermediates/merged_manifest/debug/AndroidManifest.xml:13:9-33
+		ADDED from [:flutter_phone_direct_caller] /Users/rohits/Public/Development/Flutter/Projects/scr_amenities_admin/build/flutter_phone_direct_caller/intermediates/merged_manifest/debug/AndroidManifest.xml:13:9-33
 	android:name
-		ADDED from [:flutter_phone_direct_caller] /Users/rohits/Public/Development/Flutter/Clones/scr_amenities_admin_app/build/flutter_phone_direct_caller/intermediates/merged_manifest/debug/AndroidManifest.xml:12:9-50
+		ADDED from [:flutter_phone_direct_caller] /Users/rohits/Public/Development/Flutter/Projects/scr_amenities_admin/build/flutter_phone_direct_caller/intermediates/merged_manifest/debug/AndroidManifest.xml:12:9-50
 uses-library#androidx.window.extensions
 ADDED from [androidx.window:window:1.0.0-beta04] /Users/rohits/.gradle/caches/transforms-3/25cee5f028ac2a6b79fd6278ff5b59e2/transformed/jetified-window-1.0.0-beta04/AndroidManifest.xml:25:9-27:40
 	android:required

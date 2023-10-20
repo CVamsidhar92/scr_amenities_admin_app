@@ -5,8 +5,6 @@ import 'package:scr_amenities_admin/screens/edit_location.dart';
 import 'package:scr_amenities_admin/screens/login.dart';
 import 'dart:convert';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:geolocator/geolocator.dart';
-import 'package:permission_handler/permission_handler.dart';
 
 class AmenitiesList extends StatefulWidget {
   final String stnName;
@@ -468,29 +466,34 @@ Positioned(
   child: Container(
     margin: EdgeInsets.only(right: 8.0),
     child: ElevatedButton(
-      onPressed: () {
-        // Parse latitude and longitude as doubles and pass them to the EditLocation screen.
-        double initialLatitude = double.tryParse(item['latitude'] ?? '0.0') ?? 0.0;
-        double initialLongitude = double.tryParse(item['longitude'] ?? '0.0') ?? 0.0;
-
-        // Pass the current latitude and longitude to the EditLocation screen.
-        Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (context) => EditLocation(
-              initialLatitude: initialLatitude, // Pass the initial latitude
-              initialLongitude: initialLongitude, // Pass the initial longitude
-            ),
-          ),
-        );
-      },
-      child: Text('Edit'),
-      style: ButtonStyle(
-        backgroundColor: MaterialStateProperty.all(Colors.blue),
-        foregroundColor: MaterialStateProperty.all(Colors.white),
+  onPressed: () {
+    // Parse latitude and longitude as doubles
+    double initialLatitude = double.tryParse(item['latitude'] ?? '0.0') ?? 0.0;
+    double initialLongitude = double.tryParse(item['longitude'] ?? '0.0') ?? 0.0;
+    
+    // Pass the Amenity type, latitude, longitude, id, and location_name to the EditLocation screen.
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => EditLocation(
+          amenityType:  data[0]['amenity_type'], // Pass the Amenity type
+          initialLatitude: initialLatitude, // Pass the initial latitude
+          initialLongitude: initialLongitude, // Pass the initial longitude
+          itemId: item['id'], // Pass the item id
+          locationName: item['location_name'], // Pass the location_name
+        ),
       ),
-    ),
+    );
+  },
+  child: Text('Edit'),
+  style: ButtonStyle(
+    backgroundColor: MaterialStateProperty.all(Colors.blue),
+    foregroundColor: MaterialStateProperty.all(Colors.white),
   ),
 )
+
+  ),
+)
+
 
                                     ],
                                   ),

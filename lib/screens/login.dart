@@ -14,7 +14,7 @@ class Login extends StatefulWidget {
 class _LoginState extends State<Login> {
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-    
+
   final String apiUrl = base_url + '/login'; // Define your API endpoint
 
   Future<void> _login() async {
@@ -22,44 +22,45 @@ class _LoginState extends State<Login> {
     final password = _passwordController.text;
 
     if (username.isEmpty || password.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Please enter both username and password.'),
-        ),
-      );
+      _showErrorSnackBar('Please enter both username and password.');
       return;
     }
 
-  final response = await http.post(
-    Uri.parse(apiUrl),
-    headers: {'Content-Type': 'application/json'},
-    body: jsonEncode({'username': username, 'password': password}),
-  );
-
-  print('Response status code: ${response.statusCode}');
-  print('Response body: ${response.body}');
-
-  if (response.statusCode == 200) {
-    final Map<String, dynamic> responseData = json.decode(response.body);
-
-//  final String id = responseData['id'].toString();
- final String section = responseData['section'].toString();
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          builder: (context) => SelectStn(section:section),
-        ),
-      );
-  } else {
-    // Display the API response, which may contain error details.
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text('An error occurred. Please try again later.'),
-      ),
+    final response = await http.post(
+      Uri.parse(apiUrl),
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode({'username': username, 'password': password}),
     );
+
+    print('Response status code: ${response.statusCode}');
+    print('Response body: ${response.body}');
+
+    if (response.statusCode == 200) {
+      final Map<String, dynamic> responseData = json.decode(response.body);
+
+      if (responseData.containsKey('section')) {
+        final String section = responseData['section'].toString();
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => SelectStn(section: section),
+          ),
+        );
+      } else {
+        _showErrorSnackBar('Invalid username or password.');
+      }
+    } else {
+      _showErrorSnackBar('An error occurred. Please try again later.');
+    }
   }
 
-
+  void _showErrorSnackBar(String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+        backgroundColor: Colors.red,
+      ),
+    );
   }
 
   @override

@@ -1,9 +1,9 @@
-#Fri Oct 20 10:35:27 IST 2023
-base.0=/Users/rohits/Public/Development/Flutter/Clones/scr_amenities_admin_app/build/app/intermediates/dex/debug/mergeExtDexDebug/classes.dex
-base.1=/Users/rohits/Public/Development/Flutter/Clones/scr_amenities_admin_app/build/app/intermediates/dex/debug/mergeLibDexDebug/0/classes.dex
-base.2=/Users/rohits/Public/Development/Flutter/Clones/scr_amenities_admin_app/build/app/intermediates/dex/debug/mergeProjectDexDebug/0/classes.dex
-base.3=/Users/rohits/Public/Development/Flutter/Clones/scr_amenities_admin_app/build/app/intermediates/dex/debug/mergeProjectDexDebug/1/classes.dex
-base.4=/Users/rohits/Public/Development/Flutter/Clones/scr_amenities_admin_app/build/app/intermediates/dex/debug/mergeProjectDexDebug/11/classes.dex
+#Fri Oct 20 12:57:48 IST 2023
+base.0=/Users/rohits/Public/Development/Flutter/Projects/scr_amenities_admin/build/app/intermediates/dex/debug/mergeExtDexDebug/classes.dex
+base.1=/Users/rohits/Public/Development/Flutter/Projects/scr_amenities_admin/build/app/intermediates/dex/debug/mergeLibDexDebug/0/classes.dex
+base.2=/Users/rohits/Public/Development/Flutter/Projects/scr_amenities_admin/build/app/intermediates/dex/debug/mergeProjectDexDebug/0/classes.dex
+base.3=/Users/rohits/Public/Development/Flutter/Projects/scr_amenities_admin/build/app/intermediates/dex/debug/mergeProjectDexDebug/1/classes.dex
+base.4=/Users/rohits/Public/Development/Flutter/Projects/scr_amenities_admin/build/app/intermediates/dex/debug/mergeProjectDexDebug/11/classes.dex
 path.0=classes.dex
 path.1=0/classes.dex
 path.2=0/classes.dex
