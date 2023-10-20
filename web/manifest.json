@@ -1,6 +1,6 @@
 {
-    "name": "gm_appointments",
-    "short_name": "gm_appointments",
+    "name": "scr_amenities_admin",
+    "short_name": "scr_amenities_admin",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

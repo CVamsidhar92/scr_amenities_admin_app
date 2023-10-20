@@ -1,10 +1,10 @@
 {
     "logs": [
         {
-            "outputFile": "com.example.gm_appointments.app-mergeDebugResources-11:/values-night-v8/values-night-v8.xml",
+            "outputFile": "com.example.scr_amenities_admin.app-mergeDebugResources-15:/values-night-v8/values-night-v8.xml",
             "map": [
                 {
-                    "source": "/Users/rohits/Public/Development/Flutter/Projects/scr_amenities_feeding_app/android/app/src/main/res/values-night/styles.xml",
+                    "source": "/Users/rohits/Public/Development/Flutter/Clones/scr_amenities_admin_app/android/app/src/main/res/values-night/styles.xml",
                     "from": {
                         "startLines": "3,14",
                         "startColumns": "4,4",

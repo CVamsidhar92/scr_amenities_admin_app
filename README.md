@@ -1,4 +1,4 @@
-# gm_appointments
+# scr_amenities_admin
 
 A new Flutter project.
 

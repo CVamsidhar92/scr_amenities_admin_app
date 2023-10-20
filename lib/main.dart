@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:gm_appointments/screens/login.dart';
-import 'package:gm_appointments/screens/home.dart';
-import 'package:gm_appointments/screens/view_appointment.dart';
+import 'package:flutter/services.dart';
+import 'package:scr_amenities_admin/screens/amenities_list.dart';
+import 'package:scr_amenities_admin/screens/home.dart';
+import 'package:scr_amenities_admin/screens/login.dart';
+import 'package:scr_amenities_admin/screens/mapsWebView.dart';
+import 'package:scr_amenities_admin/screens/porter_list.dart';
+import 'package:scr_amenities_admin/screens/splash_screen.dart';
+import 'package:scr_amenities_admin/screens/taxi_list.dart';
+import './screens/select_stn.dart';
 
 void main() {
   runApp(MyApp());
@@ -11,58 +16,42 @@ void main() {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark.copyWith(
+      statusBarColor: Colors.transparent,
+    ));
+
     return MaterialApp(
-      title: 'GM Appointments',
+      title: 'Station App',
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primarySwatch: Colors.blue,
+        visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: InitialRoute(),
+      initialRoute: '/splash',
+      routes: {
+        '/splash': (context) => Splash(),
+        '/Login': (context) => Login(),
+        '/SelectStn': (context) => SelectStn(
+            section: ModalRoute.of(context)!.settings.arguments as String
+           ),
+        '/Home': (context) => Home(
+            selectedStation:
+                ModalRoute.of(context)!.settings.arguments as String),
+        '/AmenitiesList': (context) => AmenitiesList(
+              stnName: ModalRoute.of(context)!.settings.arguments as String,
+              amenityType: ModalRoute.of(context)!.settings.arguments as String,
+            ),
+        '/PorterList': (context) => PorterList(
+              stnName: ModalRoute.of(context)!.settings.arguments as String,
+              amenityType: ModalRoute.of(context)!.settings.arguments as String,
+            ),
+        '/TaxiList': (context) => TaxiList(
+              stnName: ModalRoute.of(context)!.settings.arguments as String,
+              amenityType: ModalRoute.of(context)!.settings.arguments as String,
+            ),
+        '/WebView': (context) => MapsWebview(
+            geturl: ModalRoute.of(context)!.settings.arguments as String),
+      },
     );
-  }
-}
-
-class InitialRoute extends StatefulWidget {
-  @override
-  _InitialRouteState createState() => _InitialRouteState();
-}
-
-class _InitialRouteState extends State<InitialRoute> {
-  int? userRole;
-
-  @override
-  void initState() {
-    super.initState();
-    _getUserRole();
-  }
-
-  Future<void> _getUserRole() async {
-    final prefs = await SharedPreferences.getInstance();
-    final role = prefs.getInt('role');
-    setState(() {
-      userRole = role;
-    });
-
-    // Redirect to the appropriate screen based on the user's role
-    if (userRole != null) {
-      if (userRole == 0) {
-        Navigator.of(context).pushReplacement(MaterialPageRoute(
-          builder: (context) => ViewAppointments(userRole: userRole!),
-        ));
-      } else if (userRole == 1) {
-        Navigator.of(context).pushReplacement(MaterialPageRoute(
-          builder: (context) => Home(userRole: userRole!),
-        ));
-      }
-    } else {
-      // If no role is stored, navigate to the login screen
-      Navigator.of(context).pushReplacement(MaterialPageRoute(
-        builder: (context) => Login(),
-      ));
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return CircularProgressIndicator();
   }
 }

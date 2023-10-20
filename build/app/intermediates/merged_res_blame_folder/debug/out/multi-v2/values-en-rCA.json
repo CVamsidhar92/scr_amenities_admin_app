@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "com.example.gm_appointments.app-mergeDebugResources-11:/values-en-rCA/values-en-rCA.xml",
+            "outputFile": "com.example.scr_amenities_admin.app-mergeDebugResources-15:/values-en-rCA/values-en-rCA.xml",
             "map": [
                 {
                     "source": "/Users/rohits/.gradle/caches/transforms-3/d12883dde0390e08dd2a1192741cec1b/transformed/browser-1.5.0/res/values-en-rCA/values-en-rCA.xml",
