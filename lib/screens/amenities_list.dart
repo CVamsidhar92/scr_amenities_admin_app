@@ -480,6 +480,7 @@ Positioned(
           initialLongitude: initialLongitude, // Pass the initial longitude
           itemId: item['id'], // Pass the item id
           locationName: item['location_name'], // Pass the location_name
+          station:widget.stnName
         ),
       ),
     );
