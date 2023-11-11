@@ -31,26 +31,7 @@ class MyApp extends StatelessWidget {
       routes: {
         '/splash': (context) => Splash(),
         '/Login': (context) => Login(),
-        '/SelectStn': (context) => SelectStn(
-            section: ModalRoute.of(context)!.settings.arguments as String
-           ),
-        '/Home': (context) => Home(
-            selectedStation:
-                ModalRoute.of(context)!.settings.arguments as String),
-        '/AmenitiesList': (context) => AmenitiesList(
-              stnName: ModalRoute.of(context)!.settings.arguments as String,
-              amenityType: ModalRoute.of(context)!.settings.arguments as String,
-            ),
-        '/PorterList': (context) => PorterList(
-              stnName: ModalRoute.of(context)!.settings.arguments as String,
-              amenityType: ModalRoute.of(context)!.settings.arguments as String,
-            ),
-        '/TaxiList': (context) => TaxiList(
-              stnName: ModalRoute.of(context)!.settings.arguments as String,
-              amenityType: ModalRoute.of(context)!.settings.arguments as String,
-            ),
-        '/WebView': (context) => MapsWebview(
-            geturl: ModalRoute.of(context)!.settings.arguments as String),
+      
       },
     );
   }

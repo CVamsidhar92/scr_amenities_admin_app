@@ -3,15 +3,26 @@ import 'package:http/http.dart' as http;
 import 'package:scr_amenities_admin/screens/base_url.dart';
 import 'package:scr_amenities_admin/screens/edit_location.dart';
 import 'package:scr_amenities_admin/screens/login.dart';
+import 'package:scr_amenities_admin/screens/view_location.dart';
 import 'dart:convert';
 import 'package:url_launcher/url_launcher.dart';
 
 class AmenitiesList extends StatefulWidget {
+  final String id;
+  final String role;
+  final String zone;
+  final String division;
+  final String section;
   final String stnName;
   final String amenityType;
 
   const AmenitiesList({
     Key? key,
+    required this.id,
+    required this.role,
+    required this.zone,
+    required this.division,
+    required this.section,
     required this.stnName,
     required this.amenityType,
   }) : super(key: key);
@@ -41,6 +52,12 @@ class _AmenitiesListState extends State<AmenitiesList> {
     super.initState();
     amenitiesData = fetchData();
     webviewUrl = fetchWebviewUrl();
+  }
+
+  void refreshData() {
+    setState(() {
+      amenitiesData = fetchData();
+    });
   }
 
   Future<String> fetchLocationName() async {
@@ -262,8 +279,84 @@ class _AmenitiesListState extends State<AmenitiesList> {
     };
   }
 
+  Future<void> deleteItem(int id, BuildContext context) async {
+    bool confirmDelete = await showDeleteConfirmationDialog(context);
+
+    if (confirmDelete) {
+      try {
+        final String url = base_url +
+            '/deleteAmenity'; // Replace with your actual delete API endpoint
+
+        final response = await http.post(
+          Uri.parse(url),
+          headers: {'Content-Type': 'application/json'},
+          body: jsonEncode({'id': id}),
+        );
+
+        if (response.statusCode == 200) {
+          print('Data with ID $id deleted successfully');
+
+          // Show a Snackbar to inform the user about the successful deletion.
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('Data deleted successfully'),
+            ),
+          );
+
+          // After successful deletion, call fetchData to refresh the data
+          refreshData();
+        } else {
+          print('Failed to delete data with ID $id');
+          // Handle the error case or show an error message to the user.
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('Unable to Delete Data'),
+            ),
+          );
+        }
+      } catch (error) {
+        print('Error: $error');
+        // Handle any exceptions that may occur during the HTTP request.
+      }
+    }
+  }
+
+  Future<bool> showDeleteConfirmationDialog(BuildContext context) async {
+    bool? result = await showDialog<bool>(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text('Confirm Deletion'),
+          content: Text('Are you sure you want to delete the data?'),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(false); // Cancel the deletion
+              },
+              child: Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(true); // Confirm the deletion
+              },
+              child: Text('Delete'),
+            ),
+          ],
+        );
+      },
+    );
+    return result ??
+        false; // Return false if the dialog is dismissed without a choice
+  }
+
   @override
   Widget build(BuildContext context) {
+    String id = widget.id;
+    String role = widget.role;
+    String zone = widget.zone;
+    String division = widget.division;
+    String section = widget.section;
+    String station = widget.stnName;
     return Scaffold(
       appBar: AppBar(
         title: FutureBuilder<List<Map<String, dynamic>>>(
@@ -416,7 +509,9 @@ class _AmenitiesListState extends State<AmenitiesList> {
                                               CrossAxisAlignment.center,
                                           children: [
                                             Text(
-                                              item['location_name'] as String? ?? '',
+                                              item['location_name']
+                                                      as String? ??
+                                                  '',
                                               textAlign: TextAlign.center,
                                               style: TextStyle(
                                                 color: Colors.green,
@@ -426,7 +521,8 @@ class _AmenitiesListState extends State<AmenitiesList> {
                                             ),
                                             Text(
                                               item['location_details']
-                                                  as String? ?? '',
+                                                      as String? ??
+                                                  '',
                                               textAlign: TextAlign.center,
                                               style: TextStyle(
                                                 color: Colors.blue,
@@ -435,7 +531,8 @@ class _AmenitiesListState extends State<AmenitiesList> {
                                               ),
                                             ),
                                             Text(
-                                              item['station_name'] as String? ?? '',
+                                              item['station_name'] as String? ??
+                                                  '',
                                               textAlign: TextAlign.center,
                                               style: TextStyle(
                                                 color: Colors.blue,
@@ -460,42 +557,139 @@ class _AmenitiesListState extends State<AmenitiesList> {
                                           ],
                                         ),
                                       ),
-Positioned(
-  bottom: 0,
-  right: 0,
-  child: Container(
-    margin: EdgeInsets.only(right: 8.0),
-    child: ElevatedButton(
-  onPressed: () {
-    // Parse latitude and longitude as doubles
-    double initialLatitude = double.tryParse(item['latitude'] ?? '0.0') ?? 0.0;
-    double initialLongitude = double.tryParse(item['longitude'] ?? '0.0') ?? 0.0;
-    
-    // Pass the Amenity type, latitude, longitude, id, and location_name to the EditLocation screen.
-    Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (context) => EditLocation(
-          amenityType:  data[0]['amenity_type'], // Pass the Amenity type
-          initialLatitude: initialLatitude, // Pass the initial latitude
-          initialLongitude: initialLongitude, // Pass the initial longitude
-          itemId: item['id'], // Pass the item id
-          locationName: item['location_name'], // Pass the location_name
-          station:widget.stnName
-        ),
-      ),
-    );
-  },
-  child: Text('Edit'),
-  style: ButtonStyle(
-    backgroundColor: MaterialStateProperty.all(Colors.blue),
-    foregroundColor: MaterialStateProperty.all(Colors.white),
-  ),
-)
+                                      Positioned(
+                                        bottom: 0,
+                                        right: 5,
+                                        child: Row(
+                                          children: [
+                                            ElevatedButton(
+                                              onPressed: () {
+                                                // Parse latitude and longitude as doubles
+                                                double initialLatitude =
+                                                    double.tryParse(
+                                                            item['latitude'] ??
+                                                                '0.0') ??
+                                                        0.0;
+                                                double initialLongitude =
+                                                    double.tryParse(
+                                                            item['longitude'] ??
+                                                                '0.0') ??
+                                                        0.0;
 
-  ),
-)
+                                                // Pass the Amenity type, latitude, longitude, id, and location_name to the EditLocation screen.
+                                                Navigator.of(context).push(
+                                                  MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        ViewLocation(
+                                                      amenityType: data[0][
+                                                          'amenity_type'], // Pass the Amenity type
+                                                      initialLatitude:
+                                                          initialLatitude, // Pass the initial latitude
+                                                      initialLongitude:
+                                                          initialLongitude, // Pass the initial longitude
+                                                      itemId: item[
+                                                          'id'], // Pass the item id
+                                                      locationName: item[
+                                                          'location_name'], // Pass the location_name
+                                                      id: id,
+                                                      role: role,
+                                                      zone: zone,
+                                                      division: division,
+                                                      section: section,
+                                                      station: station,
+                                                    ),
+                                                  ),
+                                                );
+                                              },
+                                              child: Text('View'),
+                                              style: ButtonStyle(
+                                                backgroundColor:
+                                                    MaterialStateProperty.all(
+                                                        Colors.blue),
+                                                foregroundColor:
+                                                    MaterialStateProperty.all(
+                                                        Colors.white),
+                                              ),
+                                            ),
+                                             SizedBox(width: 6),
+                                            ElevatedButton(
+                                              onPressed: () {
+                                                // Parse latitude and longitude as doubles
+                                                double initialLatitude =
+                                                    double.tryParse(
+                                                            item['latitude'] ??
+                                                                '0.0') ??
+                                                        0.0;
+                                                double initialLongitude =
+                                                    double.tryParse(
+                                                            item['longitude'] ??
+                                                                '0.0') ??
+                                                        0.0;
 
-
+                                                // Pass the Amenity type, latitude, longitude, id, and location_name to the EditLocation screen.
+                                                Navigator.of(context).push(
+                                                  MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        EditLocation(
+                                                      amenityType: data[0][
+                                                          'amenity_type'], // Pass the Amenity type
+                                                      initialLatitude:
+                                                          initialLatitude, // Pass the initial latitude
+                                                      initialLongitude:
+                                                          initialLongitude, // Pass the initial longitude
+                                                      itemId: item[
+                                                          'id'], // Pass the item id
+                                                      locationName: item[
+                                                          'location_name'], // Pass the location_name
+                                                      id: id,
+                                                      role: role,
+                                                      zone: zone,
+                                                      division: division,
+                                                      section: section,
+                                                      station: station,
+                                                    ),
+                                                  ),
+                                                );
+                                              },
+                                              child: Text('Edit'),
+                                              style: ButtonStyle(
+                                                backgroundColor:
+                                                    MaterialStateProperty.all(
+                                                        Colors.blue),
+                                                foregroundColor:
+                                                    MaterialStateProperty.all(
+                                                        Colors.white),
+                                              ),
+                                            ),
+                                            Visibility(
+                                              visible: role ==
+                                                  '0', // Show the "Delete" button only when role is equal to 0
+                                              child: Container(
+                                                margin: EdgeInsets.only(
+                                                    left: 4.0,
+                                                    right:
+                                                        8.0), // Add margin for the gap
+                                                child: ElevatedButton(
+                                                  onPressed: () {
+                                                    // showDeleteAlert(context, item['id']);
+                                                    deleteItem(
+                                                        item['id'], context);
+                                                  },
+                                                  child: Text('Delete'),
+                                                  style: ButtonStyle(
+                                                    backgroundColor:
+                                                        MaterialStateProperty
+                                                            .all(Colors.red),
+                                                    foregroundColor:
+                                                        MaterialStateProperty
+                                                            .all(Colors.white),
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      )
                                     ],
                                   ),
                                   shape: RoundedRectangleBorder(

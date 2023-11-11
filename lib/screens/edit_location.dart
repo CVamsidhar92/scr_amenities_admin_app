@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart' as http;
+import 'package:location/location.dart';
 import 'package:scr_amenities_admin/screens/base_url.dart';
 import 'package:scr_amenities_admin/screens/home.dart';
+import 'package:permission_handler/permission_handler.dart' as permission;
 
 class EditLocation extends StatefulWidget {
   final double initialLatitude;
@@ -10,16 +12,25 @@ class EditLocation extends StatefulWidget {
   final int itemId;
   String amenityType;
   String locationName;
+  String zone;
+  String division;
+  String section;
   String station;
+  String id;
+  String role;
 
-  EditLocation({
-    required this.initialLatitude,
-    required this.initialLongitude,
-    required this.itemId,
-    required this.amenityType,
-    required this.locationName,
-    required this.station,
-  });
+  EditLocation(
+      {required this.initialLatitude,
+      required this.initialLongitude,
+      required this.itemId,
+      required this.amenityType,
+      required this.locationName,
+      required this.zone,
+      required this.division,
+      required this.section,
+      required this.station,
+      required this.id,
+      required this.role});
 
   @override
   _EditLocationState createState() => _EditLocationState();
@@ -30,26 +41,39 @@ class _EditLocationState extends State<EditLocation> {
   TextEditingController longitudeController = TextEditingController();
   GoogleMapController? mapController;
   Set<Marker> markers = Set();
-
   double updatedLatitude = 0.0;
   double updatedLongitude = 0.0;
   MapType currentMapType = MapType.normal;
+  LocationData? currentLocation;
+  Location location = Location();
 
   @override
   void initState() {
     super.initState();
-    // Initialize the text controllers with initial values.
     latitudeController.text = widget.initialLatitude.toString();
     longitudeController.text = widget.initialLongitude.toString();
     updatedLatitude = widget.initialLatitude;
     updatedLongitude = widget.initialLongitude;
-    // Add a marker at the initial latitude and longitude.
+
     markers.add(
       Marker(
         markerId: MarkerId('marker_id'),
         position: LatLng(widget.initialLatitude, widget.initialLongitude),
       ),
     );
+
+    _checkLocationPermission();
+  }
+
+  Future<void> _checkLocationPermission() async {
+    final status = await permission.Permission.location.status;
+    if (status.isDenied) {
+      await permission.Permission.location.request();
+    }
+
+    if (await permission.Permission.location.isGranted) {
+      _getCurrentLocation();
+    }
   }
 
   @override
@@ -63,7 +87,6 @@ class _EditLocationState extends State<EditLocation> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Input fields for Amenity Type and Location Name in the same row
             Row(
               children: [
                 Expanded(
@@ -91,7 +114,6 @@ class _EditLocationState extends State<EditLocation> {
               ],
             ),
             SizedBox(height: 16),
-            // Input fields for Edit Latitude and Edit Longitude in the same row
             Row(
               children: [
                 Expanded(
@@ -122,56 +144,66 @@ class _EditLocationState extends State<EditLocation> {
             SizedBox(height: 16),
             Expanded(
               child: Stack(
-                alignment: Alignment.topRight,
+                alignment: Alignment.bottomLeft,
                 children: [
                   GoogleMap(
-                    mapType: currentMapType, // Set the map type here.
+                    mapType: currentMapType,
                     initialCameraPosition: CameraPosition(
-                      target:
-                          LatLng(widget.initialLatitude, widget.initialLongitude),
-                      zoom: 20.0, // Initial zoom level
+                      target: LatLng(
+                          widget.initialLatitude, widget.initialLongitude),
+                      zoom: 20.0,
                     ),
                     onMapCreated: (GoogleMapController controller) {
                       mapController = controller;
                     },
                     onCameraMove: (CameraPosition position) {
-                      // Update the latitude and longitude when the map camera moves.
                       updatedLatitude = position.target.latitude;
                       updatedLongitude = position.target.longitude;
-                      // Update the text fields.
                       latitudeController.text = updatedLatitude.toString();
                       longitudeController.text = updatedLongitude.toString();
-                      // Update the marker position.
                       updateMarker();
                     },
                     markers: markers,
-                    zoomControlsEnabled: true, // Enable zoom controls
+                    zoomControlsEnabled: true,
+                    myLocationButtonEnabled:
+                        true, // Enable the default location button
+                    myLocationEnabled:
+                        true, // Show user's location as a blue dot on the map
                   ),
                   Padding(
-                    padding: const EdgeInsets.all(10.0),
+                    padding: const EdgeInsets.all(
+                        16.0), // Adjust the padding as needed
                     child: Column(
+                      mainAxisAlignment: MainAxisAlignment.end,
                       children: [
-       FloatingActionButton(
-  mini: true, // Set mini to true to decrease the size of the blue circle
-  onPressed: () {
-    // Toggle between map types.
-    setState(() {
-      if (currentMapType == MapType.normal) {
-        currentMapType = MapType.satellite;
-      } else {
-        currentMapType = MapType.normal;
-      }
-    });
-  },
-  child: Icon(
-    currentMapType == MapType.normal
-      ? Icons.satellite
-      : Icons.map,
-    size: 20, // Adjust the size as needed
-  ),
-),
-
-
+                        FloatingActionButton(
+                          mini: true,
+                          onPressed: () {
+                            setState(() {
+                              currentMapType =
+                                  (currentMapType == MapType.normal)
+                                      ? MapType.satellite
+                                      : MapType.normal;
+                            });
+                          },
+                          child: Icon(Icons.map, size: 20),
+                        ),
+                        if (currentLocation != null)
+                          FloatingActionButton(
+                            mini: true,
+                            onPressed: () {
+                              mapController?.animateCamera(
+                                CameraUpdate.newLatLng(
+                                  LatLng(currentLocation!.latitude!,
+                                      currentLocation!.longitude!),
+                                ),
+                              );
+                            },
+                            child: Icon(
+                              Icons.gps_fixed,
+                              size: 20,
+                            ),
+                          ),
                       ],
                     ),
                   ),
@@ -181,23 +213,18 @@ class _EditLocationState extends State<EditLocation> {
             Center(
               child: ElevatedButton(
                 onPressed: () {
-                  // Move the map camera to the updated position first.
                   mapController?.animateCamera(
                     CameraUpdate.newLatLng(
                       LatLng(updatedLatitude, updatedLongitude),
                     ),
                   );
 
-                  // Update the text fields with the current latitude and longitude.
                   latitudeController.text = updatedLatitude.toString();
                   longitudeController.text = updatedLongitude.toString();
 
-                  // Update the marker position.
                   updateMarker();
-
-                  // Call the updateLocation function with the provided data.
                   updateLocation(
-                      widget.itemId, updatedLatitude, updatedLongitude);
+                      widget.itemId, updatedLatitude, updatedLongitude, widget.station, widget.amenityType);
                 },
                 child: Text('Update Location'),
               ),
@@ -209,7 +236,6 @@ class _EditLocationState extends State<EditLocation> {
   }
 
   void updateMarker() {
-    // Update the marker position.
     markers.clear();
     markers.add(
       Marker(
@@ -217,10 +243,10 @@ class _EditLocationState extends State<EditLocation> {
         position: LatLng(updatedLatitude, updatedLongitude),
       ),
     );
-    setState(() {}); // Rebuild the widget to update the marker position.
+    setState(() {});
   }
 
-  void updateLocation(int itemId, double latitude, double longitude) async {
+  void updateLocation(int itemId, double latitude, double longitude,String station,String amenityType) async {
     final url = base_url + '/changelocationpin';
     final response = await http.post(
       Uri.parse(url),
@@ -228,21 +254,25 @@ class _EditLocationState extends State<EditLocation> {
         'itemId': itemId.toString(),
         'latitude': latitude.toString(),
         'longitude': longitude.toString(),
+        'station':widget.station,
+        'amenity_type':widget.amenityType
       },
     );
 
     if (response.statusCode == 200) {
-      // Show a success Snackbar.
       showSnackbar('Location updated successfully');
-
-      // Navigate to the Home screen.
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(
-          builder: (context) => Home(selectedStation: widget.station),
+          builder: (context) => Home(
+              id: widget.id,
+              role:widget.role,
+              zone: widget.zone,
+              division: widget.division,
+              section: widget.section,
+              selectedStation: widget.station),
         ),
       );
     } else {
-      // Show an error Snackbar.
       showSnackbar('Error updating location: ${response.body}');
     }
   }
@@ -253,5 +283,34 @@ class _EditLocationState extends State<EditLocation> {
         content: Text(message),
       ),
     );
+  }
+
+  void _getCurrentLocation() async {
+    final location = Location();
+    bool serviceEnabled;
+    PermissionStatus permissionGranted;
+
+    serviceEnabled = await location.serviceEnabled();
+    if (!serviceEnabled) {
+      serviceEnabled = await location.requestService();
+      if (!serviceEnabled) {
+        print('Location service is disabled.');
+        return;
+      }
+
+      permissionGranted = await location.hasPermission();
+      if (permissionGranted == PermissionStatus.denied) {
+        permissionGranted = await location.requestPermission();
+        if (permissionGranted != PermissionStatus.granted) {
+          print('Location permission is denied.');
+          return;
+        }
+      }
+
+      LocationData locationData = await location.getLocation();
+      setState(() {
+        currentLocation = locationData;
+      });
+    }
   }
 }

@@ -9,33 +9,41 @@ import 'package:flutter/services.dart';
 import 'home.dart';
 
 class SelectStn extends StatefulWidget {
+  final String id;
+  final String zone;
+  final String division;
   final String section;
-  const SelectStn({Key? key, required this.section}) : super(key: key);
+  final String role;
+  const SelectStn(
+      {Key? key,
+      required this.id,
+      required this.zone,
+      required this.division,
+      required this.section,
+      required this.role})
+      : super(key: key);
 
   @override
   State<SelectStn> createState() => _SelectStnState();
 }
 
 class _SelectStnState extends State<SelectStn> {
-  final List<String> staticStations = [
-    'Kachiguda',
-    'Nampally',
-    'Secunderabad',
-    'Tirupati',
-    'Vijayawada Jn',
-
-    // Add more station names as needed
-  ];
   String selectedStation = '';
-  final myVersion = '1.4';
+  final myVersion = '1.5';
   List<dynamic> data = [];
   late BuildContext dialogContext;
 
   @override
   void initState() {
     super.initState();
-    getData();
     getUpdates();
+    print(widget.role);
+
+    if (widget.role == '0') {
+      getAllStations();
+    } else {
+      getData();
+    }
   }
 
   Future<void> getUpdates() async {
@@ -107,14 +115,33 @@ class _SelectStnState extends State<SelectStn> {
 
   Future<void> getData() async {
     final String url = base_url + '/getstationbysec';
-    final Map<String, dynamic> requestData = {
-      'section': widget.section
-    };
+    final Map<String, dynamic> requestData = {'section': widget.section};
 
     final res = await http.post(
       Uri.parse(url),
       headers: {'Content-Type': 'application/json'},
       body: jsonEncode(requestData), // Remove the extra comma here
+    );
+
+    if (res.statusCode == 200) {
+      final fetchedData = jsonDecode(res.body);
+      if (fetchedData is List) {
+        setState(() {
+          data.addAll(fetchedData);
+        });
+      }
+    } else {
+      // Handle the error case
+      print('Failed to fetch data');
+    }
+  }
+
+  Future<void> getAllStations() async {
+    final String url = base_url + '/getstationbyadmin';
+
+    final res = await http.post(
+      Uri.parse(url),
+      headers: {'Content-Type': 'application/json'},
     );
 
     if (res.statusCode == 200) {
@@ -151,7 +178,13 @@ class _SelectStnState extends State<SelectStn> {
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => Home(selectedStation: selectedStation),
+          builder: (context) => Home(
+              id:widget.id,
+              role:widget.role,
+              zone: widget.zone,
+              division: widget.division,
+              section: widget.section,
+              selectedStation: selectedStation),
         ),
       ).then((value) {
         if (value != null) {
@@ -166,11 +199,10 @@ class _SelectStnState extends State<SelectStn> {
   @override
   Widget build(BuildContext context) {
     final Size screenSize = MediaQuery.of(context).size;
-
     return Scaffold(
       appBar: AppBar(
         title: Text('Station Amenities'),
-         automaticallyImplyLeading: false,
+        automaticallyImplyLeading: false,
         actions: <Widget>[
           InkWell(
             onTap: () {
@@ -211,32 +243,6 @@ class _SelectStnState extends State<SelectStn> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              // Row(
-              //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              //   children: [
-              //     Expanded(
-              //       child: Image.asset(
-              //         'assets/images/azadi.jpeg',
-              //         width: screenSize.width * 0.2,
-              //         height: screenSize.width * 0.2,
-              //       ),
-              //     ),
-              //     Expanded(
-              //       child: Image.asset(
-              //         'assets/images/loginLogo.jpeg',
-              //         width: screenSize.width * 0.2,
-              //         height: screenSize.width * 0.2,
-              //       ),
-              //     ),
-              //     Expanded(
-              //       child: Image.asset(
-              //         'assets/images/g20.jpeg',
-              //         width: screenSize.width * 0.2,
-              //         height: screenSize.width * 0.2,
-              //       ),
-              //     ),
-              //   ],
-              // ),
               SizedBox(height: screenSize.height * 0.05),
               Text(
                 'Station Amenities Admin',
@@ -308,7 +314,6 @@ class _SelectStnState extends State<SelectStn> {
                   return null;
                 },
               ),
-
 
               SizedBox(height: screenSize.height * 0.02),
               FractionallySizedBox(
