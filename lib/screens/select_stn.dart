@@ -4,6 +4,7 @@ import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:http/http.dart' as http;
 import 'package:scr_amenities_admin/screens/base_url.dart';
 import 'package:scr_amenities_admin/screens/login.dart';
+import 'package:scr_amenities_admin/screens/stations_list.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter/services.dart';
 import 'home.dart';
@@ -32,6 +33,8 @@ class _SelectStnState extends State<SelectStn> {
   final myVersion = '1.5';
   List<dynamic> data = [];
   late BuildContext dialogContext;
+   // GlobalKey to access the ScaffoldState
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   void initState() {
@@ -62,8 +65,9 @@ class _SelectStnState extends State<SelectStn> {
       if (myVersion != result1[0]['appversion']) {
         showDialog(
           context: context,
+          barrierDismissible:
+              false, // Set this to false to disable touching the background
           builder: (BuildContext context) {
-            dialogContext = context;
             return AlertDialog(
               title: const Text('Please Update'),
               content: Text(
@@ -72,7 +76,7 @@ class _SelectStnState extends State<SelectStn> {
               actions: [
                 TextButton(
                   onPressed: () async {
-                    Navigator.pop(dialogContext);
+                    Navigator.pop(context);
                     String url = (result1[0]['update_url']);
                     try {
                       await launch(url);
@@ -97,13 +101,12 @@ class _SelectStnState extends State<SelectStn> {
       showDialog(
         context: context,
         builder: (BuildContext context) {
-          dialogContext = context;
           return AlertDialog(
             title: const Text('Error'),
             content: const Text('Something went wrong'),
             actions: [
               TextButton(
-                onPressed: () => Navigator.pop(dialogContext),
+                onPressed: () => Navigator.pop(context),
                 child: const Text('OK'),
               ),
             ],
@@ -179,8 +182,8 @@ class _SelectStnState extends State<SelectStn> {
         context,
         MaterialPageRoute(
           builder: (context) => Home(
-              id:widget.id,
-              role:widget.role,
+              id: widget.id,
+              role: widget.role,
               zone: widget.zone,
               division: widget.division,
               section: widget.section,
@@ -200,6 +203,7 @@ class _SelectStnState extends State<SelectStn> {
   Widget build(BuildContext context) {
     final Size screenSize = MediaQuery.of(context).size;
     return Scaffold(
+       key: _scaffoldKey, // Assign the key to the Scaffold
       appBar: AppBar(
         title: Text('Station Amenities'),
         automaticallyImplyLeading: false,
@@ -207,127 +211,176 @@ class _SelectStnState extends State<SelectStn> {
           InkWell(
             onTap: () {
               Navigator.of(context).pushReplacement(MaterialPageRoute(
-                builder: (context) =>
-                    Login(), // Replace with the actual login screen widget
+                builder: (context) => Login(),
               ));
             },
-            child: Row(
-              children: <Widget>[
-                Padding(
-                  padding: EdgeInsets.only(right: 8.0),
-                  child: Icon(
-                    Icons.logout_outlined,
-                    color: Colors.white,
-                  ),
+            child:Row(
+  children: <Widget>[
+    Padding(
+      padding: EdgeInsets.only(right: 8.0),
+      child: Icon(
+        Icons.logout_outlined,
+        color: Colors.white,
+      ),
+    ),
+    Padding(
+      padding: EdgeInsets.only(right: 20.0),
+      child: Text(
+        'Logout',
+        style: TextStyle(
+          color: Colors.white,
+          fontWeight: FontWeight.bold,
+          fontSize: 18,
+        ),
+      ),
+    ),
+  ],
+),
+
+          ),
+        ],
+     leading: widget.role == '0'
+    ? IconButton(
+        icon: Icon(Icons.menu),
+        onPressed: () {
+          _scaffoldKey.currentState!.openDrawer();
+        },
+      )
+    : null, // Set to null if role is not 0
+      ),
+      drawer: widget.role == '0' // Conditionally include the drawer
+          ? Drawer(
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: <Widget>[
+            DrawerHeader(
+              decoration: BoxDecoration(
+                color: Colors.blue,
+              ),
+              child: Text(
+                'Menu',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 24,
                 ),
-                Padding(
-                  padding: EdgeInsets.only(right: 20.0),
-                  child: Text(
-                    'Logout',
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 18),
+              ),
+            ),
+            ListTile(
+              title: Text('Home'),
+              onTap: () {
+                Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              title: Text('Stations'),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => StationsList(),
+                        ),
+                      );
+                    },
+                  ),
+                ],
+              ),
+            )
+          : null, // Set to null if role is not 0
+
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: EdgeInsets.symmetric(
+                horizontal: screenSize.width * 0.03,
+                vertical: screenSize.height * 0.03),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                SizedBox(height: screenSize.height * 0.05),
+                Text(
+                  'Station Amenities Admin',
+                  style: TextStyle(
+                    fontSize: screenSize.width * 0.08,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.green,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+                Text(
+                  'South Central Railway',
+                  style: TextStyle(
+                    fontSize: screenSize.width * 0.06,
+                    color: Colors.blue,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+                SizedBox(height: screenSize.height * 0.02),
+                Text(
+                  'Please Enter Station Name',
+                  style: TextStyle(
+                    fontSize: 18,
+                    color: Colors.red,
+                  ),
+                  textAlign: TextAlign.left,
+                ),
+                TypeAheadFormField<String>(
+                  textFieldConfiguration: TextFieldConfiguration(
+                    decoration: InputDecoration(
+                      labelText: 'Select a Station',
+                      suffixIcon: selectedStation.isNotEmpty
+                          ? GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                  selectedStation =
+                                      ''; // Clear the selected station
+                                });
+                              },
+                              child: Icon(Icons.close), // Close icon button
+                            )
+                          : null,
+                    ),
+                    controller: TextEditingController(text: selectedStation),
+                  ),
+                  suggestionsCallback: (pattern) async {
+                    await Future.delayed(Duration(seconds: 1));
+      
+                    return data
+                        .map<String>((item) => item['station_name'].toString())
+                        .where((station) =>
+                            station.toLowerCase().contains(pattern.toLowerCase()))
+                        .toList();
+                  },
+                  itemBuilder: (context, suggestion) {
+                    return ListTile(
+                      title: Text(suggestion),
+                    );
+                  },
+                  onSuggestionSelected: (suggestion) {
+                    setState(() {
+                      selectedStation = suggestion;
+                    });
+                  },
+                  validator: (value) {
+                    if (selectedStation.isEmpty) {
+                      return 'Please select a station';
+                    }
+                    return null;
+                  },
+                ),
+                SizedBox(height: screenSize.height * 0.02),
+                FractionallySizedBox(
+                  widthFactor:
+                      0.5, // Adjust the width factor as per your requirement
+                  child: ElevatedButton(
+                    onPressed: navigateToHome,
+                    child: Text(
+                      'Submit',
+                      style: TextStyle(fontSize: screenSize.width * 0.05),
+                    ),
                   ),
                 ),
               ],
             ),
-          ),
-        ],
-      ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: EdgeInsets.symmetric(
-              horizontal: screenSize.width * 0.03,
-              vertical: screenSize.height * 0.03),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              SizedBox(height: screenSize.height * 0.05),
-              Text(
-                'Station Amenities Admin',
-                style: TextStyle(
-                  fontSize: screenSize.width * 0.08,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.green,
-                ),
-                textAlign: TextAlign.center,
-              ),
-              Text(
-                'South Central Railway',
-                style: TextStyle(
-                  fontSize: screenSize.width * 0.06,
-                  color: Colors.blue,
-                ),
-                textAlign: TextAlign.center,
-              ),
-              SizedBox(height: screenSize.height * 0.02),
-              Text(
-                'Please Enter Station Name',
-                style: TextStyle(
-                  fontSize: 18,
-                  color: Colors.red,
-                ),
-                textAlign: TextAlign.left,
-              ),
-              TypeAheadFormField<String>(
-                textFieldConfiguration: TextFieldConfiguration(
-                  decoration: InputDecoration(
-                    labelText: 'Select a Station',
-                    suffixIcon: selectedStation.isNotEmpty
-                        ? GestureDetector(
-                            onTap: () {
-                              setState(() {
-                                selectedStation =
-                                    ''; // Clear the selected station
-                              });
-                            },
-                            child: Icon(Icons.close), // Close icon button
-                          )
-                        : null,
-                  ),
-                  controller: TextEditingController(text: selectedStation),
-                ),
-                suggestionsCallback: (pattern) async {
-                  await Future.delayed(Duration(seconds: 1));
-
-                  return data
-                      .map<String>((item) => item['station_name'].toString())
-                      .where((station) =>
-                          station.toLowerCase().contains(pattern.toLowerCase()))
-                      .toList();
-                },
-                itemBuilder: (context, suggestion) {
-                  return ListTile(
-                    title: Text(suggestion),
-                  );
-                },
-                onSuggestionSelected: (suggestion) {
-                  setState(() {
-                    selectedStation = suggestion;
-                  });
-                },
-                validator: (value) {
-                  if (selectedStation.isEmpty) {
-                    return 'Please select a station';
-                  }
-                  return null;
-                },
-              ),
-
-              SizedBox(height: screenSize.height * 0.02),
-              FractionallySizedBox(
-                widthFactor:
-                    0.5, // Adjust the width factor as per your requirement
-                child: ElevatedButton(
-                  onPressed: navigateToHome,
-                  child: Text(
-                    'Submit',
-                    style: TextStyle(fontSize: screenSize.width * 0.05),
-                  ),
-                ),
-              ),
-            ],
           ),
         ),
       ),

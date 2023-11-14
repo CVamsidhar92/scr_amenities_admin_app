@@ -323,6 +323,7 @@ void didUpdateWidget(covariant Home oldWidget) {
           ),
         ],
       ),
+      
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
@@ -364,17 +365,6 @@ void didUpdateWidget(covariant Home oldWidget) {
                           return Expanded(
                             child: GestureDetector(
                               onTap: () async {
-                                // if (item['value'] == 'Taxi Stand') {
-                                //   Navigator.push(
-                                //     context,
-                                //     MaterialPageRoute(
-                                //       builder: (context) => TaxiList(
-                                //         stnName: selectedStation,
-                                //         amenityType: item['value'],
-                                //       ),
-                                //     ),
-                                //   );
-                                // }
                                 if (item['value'] == 'Porter') {
                                   Navigator.push(
                                     context,
@@ -459,10 +449,9 @@ void didUpdateWidget(covariant Home oldWidget) {
       floatingActionButton: Column(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
-          Text('Add Amenity',
-              style: TextStyle(fontSize: 13.0, fontWeight: FontWeight.bold)),
-          SizedBox(height: 6),
+        
           FloatingActionButton(
+            mini: true,
             onPressed: () {
               // Navigate to the CreateAmenity screen
               Navigator.push(
@@ -481,6 +470,10 @@ void didUpdateWidget(covariant Home oldWidget) {
             },
             child: Icon(Icons.add),
           ),
+          SizedBox(height: 6),
+            Text('Add Amenity',
+              style: TextStyle(fontSize: 12.0, fontWeight: FontWeight.bold,color: Colors.blue)),
+          
         ],
       ),
     );
