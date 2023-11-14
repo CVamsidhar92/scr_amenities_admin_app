@@ -4,9 +4,12 @@ import 'package:scr_amenities_admin/screens/add_stations.dart';
 import 'package:scr_amenities_admin/screens/base_url.dart';
 import 'dart:convert';
 
+import 'package:scr_amenities_admin/screens/login.dart';
+
 class StationsList extends StatefulWidget {
   final String id;
-  const StationsList({Key? key, required this.id}) : super(key: key);
+  final String role;
+  const StationsList({Key? key, required this.id,required this.role}) : super(key: key);
 
   @override
   State<StationsList> createState() => _StationsListState();
@@ -22,12 +25,6 @@ class _StationsListState extends State<StationsList> {
   void initState() {
     super.initState();
     getAllStations();
-  }
-
-  void refreshData() {
-    setState(() {
-      getAllStations();
-    });
   }
 
   Future<void> getAllStations() async {
@@ -52,24 +49,29 @@ class _StationsListState extends State<StationsList> {
     }
   }
 
-  void filterStations(String query) {
-    setState(() {
-      filteredData = data
-          .where((station) => station['station_name']
-              .toString()
-              .toLowerCase()
-              .contains(query.toLowerCase()))
-          .toList();
-    });
-  }
+void filterStations(String query) {
+  setState(() {
+    filteredData = data
+        .where((station) =>
+            station['station_name']
+                .toString()
+                .toLowerCase()
+                .contains(query.toLowerCase()) ||
+            station['code']
+                .toString()
+                .toLowerCase()
+                .contains(query.toLowerCase()))
+        .toList();
+  });
+}
+
 
   Future<void> deleteItem(int id, BuildContext context) async {
     bool confirmDelete = await showDeleteConfirmationDialog(context);
 
     if (confirmDelete) {
       try {
-        final String url = base_url +
-            '/deleteStation'; // Replace with your actual delete API endpoint
+        final String url = base_url + '/deleteStation';
 
         final response = await http.post(
           Uri.parse(url),
@@ -83,18 +85,24 @@ class _StationsListState extends State<StationsList> {
           // Show a Snackbar to inform the user about the successful deletion.
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text('Data deleted successfully'),
+              content: Text('Station deleted successfully'),
             ),
           );
 
-          // After successful deletion, call fetchData to refresh the data
-          refreshData();
+          // Clear existing data and fetch new data
+          setState(() {
+            data.clear();
+            filteredData.clear();
+          });
+
+          // Fetch new data
+          getAllStations();
         } else {
           print('Failed to delete data with ID $id');
           // Handle the error case or show an error message to the user.
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text('Unable to Delete Data'),
+              content: Text('Unable to Delete Station'),
             ),
           );
         }
@@ -133,12 +141,88 @@ class _StationsListState extends State<StationsList> {
         false; // Return false if the dialog is dismissed without a choice
   }
 
+   Future<void> showEditDialog(int stationId) async {
+  TextEditingController editedStationNameController =
+      TextEditingController(text: filteredData[stationId]['station_name']);
+
+  await showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: Text('Edit Station'),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+           
+            SizedBox(height: 8),
+            TextField(
+              controller: TextEditingController(text: filteredData[stationId]['station_name']),
+              decoration: InputDecoration(
+                border: OutlineInputBorder(),
+                contentPadding: EdgeInsets.all(8),
+              ),
+            ),
+          ],
+        ),
+        actions: <Widget>[
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop(); // Cancel the edit
+            },
+            child: Text('Cancel'),
+          ),
+          TextButton(
+            onPressed: () async {
+              // Submit the changes
+              Navigator.of(context).pop(); // Close the dialog
+            },
+            child: Text('Submit'),
+          ),
+        ],
+      );
+    },
+  );
+}
+
+
   @override
   Widget build(BuildContext context) {
     final Size screenSize = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
         title: Text('Stations'),
+         actions: <Widget>[
+          InkWell(
+            onTap: () {
+              Navigator.of(context).pushReplacement(MaterialPageRoute(
+                builder: (context) => Login(),
+              ));
+            },
+            child:Row(
+  children: <Widget>[
+    Padding(
+      padding: EdgeInsets.only(right: 8.0),
+      child: Icon(
+        Icons.logout_outlined,
+        color: Colors.white,
+      ),
+    ),
+    Padding(
+      padding: EdgeInsets.only(right: 20.0),
+      child: Text(
+        'Logout',
+        style: TextStyle(
+          color: Colors.white,
+          fontWeight: FontWeight.bold,
+          fontSize: 18,
+        ),
+      ),
+    ),
+  ],
+),
+
+          ),
+        ],
       ),
       body: Column(
         children: [
@@ -175,20 +259,20 @@ class _StationsListState extends State<StationsList> {
                             icon: Icon(Icons.edit),
                             color: Colors.black,
                             onPressed: () {
-                              // Implement your edit logic here
-                              // You can navigate to an edit screen or show a dialog, etc.
+                               showEditDialog(index);
                             },
                           ),
-                          IconButton(
-                            icon: Icon(
-                              Icons.delete,
-                              color: Colors.red,
+                          if (widget.role == '0')
+                            IconButton(
+                              icon: Icon(
+                                Icons.delete,
+                                color: Colors.red,
+                              ),
+                              onPressed: () {
+                                // Call the deleteItem function with the item ID
+                                deleteItem(filteredData[index]['id'], context);
+                              },
                             ),
-                            onPressed: () {
-                              // Call the deleteItem function with the item ID
-                              deleteItem(filteredData[index]['id'], context);
-                            },
-                          ),
                         ],
                       ),
                     ),
@@ -213,8 +297,8 @@ class _StationsListState extends State<StationsList> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) =>
-                      AddStation(id:widget.id), // Replace with the actual CreateAmenity screen
+                  builder: (context) => AddStation(
+                      id: widget.id,role:widget.role)
                 ),
               );
             },

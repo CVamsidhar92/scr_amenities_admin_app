@@ -277,7 +277,7 @@ class _SelectStnState extends State<SelectStn> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => StationsList( id: widget.id,),
+                    builder: (context) => StationsList( id: widget.id,role:widget.role),
                         ),
                       );
                     },
@@ -323,50 +323,56 @@ class _SelectStnState extends State<SelectStn> {
                   ),
                   textAlign: TextAlign.left,
                 ),
-                TypeAheadFormField<String>(
-                  textFieldConfiguration: TextFieldConfiguration(
-                    decoration: InputDecoration(
-                      labelText: 'Select a Station',
-                      suffixIcon: selectedStation.isNotEmpty
-                          ? GestureDetector(
-                              onTap: () {
-                                setState(() {
-                                  selectedStation =
-                                      ''; // Clear the selected station
-                                });
-                              },
-                              child: Icon(Icons.close), // Close icon button
-                            )
-                          : null,
-                    ),
-                    controller: TextEditingController(text: selectedStation),
-                  ),
-                  suggestionsCallback: (pattern) async {
-                    await Future.delayed(Duration(seconds: 1));
-      
-                    return data
-                        .map<String>((item) => item['station_name'].toString())
-                        .where((station) =>
-                            station.toLowerCase().contains(pattern.toLowerCase()))
-                        .toList();
-                  },
-                  itemBuilder: (context, suggestion) {
-                    return ListTile(
-                      title: Text(suggestion),
-                    );
-                  },
-                  onSuggestionSelected: (suggestion) {
-                    setState(() {
-                      selectedStation = suggestion;
-                    });
-                  },
-                  validator: (value) {
-                    if (selectedStation.isEmpty) {
-                      return 'Please select a station';
-                    }
-                    return null;
-                  },
-                ),
+            TypeAheadFormField<String>(
+  textFieldConfiguration: TextFieldConfiguration(
+    decoration: InputDecoration(
+      labelText: 'Select a Station',
+      suffixIcon: selectedStation.isNotEmpty
+          ? GestureDetector(
+              onTap: () {
+                setState(() {
+                  selectedStation = ''; // Clear the selected station
+                });
+              },
+              child: Icon(Icons.close), // Close icon button
+            )
+          : null,
+    ),
+    controller: TextEditingController(text: selectedStation),
+  ),
+  suggestionsCallback: (pattern) async {
+    await Future.delayed(Duration(seconds: 1));
+
+    return data
+        .where((item) =>
+            item['station_name']
+                .toString()
+                .toLowerCase()
+                .contains(pattern.toLowerCase()) ||
+            item['code'].toString().contains(pattern))
+        .map<String>((item) => item['station_name'].toString())
+        .toList();
+  },
+  itemBuilder: (context, suggestion) {
+    return ListTile(
+      title: Text(suggestion),
+    );
+  },
+  onSuggestionSelected: (suggestion) {
+    setState(() {
+      selectedStation = suggestion;
+    });
+  },
+  validator: (value) {
+    if (selectedStation.isEmpty) {
+      return 'Please select a station';
+    }
+    return null;
+  },
+),
+
+
+
                 SizedBox(height: screenSize.height * 0.02),
                 FractionallySizedBox(
                   widthFactor:
