@@ -110,7 +110,7 @@ class _HomeState extends State<Home> {
       'id': '13',
       'title': 'Multi Purpose Stall',
       'value': 'Multi Purpose Stall',
-      'image': 'assets/images/Multi Purpose Stall.avif',
+      'image': 'assets/images/Multi Purpose Stall.jpeg',
     },
     {
       'id': '14',

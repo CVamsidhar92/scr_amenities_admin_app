@@ -23,9 +23,44 @@ class _AddStationState extends State<AddStation> {
   TextEditingController codeController = TextEditingController();
   TextEditingController categoryController = TextEditingController();
   String selectedCategory = '-Select-'; // Default value
+  List<String> categories = ['-Select-']; // Default value
+
+    @override
+  void initState() {
+    super.initState();
+    fetchCategories();
+  }
+
+   Future<void> fetchCategories() async {
+    final String url = base_url + '/getcatgvalues';
+
+    try {
+      final response = await http.post(
+        Uri.parse(url),
+        headers: {'Content-Type': 'application/json'},
+      );
+
+      if (response.statusCode == 200) {
+        List<dynamic> catgValues = jsonDecode(response.body);
+
+        setState(() {
+          // Extract "category" values and set the categories list
+          categories = catgValues.map<String>((value) => value['category'].toString()).toList();
+          // Add the default value
+          categories.insert(0, '-Select-');
+        });
+      } else {
+        // Handle the error case
+        print('Failed to fetch categories');
+      }
+    } catch (error) {
+      // Handle any exceptions that may occur during the HTTP request.
+      print('Error: $error');
+    }
+  }
 
   Future<void> saveStationData() async {
-    final String url = base_url + '/poststn';
+    final String url = base_url + '/poststations';
     Map<String, dynamic> data = {
       'zone': zoneController.text,
       'division': divisionController.text,
@@ -192,15 +227,7 @@ class _AddStationState extends State<AddStation> {
                 ),
                 DropdownButtonFormField<String>(
                   value: selectedCategory,
-                  items: [
-                    '-Select-',
-                    'NSG1',
-                    'NSG2',
-                    'NSG3',
-                    'NSG4',
-                    'NSG5',
-                    'NSG6'
-                  ].map((String category) {
+                  items: categories.map((String category) {
                     return DropdownMenuItem<String>(
                       value: category,
                       child: Text(category),

@@ -33,7 +33,7 @@ class _SelectStnState extends State<SelectStn> {
   final myVersion = '1.5';
   List<dynamic> data = [];
   late BuildContext dialogContext;
-   // GlobalKey to access the ScaffoldState
+  // GlobalKey to access the ScaffoldState
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
@@ -203,7 +203,7 @@ class _SelectStnState extends State<SelectStn> {
   Widget build(BuildContext context) {
     final Size screenSize = MediaQuery.of(context).size;
     return Scaffold(
-       key: _scaffoldKey, // Assign the key to the Scaffold
+      key: _scaffoldKey, // Assign the key to the Scaffold
       appBar: AppBar(
         title: Text('Station Amenities'),
         automaticallyImplyLeading: false,
@@ -214,70 +214,70 @@ class _SelectStnState extends State<SelectStn> {
                 builder: (context) => Login(),
               ));
             },
-            child:Row(
-  children: <Widget>[
-    Padding(
-      padding: EdgeInsets.only(right: 8.0),
-      child: Icon(
-        Icons.logout_outlined,
-        color: Colors.white,
-      ),
-    ),
-    Padding(
-      padding: EdgeInsets.only(right: 20.0),
-      child: Text(
-        'Logout',
-        style: TextStyle(
-          color: Colors.white,
-          fontWeight: FontWeight.bold,
-          fontSize: 18,
-        ),
-      ),
-    ),
-  ],
-),
-
+            child: Row(
+              children: <Widget>[
+                Padding(
+                  padding: EdgeInsets.only(right: 8.0),
+                  child: Icon(
+                    Icons.logout_outlined,
+                    color: Colors.white,
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(right: 20.0),
+                  child: Text(
+                    'Logout',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18,
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
         ],
-     leading: widget.role == '0'
-    ? IconButton(
-        icon: Icon(Icons.menu),
-        onPressed: () {
-          _scaffoldKey.currentState!.openDrawer();
-        },
-      )
-    : null, // Set to null if role is not 0
+        leading: widget.role == '0'
+            ? IconButton(
+                icon: Icon(Icons.menu),
+                onPressed: () {
+                  _scaffoldKey.currentState!.openDrawer();
+                },
+              )
+            : null, // Set to null if role is not 0
       ),
-      drawer: widget.role == '0' // Conditionally include the drawer
+      drawer: widget.role == '0'
           ? Drawer(
-        child: ListView(
-          padding: EdgeInsets.zero,
-          children: <Widget>[
-            DrawerHeader(
-              decoration: BoxDecoration(
-                color: Colors.blue,
-              ),
-              child: Text(
-                'Menu',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 24,
-                ),
-              ),
-            ),
-            ListTile(
-              title: Text('Home'),
-              onTap: () {
-                Navigator.pop(context);
-              },
-            ),
-            ListTile(
-              title: Text('Stations'),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => StationsList( id: widget.id,role:widget.role),
+              child: ListView(
+                padding: EdgeInsets.zero,
+                children: <Widget>[
+                  DrawerHeader(
+                    decoration: BoxDecoration(
+                      color: Colors.blue,
+                    ),
+                    child: Text(
+                      'Menu',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 24,
+                      ),
+                    ),
+                  ),
+                  ListTile(
+                    title: Text('Home'),
+                    onTap: () {
+                      Navigator.pop(context);
+                    },
+                  ),
+                  ListTile(
+                    title: Text('Stations'),
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) =>
+                              StationsList(id: widget.id, role: widget.role),
                         ),
                       );
                     },
@@ -285,7 +285,7 @@ class _SelectStnState extends State<SelectStn> {
                 ],
               ),
             )
-          : null, // Set to null if role is not 0
+          : null,
 
       body: SafeArea(
         child: SingleChildScrollView(
@@ -323,56 +323,54 @@ class _SelectStnState extends State<SelectStn> {
                   ),
                   textAlign: TextAlign.left,
                 ),
-            TypeAheadFormField<String>(
-  textFieldConfiguration: TextFieldConfiguration(
-    decoration: InputDecoration(
-      labelText: 'Select a Station',
-      suffixIcon: selectedStation.isNotEmpty
-          ? GestureDetector(
-              onTap: () {
-                setState(() {
-                  selectedStation = ''; // Clear the selected station
-                });
-              },
-              child: Icon(Icons.close), // Close icon button
-            )
-          : null,
-    ),
-    controller: TextEditingController(text: selectedStation),
-  ),
-  suggestionsCallback: (pattern) async {
-    await Future.delayed(Duration(seconds: 1));
+                TypeAheadFormField<String>(
+                  textFieldConfiguration: TextFieldConfiguration(
+                    decoration: InputDecoration(
+                      labelText: 'Select a Station',
+                      suffixIcon: selectedStation.isNotEmpty
+                          ? GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                  selectedStation =
+                                      ''; // Clear the selected station
+                                });
+                              },
+                              child: Icon(Icons.close), // Close icon button
+                            )
+                          : null,
+                    ),
+                    controller: TextEditingController(text: selectedStation),
+                  ),
+                  suggestionsCallback: (pattern) async {
+                    await Future.delayed(Duration(seconds: 1));
 
-    return data
-        .where((item) =>
-            item['station_name']
-                .toString()
-                .toLowerCase()
-                .contains(pattern.toLowerCase()) ||
-            item['code'].toString().contains(pattern))
-        .map<String>((item) => item['station_name'].toString())
-        .toList();
-  },
-  itemBuilder: (context, suggestion) {
-    return ListTile(
-      title: Text(suggestion),
-    );
-  },
-  onSuggestionSelected: (suggestion) {
-    setState(() {
-      selectedStation = suggestion;
-    });
-  },
-  validator: (value) {
-    if (selectedStation.isEmpty) {
-      return 'Please select a station';
-    }
-    return null;
-  },
-),
-
-
-
+                    return data
+                        .where((item) =>
+                            item['station_name']
+                                .toString()
+                                .toLowerCase()
+                                .contains(pattern.toLowerCase()) ||
+                            item['code'].toString().contains(pattern))
+                        .map<String>((item) => item['station_name'].toString())
+                        .toList();
+                  },
+                  itemBuilder: (context, suggestion) {
+                    return ListTile(
+                      title: Text(suggestion),
+                    );
+                  },
+                  onSuggestionSelected: (suggestion) {
+                    setState(() {
+                      selectedStation = suggestion;
+                    });
+                  },
+                  validator: (value) {
+                    if (selectedStation.isEmpty) {
+                      return 'Please select a station';
+                    }
+                    return null;
+                  },
+                ),
                 SizedBox(height: screenSize.height * 0.02),
                 FractionallySizedBox(
                   widthFactor:
