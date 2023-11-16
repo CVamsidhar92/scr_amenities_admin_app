@@ -270,16 +270,7 @@ class _AmenitiesListState extends State<AmenitiesList> {
     }
   }
 
-  Future<void> fetchNearestLocations(String selectedPlatform) async {
-    final String nearestLocations = base_url + '/getnearestLocations';
-
-    final body = {
-      'station': widget.stnName,
-      'platform': selectedPlatform,
-    };
-  }
-
-  Future<void> deleteItem(int id, BuildContext context) async {
+  Future<void> deleteItem(int id, String amenityType, String stationName,String locationName, double latitude, double longitude, BuildContext context) async {
     bool confirmDelete = await showDeleteConfirmationDialog(context);
 
     if (confirmDelete) {
@@ -290,7 +281,7 @@ class _AmenitiesListState extends State<AmenitiesList> {
         final response = await http.post(
           Uri.parse(url),
           headers: {'Content-Type': 'application/json'},
-          body: jsonEncode({'id': id}),
+          body: jsonEncode({'id': id,'station':stationName,'amenity_type':amenityType,'location_name':locationName,'latitude':latitude,'longitude':longitude}),
         );
 
         if (response.statusCode == 200) {
@@ -672,8 +663,7 @@ class _AmenitiesListState extends State<AmenitiesList> {
                                                 child: ElevatedButton(
                                                   onPressed: () {
                                                     // showDeleteAlert(context, item['id']);
-                                                    deleteItem(
-                                                        item['id'], context);
+                                                   deleteItem(item['id'], item['amenity_type'], item['station_name'],item['location_name'], item['latitude'], item['longitude'], context);
                                                   },
                                                   child: Text('Delete'),
                                                   style: ButtonStyle(

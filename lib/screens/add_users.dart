@@ -5,70 +5,47 @@ import 'package:scr_amenities_admin/screens/base_url.dart';
 import 'package:scr_amenities_admin/screens/login.dart';
 import 'package:scr_amenities_admin/screens/stations_list.dart';
 
-class AddStation extends StatefulWidget {
+class AddUsers extends StatefulWidget {
   final String id;
   final String role;
-  const AddStation({Key? key, required this.id,required this.role}) : super(key: key);
+  const AddUsers({Key? key, required this.id, required this.role})
+      : super(key: key);
 
   @override
-  State<AddStation> createState() => _AddStationState();
+  State<AddUsers> createState() => _AddUsersState();
 }
 
-class _AddStationState extends State<AddStation> {
+class _AddUsersState extends State<AddUsers> {
   final _formKey = GlobalKey<FormState>();
+  TextEditingController usernameController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+  TextEditingController nameController = TextEditingController();
+  TextEditingController desigController = TextEditingController();
+  TextEditingController mobileController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
   TextEditingController zoneController = TextEditingController();
   TextEditingController divisionController = TextEditingController();
   TextEditingController sectionController = TextEditingController();
-  TextEditingController stationNameController = TextEditingController();
-  TextEditingController codeController = TextEditingController();
-  TextEditingController categoryController = TextEditingController();
-  String selectedCategory = '-Select-'; // Default value
-  List<String> categories = ['-Select-']; // Default value
 
-    @override
+  @override
   void initState() {
     super.initState();
-    fetchCategories();
   }
 
-   Future<void> fetchCategories() async {
-    final String url = base_url + '/getcatgvalues';
+  
 
-    try {
-      final response = await http.post(
-        Uri.parse(url),
-        headers: {'Content-Type': 'application/json'},
-      );
-
-      if (response.statusCode == 200) {
-        List<dynamic> catgValues = jsonDecode(response.body);
-
-        setState(() {
-          // Extract "category" values and set the categories list
-          categories = catgValues.map<String>((value) => value['category'].toString()).toList();
-          // Add the default value
-          categories.insert(0, '-Select-');
-        });
-      } else {
-        // Handle the error case
-        print('Failed to fetch categories');
-      }
-    } catch (error) {
-      // Handle any exceptions that may occur during the HTTP request.
-      print('Error: $error');
-    }
-  }
-
-  Future<void> saveStationData() async {
-    final String url = base_url + '/poststations';
+  Future<void> saveUserData() async {
+    final String url = base_url + '/postUser';
     Map<String, dynamic> data = {
+      'username': usernameController.text,
+      'password': passwordController.text,
+      'name':nameController.text,
+      'desig':desigController.text,
+      'mobile_no':mobileController.text,
+      'e_mail':emailController.text,
       'zone': zoneController.text,
       'division': divisionController.text,
       'section': sectionController.text,
-      'station_name': stationNameController.text,
-      'code': codeController.text,
-      'category': selectedCategory,
-      'created_by': widget.id,
     };
 
     final response = await http.post(
@@ -88,7 +65,9 @@ class _AddStationState extends State<AddStation> {
       // Navigate to the Home Screen
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => StationsList(id: widget.id,role:widget.role)),
+        MaterialPageRoute(
+            builder: (context) =>
+                StationsList(id: widget.id, role: widget.role)),
       );
     } else {
       // Handle the error case
@@ -102,37 +81,36 @@ class _AddStationState extends State<AddStation> {
     final screenSize = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
-        title: Text('Add Station'),
-         actions: <Widget>[
+        title: Text('Add User'),
+        actions: <Widget>[
           InkWell(
             onTap: () {
               Navigator.of(context).pushReplacement(MaterialPageRoute(
                 builder: (context) => Login(),
               ));
             },
-            child:Row(
-  children: <Widget>[
-    Padding(
-      padding: EdgeInsets.only(right: 8.0),
-      child: Icon(
-        Icons.logout_outlined,
-        color: Colors.white,
-      ),
-    ),
-    Padding(
-      padding: EdgeInsets.only(right: 20.0),
-      child: Text(
-        'Logout',
-        style: TextStyle(
-          color: Colors.white,
-          fontWeight: FontWeight.bold,
-          fontSize: 18,
-        ),
-      ),
-    ),
-  ],
-),
-
+            child: Row(
+              children: <Widget>[
+                Padding(
+                  padding: EdgeInsets.only(right: 8.0),
+                  child: Icon(
+                    Icons.logout_outlined,
+                    color: Colors.white,
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(right: 20.0),
+                  child: Text(
+                    'Logout',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18,
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
         ],
       ),
@@ -145,6 +123,96 @@ class _AddStationState extends State<AddStation> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 TextFormField(
+                  controller: usernameController,
+                  decoration: InputDecoration(
+                    labelText: 'Username',
+                    border: OutlineInputBorder(),
+                  ),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter Username';
+                    }
+                    return null;
+                  },
+                ),
+                SizedBox(
+                  height: screenSize.height * 0.02,
+                ),
+                TextFormField(
+                  controller: passwordController,
+                  decoration: InputDecoration(
+                    labelText: 'Password',
+                    border: OutlineInputBorder(),
+                  ),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter password';
+                    }
+                    return null;
+                  },
+                ),
+                SizedBox(
+                  height: screenSize.height * 0.02,
+                ),
+                TextFormField(
+                  controller: nameController,
+                  decoration: InputDecoration(
+                    labelText: 'Name',
+                    border: OutlineInputBorder(),
+                  ),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter name';
+                    }
+                    return null;
+                  },
+                ),
+                SizedBox(
+                  height: screenSize.height * 0.02,
+                ),
+                TextFormField(
+                  controller: desigController,
+                  decoration: InputDecoration(
+                    labelText: 'Designation',
+                    border: OutlineInputBorder(),
+                  ),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter Designation';
+                    }
+                    return null;
+                  },
+                ),
+                SizedBox(
+                  height: screenSize.height * 0.02,
+                ),
+                TextFormField(
+                  controller: mobileController,
+                  decoration: InputDecoration(
+                    labelText: 'Mobile Number',
+                    border: OutlineInputBorder(),
+                  ),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter Mobile Number';
+                    }
+                    return null;
+                  },
+                ),
+                SizedBox(
+                  height: screenSize.height * 0.02,
+                ),
+               TextFormField(
+                  controller: emailController,
+                  decoration: InputDecoration(
+                    labelText: 'e-Mail',
+                    border: OutlineInputBorder(),
+                  ),
+                ),
+                SizedBox(
+                  height: screenSize.height * 0.02,
+                ),
+                 TextFormField(
                   controller: zoneController,
                   decoration: InputDecoration(
                     labelText: 'Zone',
@@ -160,7 +228,7 @@ class _AddStationState extends State<AddStation> {
                 SizedBox(
                   height: screenSize.height * 0.02,
                 ),
-                TextFormField(
+                 TextFormField(
                   controller: divisionController,
                   decoration: InputDecoration(
                     labelText: 'Division',
@@ -168,7 +236,7 @@ class _AddStationState extends State<AddStation> {
                   ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Please enter division';
+                      return 'Please enter Division';
                     }
                     return null;
                   },
@@ -176,7 +244,7 @@ class _AddStationState extends State<AddStation> {
                 SizedBox(
                   height: screenSize.height * 0.02,
                 ),
-                TextFormField(
+                     TextFormField(
                   controller: sectionController,
                   decoration: InputDecoration(
                     labelText: 'Section',
@@ -184,7 +252,7 @@ class _AddStationState extends State<AddStation> {
                   ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Please enter section';
+                      return 'Please enter Section';
                     }
                     return null;
                   },
@@ -192,65 +260,7 @@ class _AddStationState extends State<AddStation> {
                 SizedBox(
                   height: screenSize.height * 0.02,
                 ),
-                TextFormField(
-                  controller: stationNameController,
-                  decoration: InputDecoration(
-                    labelText: 'Station Name',
-                    border: OutlineInputBorder(),
-                  ),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter station';
-                    }
-                    return null;
-                  },
-                ),
-                SizedBox(
-                  height: screenSize.height * 0.02,
-                ),
-                TextFormField(
-                  controller: codeController,
-                  decoration: InputDecoration(
-                    labelText: 'Code',
-                    border: OutlineInputBorder(),
-                  ),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter code';
-                    }
-                    return null;
-                  },
-                ),
-                SizedBox(
-                  height: screenSize.height * 0.02,
-                ),
-                DropdownButtonFormField<String>(
-                  value: selectedCategory,
-                  items: categories.map((String category) {
-                    return DropdownMenuItem<String>(
-                      value: category,
-                      child: Text(category),
-                    );
-                  }).toList(),
-                  onChanged: (String? value) {
-                    setState(() {
-                      selectedCategory = value!;
-                    });
-                  },
-                  decoration: InputDecoration(
-                    labelText: 'Category',
-                    border: OutlineInputBorder(),
-                  ),
-                  validator: (value) {
-                    if (value == null || value == '-Select-') {
-                      return 'Please select a category';
-                    }
-                    return null;
-                  },
-                ),
-                SizedBox(
-                  height: screenSize.height * 0.02,
-                ),
+               
                 Center(
                   child: ElevatedButton(
                     onPressed: () async {
@@ -263,14 +273,14 @@ class _AddStationState extends State<AddStation> {
                               children: [
                                 CircularProgressIndicator(),
                                 SizedBox(width: 16.0),
-                                Text("Saving Station data..."),
+                                Text("Saving User data..."),
                               ],
                             ),
                           ),
                         );
 
                         // Call the function to save station data
-                        await saveStationData();
+                        await saveUserData();
 
                         // Hide the loading indicator
                         ScaffoldMessenger.of(context).clearSnackBars();

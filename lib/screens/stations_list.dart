@@ -54,27 +54,24 @@ class _StationsListState extends State<StationsList> {
     }
   }
 
-Future<void> getCatgValues() async {
-  try {
-    List<String> catgList = await fetchCatgValues();
-    if (catgList.isNotEmpty) {
-      setState(() {
-        categories = catgList;
-        // Set a default value if needed
-        selectedCategory = categories.isNotEmpty ? categories.first : '';
-      });
-    } else {
-      print('Empty category list received.');
-      // Handle the case when no categories are received from the server.
+  Future<void> getCatgValues() async {
+    try {
+      List<String> catgList = await fetchCatgValues();
+      if (catgList.isNotEmpty) {
+        setState(() {
+          categories = catgList;
+          // Set a default value if needed
+          selectedCategory = categories.isNotEmpty ? categories.first : '';
+        });
+      } else {
+        print('Empty category list received.');
+        // Handle the case when no categories are received from the server.
+      }
+    } catch (error) {
+      print('Error fetching catg values: $error');
+      // Handle any errors that may occur during the request.
     }
-  } catch (error) {
-    print('Error fetching catg values: $error');
-    // Handle any errors that may occur during the request.
   }
-}
-
-
-
 
   Future<List<String>> fetchCatgValues() async {
     final String url = base_url + '/getcatgvalues';
@@ -114,7 +111,15 @@ Future<void> getCatgValues() async {
     });
   }
 
-  Future<void> deleteItem(int id, BuildContext context) async {
+  Future<void> deleteItem(
+    int id,
+    String zone,
+    String division,
+    String section,
+    String stationName,
+    String createdBy,
+    BuildContext context,
+  ) async {
     bool confirmDelete = await showDeleteConfirmationDialog(context);
 
     if (confirmDelete) {
@@ -124,7 +129,14 @@ Future<void> getCatgValues() async {
         final response = await http.post(
           Uri.parse(url),
           headers: {'Content-Type': 'application/json'},
-          body: jsonEncode({'id': id}),
+          body: jsonEncode({
+            'id': id,
+            'zone': zone,
+            'division': division,
+            'section': section,
+            'stationName': stationName,
+            'createdBy': createdBy
+          }),
         );
 
         if (response.statusCode == 200) {
@@ -264,54 +276,38 @@ Future<void> getCatgValues() async {
                     SizedBox(
                       height: screenSize.height * 0.02,
                     ),
-Container(
-  width: 250,
-  child: DropdownButtonFormField<String>(
-    value: filteredData[stationId]['catg'] ?? '',
-    items: categories
-        .toSet() // Convert to a set to remove duplicates
-        .map((category) {
-          return DropdownMenuItem<String>(
-            value: category,
-            child: Text(category),
-          );
-        })
-        .toList(),
-    onChanged: (String? value) {
-      setState(() {
-        selectedCategory = value ?? '';
-      });
-    },
-    decoration: InputDecoration(
-      labelText: 'Category',
-      labelStyle: TextStyle(
-        fontWeight: FontWeight.bold,
-      ),
-      border: OutlineInputBorder(),
-    ),
-    validator: (value) {
-      if (value == null || value.isEmpty) {
-        return 'Please select a category';
-      }
-      return null;
-    },
-  ),
-),
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+                    Container(
+                      width: 250,
+                      child: DropdownButtonFormField<String>(
+                        value: filteredData[stationId]['catg'] ?? '',
+                        items: categories
+                            .toSet() // Convert to a set to remove duplicates
+                            .map((category) {
+                          return DropdownMenuItem<String>(
+                            value: category,
+                            child: Text(category),
+                          );
+                        }).toList(),
+                        onChanged: (String? value) {
+                          setState(() {
+                            selectedCategory = value ?? '';
+                          });
+                        },
+                        decoration: InputDecoration(
+                          labelText: 'Category',
+                          labelStyle: TextStyle(
+                            fontWeight: FontWeight.bold,
+                          ),
+                          border: OutlineInputBorder(),
+                        ),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please select a category';
+                          }
+                          return null;
+                        },
+                      ),
+                    ),
                   ],
                 ),
                 actions: <Widget>[
@@ -485,7 +481,14 @@ Container(
                                 color: Colors.red,
                               ),
                               onPressed: () {
-                                deleteItem(filteredData[index]['id'], context);
+                                deleteItem(
+                                    filteredData[index]['id'],
+                                    filteredData[index]['zone'],
+                                    filteredData[index]['division'],
+                                    filteredData[index]['section'],
+                                    filteredData[index]['station_name'],
+                                    filteredData[index]['created_by'],
+                                    context);
                               },
                             ),
                         ],

@@ -5,6 +5,7 @@ import 'package:http/http.dart' as http;
 import 'package:scr_amenities_admin/screens/base_url.dart';
 import 'package:scr_amenities_admin/screens/login.dart';
 import 'package:scr_amenities_admin/screens/stations_list.dart';
+import 'package:scr_amenities_admin/screens/users_list.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter/services.dart';
 import 'home.dart';
@@ -270,6 +271,7 @@ class _SelectStnState extends State<SelectStn> {
                       Navigator.pop(context);
                     },
                   ),
+                    Divider(),
                   ListTile(
                     title: Text('Stations'),
                     onTap: () {
@@ -282,6 +284,20 @@ class _SelectStnState extends State<SelectStn> {
                       );
                     },
                   ),
+                    Divider(),
+                    ListTile(
+                    title: Text('Users'),
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) =>
+                              UsersList(id: widget.id, role: widget.role),
+                        ),
+                      );
+                    },
+                  ),
+                    Divider(),
                 ],
               ),
             )
