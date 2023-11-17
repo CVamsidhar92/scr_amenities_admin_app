@@ -271,7 +271,7 @@ class _SelectStnState extends State<SelectStn> {
                       Navigator.pop(context);
                     },
                   ),
-                    Divider(),
+                  Divider(),
                   ListTile(
                     title: Text('Stations'),
                     onTap: () {
@@ -284,8 +284,8 @@ class _SelectStnState extends State<SelectStn> {
                       );
                     },
                   ),
-                    Divider(),
-                    ListTile(
+                  Divider(),
+                  ListTile(
                     title: Text('Users'),
                     onTap: () {
                       Navigator.push(
@@ -297,7 +297,7 @@ class _SelectStnState extends State<SelectStn> {
                       );
                     },
                   ),
-                    Divider(),
+                  Divider(),
                 ],
               ),
             )
@@ -357,19 +357,24 @@ class _SelectStnState extends State<SelectStn> {
                     ),
                     controller: TextEditingController(text: selectedStation),
                   ),
-                  suggestionsCallback: (pattern) async {
-                    await Future.delayed(Duration(seconds: 1));
+              suggestionsCallback: (pattern) async {
+  await Future.delayed(Duration(seconds: 1));
 
-                    return data
-                        .where((item) =>
-                            item['station_name']
-                                .toString()
-                                .toLowerCase()
-                                .contains(pattern.toLowerCase()) ||
-                            item['code'].toString().contains(pattern))
-                        .map<String>((item) => item['station_name'].toString())
-                        .toList();
-                  },
+  pattern = pattern.toLowerCase(); // Convert the pattern to lowercase
+
+  return data
+      .where((item) =>
+          item['station_name']
+              .toString()
+              .toLowerCase()
+              .contains(pattern) ||
+          item['code'].toString().toLowerCase().contains(pattern))
+      .map<String>((item) => item['station_name'].toString())
+      .toList();
+},
+
+
+
                   itemBuilder: (context, suggestion) {
                     return ListTile(
                       title: Text(suggestion),

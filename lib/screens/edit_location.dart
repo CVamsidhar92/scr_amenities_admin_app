@@ -12,6 +12,7 @@ class EditLocation extends StatefulWidget {
   final int itemId;
   String amenityType;
   String locationName;
+  String locationDetails;
   String zone;
   String division;
   String section;
@@ -25,6 +26,7 @@ class EditLocation extends StatefulWidget {
       required this.itemId,
       required this.amenityType,
       required this.locationName,
+      required this.locationDetails,
       required this.zone,
       required this.division,
       required this.section,
@@ -39,6 +41,8 @@ class EditLocation extends StatefulWidget {
 class _EditLocationState extends State<EditLocation> {
   TextEditingController latitudeController = TextEditingController();
   TextEditingController longitudeController = TextEditingController();
+  TextEditingController locationNameController = TextEditingController();
+  TextEditingController locationDetailsController = TextEditingController();
   GoogleMapController? mapController;
   Set<Marker> markers = Set();
   double updatedLatitude = 0.0;
@@ -54,6 +58,8 @@ class _EditLocationState extends State<EditLocation> {
     longitudeController.text = widget.initialLongitude.toString();
     updatedLatitude = widget.initialLatitude;
     updatedLongitude = widget.initialLongitude;
+    locationNameController.text = widget.locationName;
+    locationDetailsController.text = widget.locationDetails;
 
     markers.add(
       Marker(
@@ -91,23 +97,30 @@ class _EditLocationState extends State<EditLocation> {
               children: [
                 Expanded(
                   child: TextField(
-                    controller: TextEditingController(text: widget.amenityType),
+                    controller: TextEditingController(text: widget.station),
                     readOnly: true,
                     decoration: InputDecoration(
-                      labelText: 'Amenity Type',
+                      labelText: 'Station Name',
+                      border: OutlineInputBorder(),
                       labelStyle: TextStyle(fontWeight: FontWeight.bold),
+                      contentPadding: EdgeInsets.fromLTRB(
+                          10.0, 5.0, 16.0, 10.0), // Add left padding
+                      alignLabelWithHint: true,
                     ),
                   ),
                 ),
                 SizedBox(width: 16),
                 Expanded(
                   child: TextField(
-                    controller:
-                        TextEditingController(text: widget.locationName),
+                    controller: TextEditingController(text: widget.amenityType),
                     readOnly: true,
                     decoration: InputDecoration(
-                      labelText: 'Location Name',
+                      labelText: 'Amenity Type',
+                      border: OutlineInputBorder(),
                       labelStyle: TextStyle(fontWeight: FontWeight.bold),
+                      contentPadding: EdgeInsets.fromLTRB(
+                          10.0, 5.0, 16.0, 10.0), // Add left padding
+                      alignLabelWithHint: true,
                     ),
                   ),
                 ),
@@ -118,24 +131,64 @@ class _EditLocationState extends State<EditLocation> {
               children: [
                 Expanded(
                   child: TextField(
-                    controller: latitudeController,
                     readOnly: true,
+                    controller: latitudeController,
                     keyboardType: TextInputType.number,
                     decoration: InputDecoration(
                       labelText: 'Edit Latitude',
+                          border: OutlineInputBorder(),
                       labelStyle: TextStyle(fontWeight: FontWeight.bold),
+                      contentPadding: EdgeInsets.fromLTRB(
+                          10.0, 5.0, 16.0, 10.0), // Add left padding
+                      alignLabelWithHint: true,
                     ),
                   ),
                 ),
                 SizedBox(width: 16),
                 Expanded(
                   child: TextField(
-                    controller: longitudeController,
                     readOnly: true,
+                    controller: longitudeController,
                     keyboardType: TextInputType.number,
                     decoration: InputDecoration(
                       labelText: 'Edit Longitude',
+                         border: OutlineInputBorder(),
                       labelStyle: TextStyle(fontWeight: FontWeight.bold),
+                      contentPadding: EdgeInsets.fromLTRB(
+                          10.0, 5.0, 16.0, 10.0), // Add left padding
+                      alignLabelWithHint: true,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(height: 16),
+            Row(
+              children: [
+                Expanded(
+                  child: TextField(
+                    controller: locationNameController,
+                    decoration: InputDecoration(
+                      labelText: 'Location Name',
+                          border: OutlineInputBorder(),
+                      labelStyle: TextStyle(fontWeight: FontWeight.bold),
+                      contentPadding: EdgeInsets.fromLTRB(
+                          10.0, 5.0, 16.0, 10.0), // Add left padding
+                      alignLabelWithHint: true,
+                    ),
+                  ),
+                ),
+                SizedBox(width: 16),
+                Expanded(
+                  child: TextField(
+                    controller: locationDetailsController,
+                    decoration: InputDecoration(
+                      labelText: 'Location Details',
+                          border: OutlineInputBorder(),
+                      labelStyle: TextStyle(fontWeight: FontWeight.bold),
+                      contentPadding: EdgeInsets.fromLTRB(
+                          10.0, 5.0, 16.0, 10.0), // Add left padding
+                      alignLabelWithHint: true,
                     ),
                   ),
                 ),
@@ -224,7 +277,13 @@ class _EditLocationState extends State<EditLocation> {
 
                   updateMarker();
                   updateLocation(
-                      widget.itemId, updatedLatitude, updatedLongitude, widget.station, widget.amenityType);
+                      widget.itemId,
+                      updatedLatitude,
+                      updatedLongitude,
+                      widget.station,
+                      widget.amenityType,
+                      locationNameController, // Pass the controller directly
+                      locationDetailsController);
                 },
                 child: Text('Update Location'),
               ),
@@ -246,7 +305,15 @@ class _EditLocationState extends State<EditLocation> {
     setState(() {});
   }
 
-  void updateLocation(int itemId, double latitude, double longitude,String station,String amenityType) async {
+  void updateLocation(
+    int itemId,
+    double latitude,
+    double longitude,
+    String station,
+    String amenityType,
+    TextEditingController locationNameController,
+    TextEditingController locationDetailsController,
+  ) async {
     final url = base_url + '/changelocationpin';
     final response = await http.post(
       Uri.parse(url),
@@ -254,8 +321,10 @@ class _EditLocationState extends State<EditLocation> {
         'itemId': itemId.toString(),
         'latitude': latitude.toString(),
         'longitude': longitude.toString(),
-        'station':widget.station,
-        'amenity_type':widget.amenityType
+        'locationName': locationNameController.text,
+        'locationDetails': locationDetailsController.text,
+        'station': station,
+        'amenity_type': amenityType,
       },
     );
 
@@ -264,12 +333,13 @@ class _EditLocationState extends State<EditLocation> {
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(
           builder: (context) => Home(
-              id: widget.id,
-              role:widget.role,
-              zone: widget.zone,
-              division: widget.division,
-              section: widget.section,
-              selectedStation: widget.station),
+            id: widget.id,
+            role: widget.role,
+            zone: widget.zone,
+            division: widget.division,
+            section: widget.section,
+            selectedStation: widget.station,
+          ),
         ),
       );
     } else {

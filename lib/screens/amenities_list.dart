@@ -31,6 +31,16 @@ class AmenitiesList extends StatefulWidget {
   _AmenitiesListState createState() => _AmenitiesListState();
 }
 
+double parseDouble(dynamic value) {
+  if (value is String) {
+    return double.tryParse(value) ?? 0.0;
+  } else if (value is num) {
+    return value.toDouble();
+  } else {
+    return 0.0; // or throw an error, depending on your requirements
+  }
+}
+
 class _AmenitiesListState extends State<AmenitiesList> {
   List<Map<String, dynamic>> dataa = [];
   late Future<List<Map<String, dynamic>>> amenitiesData;
@@ -111,20 +121,27 @@ class _AmenitiesListState extends State<AmenitiesList> {
         'station': widget.stnName,
       }),
     );
+
     if (response.statusCode == 200) {
       final List<dynamic> responseData = json.decode(response.body);
 
       if (responseData.isNotEmpty) {
         final platformsData = responseData.map((item) {
           final platform = item['platform'] as String;
-          final latitude = double.tryParse(item['latitude'] as String) ?? 0.0;
-          final longitude = double.tryParse(item['longitude'] as String) ?? 0.0;
+       final latitudeStr = item['latitude'];
+      final longitudeStr = item['longitude'];
+
+      final latitude = parseDouble(latitudeStr);
+      final longitude = parseDouble(longitudeStr);
+
+
           return {
             'platform': platform,
             'latitude': latitude,
             'longitude': longitude,
           };
         }).toList();
+
         return platformsData;
       } else {
         throw Exception('Invalid data format received from API');
@@ -189,46 +206,47 @@ class _AmenitiesListState extends State<AmenitiesList> {
     }
   }
 
-  Future<List<Map<String, dynamic>>> fetchData() async {
-    final String url = base_url + '/getstalldetails';
-    final body = {
-      'stnName': widget.stnName,
-      'amenityType': widget.amenityType,
-    };
+ Future<List<Map<String, dynamic>>> fetchData() async {
+  final String url = base_url + '/getstalldetails';
+  final body = {
+    'stnName': widget.stnName,
+    'amenityType': widget.amenityType,
+  };
 
-    try {
-      final response = await http.post(Uri.parse(url), body: body);
-      if (response.statusCode == 200) {
-        final jsonData = json.decode(response.body);
-        if (jsonData is List) {
-          final data = List<Map<String, dynamic>>.from(jsonData);
-          return data;
-        } else {
-          throw Exception('Invalid data format received from API');
-        }
+  try {
+    final response = await http.post(Uri.parse(url), body: body);
+    if (response.statusCode == 200) {
+      final jsonData = json.decode(response.body);
+      if (jsonData is List) {
+        final data = List<Map<String, dynamic>>.from(jsonData);
+
+        return data;
       } else {
-        throw Exception(
-            'Failed to fetch data from API: ${response.statusCode}');
+        throw Exception('Invalid data format received from API');
       }
-    } catch (error) {
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: Text('Error'),
-            content: Text('Failed to fetch data from API: $error'),
-            actions: [
-              TextButton(
-                onPressed: () => Navigator.pop(context),
-                child: Text('OK'),
-              ),
-            ],
-          );
-        },
-      );
-      return [];
+    } else {
+      throw Exception('Failed to fetch data from API: ${response.statusCode}');
     }
+  } catch (error) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Error'),
+          content: Text('Failed to fetch data from API: $error'),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: Text('OK'),
+            ),
+          ],
+        );
+      },
+    );
+    return [];
   }
+}
+
 
   Future<List<Map<String, dynamic>>> fetchItem() async {
     final String url = base_url + '/getItemsList';
@@ -270,47 +288,66 @@ class _AmenitiesListState extends State<AmenitiesList> {
     }
   }
 
-  Future<void> deleteItem(int id, String amenityType, String stationName,String locationName, double latitude, double longitude, BuildContext context) async {
-    bool confirmDelete = await showDeleteConfirmationDialog(context);
+Future<void> deleteItem(
+  int id,
+  String stationName,
+  String amenityType,
+  String locationName,
+  dynamic latitude, // Use dynamic type
+  dynamic longitude, // Use dynamic type
+  BuildContext context,
+) async {
+  bool confirmDelete = await showDeleteConfirmationDialog(context);
 
-    if (confirmDelete) {
-      try {
-        final String url = base_url +
-            '/deleteAmenity'; // Replace with your actual delete API endpoint
+  if (confirmDelete) {
+    try {
+      final String url = base_url + '/deleteAmenity';
 
-        final response = await http.post(
-          Uri.parse(url),
-          headers: {'Content-Type': 'application/json'},
-          body: jsonEncode({'id': id,'station':stationName,'amenity_type':amenityType,'location_name':locationName,'latitude':latitude,'longitude':longitude}),
+      final response = await http.post(
+        Uri.parse(url),
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode({
+          'id': id,
+          'station': stationName,
+          'amenity_type': amenityType,
+          'location_name': locationName,
+          'latitude': parseDouble(latitude), // Convert to double
+          'longitude': parseDouble(longitude), // Convert to double
+        }),
+      );
+
+      if (response.statusCode == 200) {
+        print('Data with ID $id deleted successfully');
+
+        // Show a Snackbar to inform the user about the successful deletion.
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Data deleted successfully'),
+          ),
         );
 
-        if (response.statusCode == 200) {
-          print('Data with ID $id deleted successfully');
-
-          // Show a Snackbar to inform the user about the successful deletion.
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text('Data deleted successfully'),
-            ),
-          );
-
-          // After successful deletion, call fetchData to refresh the data
-          refreshData();
-        } else {
-          print('Failed to delete data with ID $id');
-          // Handle the error case or show an error message to the user.
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text('Unable to Delete Data'),
-            ),
-          );
-        }
-      } catch (error) {
-        print('Error: $error');
-        // Handle any exceptions that may occur during the HTTP request.
+        // Update the amenitiesData Future after deletion
+        setState(() {
+          amenitiesData = fetchData();
+        });
+      } else {
+        print('Failed to delete data with ID $id');
+        // Handle the error case or show an error message to the user.
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Unable to Delete Data'),
+          ),
+        );
       }
+    } catch (error) {
+      print('Error: $error');
+      // Handle any exceptions that may occur during the HTTP request.
     }
   }
+}
+
+
+
 
   Future<bool> showDeleteConfirmationDialog(BuildContext context) async {
     bool? result = await showDialog<bool>(
@@ -602,7 +639,7 @@ class _AmenitiesListState extends State<AmenitiesList> {
                                                         Colors.white),
                                               ),
                                             ),
-                                             SizedBox(width: 6),
+                                            SizedBox(width: 6),
                                             ElevatedButton(
                                               onPressed: () {
                                                 // Parse latitude and longitude as doubles
@@ -632,6 +669,7 @@ class _AmenitiesListState extends State<AmenitiesList> {
                                                           'id'], // Pass the item id
                                                       locationName: item[
                                                           'location_name'], // Pass the location_name
+                                                       locationDetails: item['location_details'],
                                                       id: id,
                                                       role: role,
                                                       zone: zone,
@@ -663,7 +701,14 @@ class _AmenitiesListState extends State<AmenitiesList> {
                                                 child: ElevatedButton(
                                                   onPressed: () {
                                                     // showDeleteAlert(context, item['id']);
-                                                   deleteItem(item['id'], item['amenity_type'], item['station_name'],item['location_name'], item['latitude'], item['longitude'], context);
+                                                    deleteItem(
+                                                        item['id'],
+                                                        item['amenity_type'],
+                                                        item['station_name'],
+                                                        item['location_name'],
+                                                        item['latitude'],
+                                                        item['longitude'],
+                                                        context);
                                                   },
                                                   child: Text('Delete'),
                                                   style: ButtonStyle(

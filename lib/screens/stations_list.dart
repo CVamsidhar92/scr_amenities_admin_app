@@ -157,6 +157,10 @@ class _StationsListState extends State<StationsList> {
 
           // Fetch new data
           getAllStations();
+          // Close the keyboard
+        FocusScope.of(context).unfocus();
+           // Clear the search bar data
+        searchController.clear();
         } else {
           print('Failed to delete data with ID $id');
           // Handle the error case or show an error message to the user.
@@ -280,9 +284,7 @@ class _StationsListState extends State<StationsList> {
                       width: 250,
                       child: DropdownButtonFormField<String>(
                         value: filteredData[stationId]['catg'] ?? '',
-                        items: categories
-                            .toSet() // Convert to a set to remove duplicates
-                            .map((category) {
+                        items: categories.toSet().map((category) {
                           return DropdownMenuItem<String>(
                             value: category,
                             child: Text(category),

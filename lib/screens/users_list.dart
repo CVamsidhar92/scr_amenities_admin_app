@@ -73,16 +73,7 @@ class _UsersListState extends State<UsersList> {
   }
 
   Future<void> deleteItem(
-  int id,
-  String username,
-  String password,
-  String name,
-  String desig,
-  String zone,
-  String division,
-  String section,
-  BuildContext context,
-) async {
+      Map<String, dynamic> userData, BuildContext context) async {
     bool confirmDelete = await showDeleteConfirmationDialog(context);
 
     if (confirmDelete) {
@@ -92,11 +83,11 @@ class _UsersListState extends State<UsersList> {
         final response = await http.post(
           Uri.parse(url),
           headers: {'Content-Type': 'application/json'},
-          body: jsonEncode({'id': id}),
+          body: jsonEncode(userData),
         );
 
         if (response.statusCode == 200) {
-          print('Data with ID $id deleted successfully');
+          print('Data with ID ${userData['id']} deleted successfully');
 
           // Show a Snackbar to inform the user about the successful deletion.
           ScaffoldMessenger.of(context).showSnackBar(
@@ -111,10 +102,14 @@ class _UsersListState extends State<UsersList> {
             filteredData.clear();
           });
 
-          // Fetch new data
-          getAllUsers();
+        // Fetch new data
+        getAllUsers();
+        // Close the keyboard
+        FocusScope.of(context).unfocus();
+        // Clear the search bar data
+        searchController.clear();
         } else {
-          print('Failed to delete data with ID $id');
+          print('Failed to delete data with ID ${userData['id']}');
           // Handle the error case or show an error message to the user.
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
@@ -229,18 +224,18 @@ class _UsersListState extends State<UsersList> {
                                 color: Colors.red,
                               ),
                               onPressed: () {
-                                deleteItem(
-                                    filteredData[index]['id'],
-                                    filteredData[index]['username'],
-                                    filteredData[index]['password'],
-                                    filteredData[index]['name'],
-                                    filteredData[index]['desig'],
-                                    filteredData[index]['zone'],
-                                    filteredData[index]['division'],
-                                    filteredData[index]['section'],
-                                    context);
+                                deleteItem({
+                                  'id': filteredData[index]['id'],
+                                  'username': filteredData[index]['username'],
+                                  'password': filteredData[index]['password'],
+                                  'name': filteredData[index]['name'],
+                                  'desig': filteredData[index]['desig'],
+                                  'zone': filteredData[index]['zone'],
+                                  'division': filteredData[index]['division'],
+                                  'section': filteredData[index]['section'],
+                                }, context);
                               },
-                            ),
+                            )
                         ],
                       ),
                     ),

@@ -178,10 +178,10 @@ packages:
     dependency: transitive
     description:
       name: flutter_plugin_android_lifecycle
-      sha256: b068ffc46f82a55844acfa4fdbb61fad72fa2aef0905548419d97f0f95c456da
+      sha256: f185ac890306b5779ecbd611f52502d8d4d63d27703ef73161ca0407e815f02c
       url: "https://pub.dev"
     source: hosted
-    version: "2.0.17"
+    version: "2.0.16"
   flutter_polyline_points:
     dependency: "direct main"
     description:
@@ -244,10 +244,10 @@ packages:
     dependency: transitive
     description:
       name: geolocator_platform_interface
-      sha256: "6c8d494d6948757c56720b778af742f6973f31fca1f702a7539b8917e4a2468a"
+      sha256: b7aca62aa05d7e610c396a53a1936ff87fce2f735d76e93fde9269c341c46a25
       url: "https://pub.dev"
     source: hosted
-    version: "4.2.0"
+    version: "4.1.1"
   geolocator_web:
     dependency: transitive
     description:
@@ -284,10 +284,10 @@ packages:
     dependency: transitive
     description:
       name: google_maps_flutter_android
-      sha256: "4023e79184c762e63efe04da629d876085e0c296a7ca26745fb5750d4acd0aa2"
+      sha256: e6cb018169e49332f88d23b1d2119b09e8ab4e7d3a1b889a1b7b3fd113e034ba
       url: "https://pub.dev"
     source: hosted
-    version: "2.5.3"
+    version: "2.5.1"
   google_maps_flutter_ios:
     dependency: transitive
     description:
@@ -649,42 +649,42 @@ packages:
     dependency: transitive
     description:
       name: url_launcher_android
-      sha256: "31222ffb0063171b526d3e569079cf1f8b294075ba323443fdc690842bfd4def"
+      sha256: b04af59516ab45762b2ca6da40fa830d72d0f6045cd97744450b73493fa76330
       url: "https://pub.dev"
     source: hosted
-    version: "6.2.0"
+    version: "6.1.0"
   url_launcher_ios:
     dependency: transitive
     description:
       name: url_launcher_ios
-      sha256: "4ac97281cf60e2e8c5cc703b2b28528f9b50c8f7cebc71df6bdf0845f647268a"
+      sha256: "7c65021d5dee51813d652357bc65b8dd4a6177082a9966bc8ba6ee477baa795f"
       url: "https://pub.dev"
     source: hosted
-    version: "6.2.0"
+    version: "6.1.5"
   url_launcher_linux:
     dependency: transitive
     description:
       name: url_launcher_linux
-      sha256: "9f2d390e096fdbe1e6e6256f97851e51afc2d9c423d3432f1d6a02a8a9a8b9fd"
+      sha256: b651aad005e0cb06a01dbd84b428a301916dc75f0e7ea6165f80057fee2d8e8e
       url: "https://pub.dev"
     source: hosted
-    version: "3.1.0"
+    version: "3.0.6"
   url_launcher_macos:
     dependency: transitive
     description:
       name: url_launcher_macos
-      sha256: b7244901ea3cf489c5335bdacda07264a6e960b1c1b1a9f91e4bc371d9e68234
+      sha256: b55486791f666e62e0e8ff825e58a023fd6b1f71c49926483f1128d3bbd8fe88
       url: "https://pub.dev"
     source: hosted
-    version: "3.1.0"
+    version: "3.0.7"
   url_launcher_platform_interface:
     dependency: transitive
     description:
       name: url_launcher_platform_interface
-      sha256: "980e8d9af422f477be6948bdfb68df8433be71f5743a188968b0c1b887807e50"
+      sha256: "95465b39f83bfe95fcb9d174829d6476216f2d548b79c38ab2506e0458787618"
       url: "https://pub.dev"
     source: hosted
-    version: "2.2.0"
+    version: "2.1.5"
   url_launcher_web:
     dependency: transitive
     description:
@@ -697,10 +697,10 @@ packages:
     dependency: transitive
     description:
       name: url_launcher_windows
-      sha256: "7754a1ad30ee896b265f8d14078b0513a4dba28d358eabb9d5f339886f4a1adc"
+      sha256: "95fef3129dc7cfaba2bc3d5ba2e16063bb561fc6d78e63eee16162bc70029069"
       url: "https://pub.dev"
     source: hosted
-    version: "3.1.0"
+    version: "3.0.8"
   vector_math:
     dependency: transitive
     description:

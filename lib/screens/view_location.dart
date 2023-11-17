@@ -96,7 +96,11 @@ class _ViewLocationState extends State<ViewLocation> {
                     readOnly: true,
                     decoration: InputDecoration(
                       labelText: 'Amenity Type',
+                      border: OutlineInputBorder(),
                       labelStyle: TextStyle(fontWeight: FontWeight.bold),
+                      contentPadding: EdgeInsets.fromLTRB(
+                          10.0, 5.0, 16.0, 10.0), // Add left padding
+                      alignLabelWithHint: true,
                     ),
                   ),
                 ),
@@ -108,7 +112,11 @@ class _ViewLocationState extends State<ViewLocation> {
                     readOnly: true,
                     decoration: InputDecoration(
                       labelText: 'Location Name',
+                        border: OutlineInputBorder(),
                       labelStyle: TextStyle(fontWeight: FontWeight.bold),
+                      contentPadding: EdgeInsets.fromLTRB(
+                          10.0, 5.0, 16.0, 10.0), // Add left padding
+                      alignLabelWithHint: true,
                     ),
                   ),
                 ),

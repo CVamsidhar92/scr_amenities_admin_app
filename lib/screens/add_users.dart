@@ -4,6 +4,7 @@ import 'package:http/http.dart' as http;
 import 'package:scr_amenities_admin/screens/base_url.dart';
 import 'package:scr_amenities_admin/screens/login.dart';
 import 'package:scr_amenities_admin/screens/stations_list.dart';
+import 'package:scr_amenities_admin/screens/users_list.dart';
 
 class AddUsers extends StatefulWidget {
   final String id;
@@ -32,17 +33,15 @@ class _AddUsersState extends State<AddUsers> {
     super.initState();
   }
 
-  
-
   Future<void> saveUserData() async {
     final String url = base_url + '/postUser';
     Map<String, dynamic> data = {
       'username': usernameController.text,
       'password': passwordController.text,
-      'name':nameController.text,
-      'desig':desigController.text,
-      'mobile_no':mobileController.text,
-      'e_mail':emailController.text,
+      'name': nameController.text,
+      'desig': desigController.text,
+      'mobile_no': mobileController.text,
+      'e_mail': emailController.text,
       'zone': zoneController.text,
       'division': divisionController.text,
       'section': sectionController.text,
@@ -67,7 +66,7 @@ class _AddUsersState extends State<AddUsers> {
         context,
         MaterialPageRoute(
             builder: (context) =>
-                StationsList(id: widget.id, role: widget.role)),
+                UsersList(id: widget.id, role: widget.role)),
       );
     } else {
       // Handle the error case
@@ -188,6 +187,7 @@ class _AddUsersState extends State<AddUsers> {
                 ),
                 TextFormField(
                   controller: mobileController,
+                  keyboardType: TextInputType.phone,
                   decoration: InputDecoration(
                     labelText: 'Mobile Number',
                     border: OutlineInputBorder(),
@@ -195,6 +195,8 @@ class _AddUsersState extends State<AddUsers> {
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Please enter Mobile Number';
+                    } else if (value.length != 10) {
+                      return 'Please enter 10 digit mobile number';
                     }
                     return null;
                   },
@@ -202,8 +204,9 @@ class _AddUsersState extends State<AddUsers> {
                 SizedBox(
                   height: screenSize.height * 0.02,
                 ),
-               TextFormField(
+                TextFormField(
                   controller: emailController,
+                  keyboardType: TextInputType.emailAddress,
                   decoration: InputDecoration(
                     labelText: 'e-Mail',
                     border: OutlineInputBorder(),
@@ -212,7 +215,7 @@ class _AddUsersState extends State<AddUsers> {
                 SizedBox(
                   height: screenSize.height * 0.02,
                 ),
-                 TextFormField(
+                TextFormField(
                   controller: zoneController,
                   decoration: InputDecoration(
                     labelText: 'Zone',
@@ -228,7 +231,7 @@ class _AddUsersState extends State<AddUsers> {
                 SizedBox(
                   height: screenSize.height * 0.02,
                 ),
-                 TextFormField(
+                TextFormField(
                   controller: divisionController,
                   decoration: InputDecoration(
                     labelText: 'Division',
@@ -244,7 +247,7 @@ class _AddUsersState extends State<AddUsers> {
                 SizedBox(
                   height: screenSize.height * 0.02,
                 ),
-                     TextFormField(
+                TextFormField(
                   controller: sectionController,
                   decoration: InputDecoration(
                     labelText: 'Section',
@@ -260,7 +263,6 @@ class _AddUsersState extends State<AddUsers> {
                 SizedBox(
                   height: screenSize.height * 0.02,
                 ),
-               
                 Center(
                   child: ElevatedButton(
                     onPressed: () async {
