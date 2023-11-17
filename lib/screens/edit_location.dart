@@ -39,6 +39,7 @@ class EditLocation extends StatefulWidget {
 }
 
 class _EditLocationState extends State<EditLocation> {
+   final _formKey = GlobalKey<FormState>();
   TextEditingController latitudeController = TextEditingController();
   TextEditingController longitudeController = TextEditingController();
   TextEditingController locationNameController = TextEditingController();
@@ -90,205 +91,224 @@ class _EditLocationState extends State<EditLocation> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                Expanded(
-                  child: TextField(
-                    controller: TextEditingController(text: widget.station),
-                    readOnly: true,
-                    decoration: InputDecoration(
-                      labelText: 'Station Name',
-                      border: OutlineInputBorder(),
-                      labelStyle: TextStyle(fontWeight: FontWeight.bold),
-                      contentPadding: EdgeInsets.fromLTRB(
-                          10.0, 5.0, 16.0, 10.0), // Add left padding
-                      alignLabelWithHint: true,
-                    ),
-                  ),
-                ),
-                SizedBox(width: 16),
-                Expanded(
-                  child: TextField(
-                    controller: TextEditingController(text: widget.amenityType),
-                    readOnly: true,
-                    decoration: InputDecoration(
-                      labelText: 'Amenity Type',
-                      border: OutlineInputBorder(),
-                      labelStyle: TextStyle(fontWeight: FontWeight.bold),
-                      contentPadding: EdgeInsets.fromLTRB(
-                          10.0, 5.0, 16.0, 10.0), // Add left padding
-                      alignLabelWithHint: true,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(height: 16),
-            Row(
-              children: [
-                Expanded(
-                  child: TextField(
-                    readOnly: true,
-                    controller: latitudeController,
-                    keyboardType: TextInputType.number,
-                    decoration: InputDecoration(
-                      labelText: 'Edit Latitude',
-                          border: OutlineInputBorder(),
-                      labelStyle: TextStyle(fontWeight: FontWeight.bold),
-                      contentPadding: EdgeInsets.fromLTRB(
-                          10.0, 5.0, 16.0, 10.0), // Add left padding
-                      alignLabelWithHint: true,
-                    ),
-                  ),
-                ),
-                SizedBox(width: 16),
-                Expanded(
-                  child: TextField(
-                    readOnly: true,
-                    controller: longitudeController,
-                    keyboardType: TextInputType.number,
-                    decoration: InputDecoration(
-                      labelText: 'Edit Longitude',
-                         border: OutlineInputBorder(),
-                      labelStyle: TextStyle(fontWeight: FontWeight.bold),
-                      contentPadding: EdgeInsets.fromLTRB(
-                          10.0, 5.0, 16.0, 10.0), // Add left padding
-                      alignLabelWithHint: true,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(height: 16),
-            Row(
-              children: [
-                Expanded(
-                  child: TextField(
-                    controller: locationNameController,
-                    decoration: InputDecoration(
-                      labelText: 'Location Name',
-                          border: OutlineInputBorder(),
-                      labelStyle: TextStyle(fontWeight: FontWeight.bold),
-                      contentPadding: EdgeInsets.fromLTRB(
-                          10.0, 5.0, 16.0, 10.0), // Add left padding
-                      alignLabelWithHint: true,
-                    ),
-                  ),
-                ),
-                SizedBox(width: 16),
-                Expanded(
-                  child: TextField(
-                    controller: locationDetailsController,
-                    decoration: InputDecoration(
-                      labelText: 'Location Details',
-                          border: OutlineInputBorder(),
-                      labelStyle: TextStyle(fontWeight: FontWeight.bold),
-                      contentPadding: EdgeInsets.fromLTRB(
-                          10.0, 5.0, 16.0, 10.0), // Add left padding
-                      alignLabelWithHint: true,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(height: 16),
-            Expanded(
-              child: Stack(
-                alignment: Alignment.bottomLeft,
+        child: Form(
+             key: _formKey,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
                 children: [
-                  GoogleMap(
-                    mapType: currentMapType,
-                    initialCameraPosition: CameraPosition(
-                      target: LatLng(
-                          widget.initialLatitude, widget.initialLongitude),
-                      zoom: 20.0,
+                  Expanded(
+                    child: TextField(
+                      controller: TextEditingController(text: widget.station),
+                      readOnly: true,
+                      decoration: InputDecoration(
+                        labelText: 'Station Name',
+                        border: OutlineInputBorder(),
+                        labelStyle: TextStyle(fontWeight: FontWeight.bold),
+                        contentPadding: EdgeInsets.fromLTRB(
+                            10.0, 5.0, 16.0, 10.0), // Add left padding
+                        alignLabelWithHint: true,
+                      ),
                     ),
-                    onMapCreated: (GoogleMapController controller) {
-                      mapController = controller;
-                    },
-                    onCameraMove: (CameraPosition position) {
-                      updatedLatitude = position.target.latitude;
-                      updatedLongitude = position.target.longitude;
-                      latitudeController.text = updatedLatitude.toString();
-                      longitudeController.text = updatedLongitude.toString();
-                      updateMarker();
-                    },
-                    markers: markers,
-                    zoomControlsEnabled: true,
-                    myLocationButtonEnabled:
-                        true, // Enable the default location button
-                    myLocationEnabled:
-                        true, // Show user's location as a blue dot on the map
                   ),
-                  Padding(
-                    padding: const EdgeInsets.all(
-                        16.0), // Adjust the padding as needed
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        FloatingActionButton(
-                          mini: true,
-                          onPressed: () {
-                            setState(() {
-                              currentMapType =
-                                  (currentMapType == MapType.normal)
-                                      ? MapType.satellite
-                                      : MapType.normal;
-                            });
-                          },
-                          child: Icon(Icons.map, size: 20),
-                        ),
-                        if (currentLocation != null)
-                          FloatingActionButton(
-                            mini: true,
-                            onPressed: () {
-                              mapController?.animateCamera(
-                                CameraUpdate.newLatLng(
-                                  LatLng(currentLocation!.latitude!,
-                                      currentLocation!.longitude!),
-                                ),
-                              );
-                            },
-                            child: Icon(
-                              Icons.gps_fixed,
-                              size: 20,
-                            ),
-                          ),
-                      ],
+                  SizedBox(width: 16),
+                  Expanded(
+                    child: TextField(
+                      controller: TextEditingController(text: widget.amenityType),
+                      readOnly: true,
+                      decoration: InputDecoration(
+                        labelText: 'Amenity Type',
+                        border: OutlineInputBorder(),
+                        labelStyle: TextStyle(fontWeight: FontWeight.bold),
+                        contentPadding: EdgeInsets.fromLTRB(
+                            10.0, 5.0, 16.0, 10.0), // Add left padding
+                        alignLabelWithHint: true,
+                      ),
                     ),
                   ),
                 ],
               ),
-            ),
-            Center(
-              child: ElevatedButton(
-                onPressed: () {
-                  mapController?.animateCamera(
-                    CameraUpdate.newLatLng(
-                      LatLng(updatedLatitude, updatedLongitude),
+              SizedBox(height: 16),
+              Row(
+                children: [
+                  Expanded(
+                    child: TextField(
+                      readOnly: true,
+                      controller: latitudeController,
+                      keyboardType: TextInputType.number,
+                      decoration: InputDecoration(
+                        labelText: 'Edit Latitude',
+                            border: OutlineInputBorder(),
+                        labelStyle: TextStyle(fontWeight: FontWeight.bold),
+                        contentPadding: EdgeInsets.fromLTRB(
+                            10.0, 5.0, 16.0, 10.0), // Add left padding
+                        alignLabelWithHint: true,
+                      ),
                     ),
-                  );
-
-                  latitudeController.text = updatedLatitude.toString();
-                  longitudeController.text = updatedLongitude.toString();
-
-                  updateMarker();
-                  updateLocation(
-                      widget.itemId,
-                      updatedLatitude,
-                      updatedLongitude,
-                      widget.station,
-                      widget.amenityType,
-                      locationNameController, // Pass the controller directly
-                      locationDetailsController);
-                },
-                child: Text('Update Location'),
+                  ),
+                  SizedBox(width: 16),
+                  Expanded(
+                    child: TextField(
+                      readOnly: true,
+                      controller: longitudeController,
+                      keyboardType: TextInputType.number,
+                      decoration: InputDecoration(
+                        labelText: 'Edit Longitude',
+                           border: OutlineInputBorder(),
+                        labelStyle: TextStyle(fontWeight: FontWeight.bold),
+                        contentPadding: EdgeInsets.fromLTRB(
+                            10.0, 5.0, 16.0, 10.0), // Add left padding
+                        alignLabelWithHint: true,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(height: 16),
+            Row(
+          children: [
+            Expanded(
+              child: TextFormField(
+          controller: locationNameController,
+          decoration: InputDecoration(
+            labelText: 'Location Name',
+            border: OutlineInputBorder(),
+            labelStyle: TextStyle(fontWeight: FontWeight.bold),
+            contentPadding: EdgeInsets.fromLTRB(10.0, 5.0, 16.0, 10.0),
+            alignLabelWithHint: true,
+          ),
+          // Add validator for required validation
+          validator: (value) {
+            if (value == null || value.isEmpty) {
+              return 'Location Name is required';
+            }
+            return null;
+          },
+              ),
+            ),
+            SizedBox(width: 16),
+            Expanded(
+              child: TextFormField(
+          controller: locationDetailsController,
+          decoration: InputDecoration(
+            labelText: 'Location Details',
+            border: OutlineInputBorder(),
+            labelStyle: TextStyle(fontWeight: FontWeight.bold),
+            contentPadding: EdgeInsets.fromLTRB(10.0, 5.0, 16.0, 10.0),
+            alignLabelWithHint: true,
+          ),
+          // Add validator for required validation
+          validator: (value) {
+            if (value == null || value.isEmpty) {
+              return 'Location Details is required';
+            }
+            return null;
+          },
               ),
             ),
           ],
+        ),
+              SizedBox(height: 16),
+              Expanded(
+                child: Stack(
+                  alignment: Alignment.bottomLeft,
+                  children: [
+                    GoogleMap(
+                      mapType: currentMapType,
+                      initialCameraPosition: CameraPosition(
+                        target: LatLng(
+                            widget.initialLatitude, widget.initialLongitude),
+                        zoom: 20.0,
+                      ),
+                      onMapCreated: (GoogleMapController controller) {
+                        mapController = controller;
+                      },
+                      onCameraMove: (CameraPosition position) {
+                        updatedLatitude = position.target.latitude;
+                        updatedLongitude = position.target.longitude;
+                        latitudeController.text = updatedLatitude.toString();
+                        longitudeController.text = updatedLongitude.toString();
+                        updateMarker();
+                      },
+                      markers: markers,
+                      zoomControlsEnabled: true,
+                      myLocationButtonEnabled:
+                          true, // Enable the default location button
+                      myLocationEnabled:
+                          true, // Show user's location as a blue dot on the map
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(
+                          16.0), // Adjust the padding as needed
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          FloatingActionButton(
+                            mini: true,
+                            onPressed: () {
+                              setState(() {
+                                currentMapType =
+                                    (currentMapType == MapType.normal)
+                                        ? MapType.satellite
+                                        : MapType.normal;
+                              });
+                            },
+                            child: Icon(Icons.map, size: 20),
+                          ),
+                          if (currentLocation != null)
+                            FloatingActionButton(
+                              mini: true,
+                              onPressed: () {
+                                mapController?.animateCamera(
+                                  CameraUpdate.newLatLng(
+                                    LatLng(currentLocation!.latitude!,
+                                        currentLocation!.longitude!),
+                                  ),
+                                );
+                              },
+                              child: Icon(
+                                Icons.gps_fixed,
+                                size: 20,
+                              ),
+                            ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+                 Center(
+                child: ElevatedButton(
+                  onPressed: () {
+                    if (_formKey.currentState!.validate()) {
+                      // If the form is valid, update the location
+                      mapController?.animateCamera(
+                        CameraUpdate.newLatLng(
+                          LatLng(updatedLatitude, updatedLongitude),
+                        ),
+                      );
+
+                      latitudeController.text = updatedLatitude.toString();
+                      longitudeController.text = updatedLongitude.toString();
+
+                      updateMarker();
+                      updateLocation(
+                        widget.itemId,
+                        updatedLatitude,
+                        updatedLongitude,
+                        widget.station,
+                        widget.amenityType,
+                        locationNameController,
+                        locationDetailsController,
+                      );
+                    }
+                  },
+                  child: Text('Update Location'),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
