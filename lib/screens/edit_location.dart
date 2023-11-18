@@ -138,7 +138,7 @@ class _EditLocationState extends State<EditLocation> {
                       controller: latitudeController,
                       keyboardType: TextInputType.number,
                       decoration: InputDecoration(
-                        labelText: 'Edit Latitude',
+                        labelText: 'Latitude',
                             border: OutlineInputBorder(),
                         labelStyle: TextStyle(fontWeight: FontWeight.bold),
                         contentPadding: EdgeInsets.fromLTRB(
@@ -154,7 +154,7 @@ class _EditLocationState extends State<EditLocation> {
                       controller: longitudeController,
                       keyboardType: TextInputType.number,
                       decoration: InputDecoration(
-                        labelText: 'Edit Longitude',
+                        labelText: 'Longitude',
                            border: OutlineInputBorder(),
                         labelStyle: TextStyle(fontWeight: FontWeight.bold),
                         contentPadding: EdgeInsets.fromLTRB(

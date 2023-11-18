@@ -469,6 +469,7 @@ void didUpdateWidget(covariant Home oldWidget) {
               );
             },
             child: Icon(Icons.add),
+            
           ),
           SizedBox(height: 6),
             Text('Add Amenity',
