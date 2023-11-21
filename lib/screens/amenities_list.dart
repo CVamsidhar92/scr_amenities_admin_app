@@ -3,9 +3,9 @@ import 'package:http/http.dart' as http;
 import 'package:scr_amenities_admin/screens/base_url.dart';
 import 'package:scr_amenities_admin/screens/edit_location.dart';
 import 'package:scr_amenities_admin/screens/login.dart';
+import 'package:scr_amenities_admin/screens/mapsWebView.dart';
 import 'package:scr_amenities_admin/screens/view_location.dart';
 import 'dart:convert';
-import 'package:url_launcher/url_launcher.dart';
 
 class AmenitiesList extends StatefulWidget {
   final String id;
@@ -183,29 +183,6 @@ class _AmenitiesListState extends State<AmenitiesList> {
     }
   }
 
-  Future<void> openGoogleChrome(String url) async {
-    final chromeUrl = 'googlechrome://navigate?url=$url';
-    try {
-      await launch(chromeUrl);
-    } catch (e) {
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: Text('Error'),
-            content: Text('Failed to launch Google Chrome.'),
-            actions: [
-              TextButton(
-                onPressed: () => Navigator.pop(context),
-                child: Text('OK'),
-              ),
-            ],
-          );
-        },
-      );
-    }
-  }
-
  Future<List<Map<String, dynamic>>> fetchData() async {
   final String url = base_url + '/getstalldetails';
   final body = {
@@ -245,6 +222,34 @@ class _AmenitiesListState extends State<AmenitiesList> {
     );
     return [];
   }
+}
+
+Future<bool> showConfirmationDialog(BuildContext context) async {
+  bool? result = await showDialog<bool>(
+    context: context,
+     barrierDismissible:false,
+    builder: (context) {
+      return AlertDialog(
+        title: Text('Confirm Navigation'),
+        content: Text('You are about to navigate to a third-party application. Do you want to continue?'),
+        actions: <Widget>[
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop(false); // Cancel navigation
+            },
+            child: Text('Cancel'),
+          ),
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop(true); // Confirm navigation
+            },
+            child: Text('OK'),
+          ),
+        ],
+      );
+    },
+  );
+  return result ?? false; // Return false if the dialog is dismissed without a choice
 }
 
 
@@ -474,50 +479,31 @@ Future<void> deleteItem(
                       );
                     }
 
-                    return SingleChildScrollView(
-                      child: Column(
-                        children: [
-                          FutureBuilder<String>(
-                            future: webviewUrl,
-                            builder: (context, urlSnapshot) {
-                              final showAerialViewButton =
-                                  urlSnapshot.connectionState ==
-                                          ConnectionState.done &&
-                                      urlSnapshot.hasData &&
-                                      urlSnapshot.data!.isNotEmpty;
+                   return SingleChildScrollView(
+                    child: Column(
+                      children: [
+              ElevatedButton(
+  onPressed: () async {
+    bool confirmNavigation = await showConfirmationDialog(context);
 
-                              if (showAerialViewButton) {
-                                return ElevatedButton(
-                                  onPressed: () async {
-                                    String url = await webviewUrl;
-                                    if (url.isNotEmpty) {
-                                      openGoogleChrome(url);
-                                    } else {
-                                      showDialog(
-                                        context: context,
-                                        builder: (BuildContext context) {
-                                          return AlertDialog(
-                                            title: Text('Error'),
-                                            content: Text('URL not found.'),
-                                            actions: [
-                                              TextButton(
-                                                onPressed: () =>
-                                                    Navigator.pop(context),
-                                                child: Text('OK'),
-                                              ),
-                                            ],
-                                          );
-                                        },
-                                      );
-                                    }
-                                  },
-                                  child: Text('View On Map'),
-                                );
-                              } else {
-                                return SizedBox.shrink();
-                              }
-                            },
-                          ),
+    if (confirmNavigation) {
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (context) => MapsWebview(
+            stnName: widget.stnName,
+            amenityType: widget.amenityType,
+          ),
+        ),
+      );
+    }
+  },
+  child: Text('View On Map'),
+),
+
+
+
+
+
                           ListView.builder(
                             physics: NeverScrollableScrollPhysics(),
                             shrinkWrap: true,

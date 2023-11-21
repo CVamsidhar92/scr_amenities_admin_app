@@ -39,7 +39,7 @@ class EditLocation extends StatefulWidget {
 }
 
 class _EditLocationState extends State<EditLocation> {
-   final _formKey = GlobalKey<FormState>();
+  final _formKey = GlobalKey<FormState>();
   TextEditingController latitudeController = TextEditingController();
   TextEditingController longitudeController = TextEditingController();
   TextEditingController locationNameController = TextEditingController();
@@ -55,12 +55,15 @@ class _EditLocationState extends State<EditLocation> {
   @override
   void initState() {
     super.initState();
+
     latitudeController.text = widget.initialLatitude.toString();
     longitudeController.text = widget.initialLongitude.toString();
     updatedLatitude = widget.initialLatitude;
     updatedLongitude = widget.initialLongitude;
-    locationNameController.text = widget.locationName;
-    locationDetailsController.text = widget.locationDetails;
+
+    // Use default values if the original values are null
+    locationNameController.text = widget.locationName ?? '';
+    locationDetailsController.text = widget.locationDetails ?? '';
 
     markers.add(
       Marker(
@@ -92,7 +95,7 @@ class _EditLocationState extends State<EditLocation> {
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Form(
-             key: _formKey,
+          key: _formKey,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -115,7 +118,8 @@ class _EditLocationState extends State<EditLocation> {
                   SizedBox(width: 16),
                   Expanded(
                     child: TextField(
-                      controller: TextEditingController(text: widget.amenityType),
+                      controller:
+                          TextEditingController(text: widget.amenityType),
                       readOnly: true,
                       decoration: InputDecoration(
                         labelText: 'Amenity Type',
@@ -139,7 +143,7 @@ class _EditLocationState extends State<EditLocation> {
                       keyboardType: TextInputType.number,
                       decoration: InputDecoration(
                         labelText: 'Latitude',
-                            border: OutlineInputBorder(),
+                        border: OutlineInputBorder(),
                         labelStyle: TextStyle(fontWeight: FontWeight.bold),
                         contentPadding: EdgeInsets.fromLTRB(
                             10.0, 5.0, 16.0, 10.0), // Add left padding
@@ -155,7 +159,7 @@ class _EditLocationState extends State<EditLocation> {
                       keyboardType: TextInputType.number,
                       decoration: InputDecoration(
                         labelText: 'Longitude',
-                           border: OutlineInputBorder(),
+                        border: OutlineInputBorder(),
                         labelStyle: TextStyle(fontWeight: FontWeight.bold),
                         contentPadding: EdgeInsets.fromLTRB(
                             10.0, 5.0, 16.0, 10.0), // Add left padding
@@ -166,49 +170,53 @@ class _EditLocationState extends State<EditLocation> {
                 ],
               ),
               SizedBox(height: 16),
-            Row(
-          children: [
-            Expanded(
-              child: TextFormField(
-          controller: locationNameController,
-          decoration: InputDecoration(
-            labelText: 'Location Name',
-            border: OutlineInputBorder(),
-            labelStyle: TextStyle(fontWeight: FontWeight.bold),
-            contentPadding: EdgeInsets.fromLTRB(10.0, 5.0, 16.0, 10.0),
-            alignLabelWithHint: true,
-          ),
-          // Add validator for required validation
-          validator: (value) {
-            if (value == null || value.isEmpty) {
-              return 'Location Name is required';
-            }
-            return null;
-          },
+              Row(
+                children: [
+                  Expanded(
+                    child: TextFormField(
+                      controller: locationNameController,
+                      initialValue: widget.locationName ?? '',
+                      decoration: InputDecoration(
+                        labelText: 'Location Name',
+                        border: OutlineInputBorder(),
+                        labelStyle: TextStyle(fontWeight: FontWeight.bold),
+                        contentPadding:
+                            EdgeInsets.fromLTRB(10.0, 5.0, 16.0, 10.0),
+                        alignLabelWithHint: true,
+                      ),
+                      // Add validator for required validation
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Location Name is required';
+                        }
+                        return null;
+                      },
+                    ),
+                  ),
+                  SizedBox(width: 16),
+                  Expanded(
+                    child: TextFormField(
+                      controller: locationDetailsController,
+                      initialValue: widget.locationDetails ?? '',
+                      decoration: InputDecoration(
+                        labelText: 'Location Details',
+                        border: OutlineInputBorder(),
+                        labelStyle: TextStyle(fontWeight: FontWeight.bold),
+                        contentPadding:
+                            EdgeInsets.fromLTRB(10.0, 5.0, 16.0, 10.0),
+                        alignLabelWithHint: true,
+                      ),
+                      // Add validator for required validation
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Location Details is required';
+                        }
+                        return null;
+                      },
+                    ),
+                  ),
+                ],
               ),
-            ),
-            SizedBox(width: 16),
-            Expanded(
-              child: TextFormField(
-          controller: locationDetailsController,
-          decoration: InputDecoration(
-            labelText: 'Location Details',
-            border: OutlineInputBorder(),
-            labelStyle: TextStyle(fontWeight: FontWeight.bold),
-            contentPadding: EdgeInsets.fromLTRB(10.0, 5.0, 16.0, 10.0),
-            alignLabelWithHint: true,
-          ),
-          // Add validator for required validation
-          validator: (value) {
-            if (value == null || value.isEmpty) {
-              return 'Location Details is required';
-            }
-            return null;
-          },
-              ),
-            ),
-          ],
-        ),
               SizedBox(height: 16),
               Expanded(
                 child: Stack(
@@ -278,7 +286,7 @@ class _EditLocationState extends State<EditLocation> {
                   ],
                 ),
               ),
-                 Center(
+              Center(
                 child: ElevatedButton(
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {
@@ -341,8 +349,8 @@ class _EditLocationState extends State<EditLocation> {
         'itemId': itemId.toString(),
         'latitude': latitude.toString(),
         'longitude': longitude.toString(),
-        'locationName': locationNameController.text,
-        'locationDetails': locationDetailsController.text,
+        'locationName': locationNameController.text ?? '',
+        'locationDetails': locationDetailsController.text ?? '',
         'station': station,
         'amenity_type': amenityType,
       },

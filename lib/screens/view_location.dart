@@ -88,40 +88,38 @@ class _ViewLocationState extends State<ViewLocation> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Row(
-              children: [
-                Expanded(
-                  child: TextField(
-                    controller: TextEditingController(text: widget.amenityType),
-                    readOnly: true,
-                    decoration: InputDecoration(
-                      labelText: 'Amenity Type',
-                      border: OutlineInputBorder(),
-                      labelStyle: TextStyle(fontWeight: FontWeight.bold),
-                      contentPadding: EdgeInsets.fromLTRB(
-                          10.0, 5.0, 16.0, 10.0), // Add left padding
-                      alignLabelWithHint: true,
-                    ),
-                  ),
-                ),
-                SizedBox(width: 16),
-                Expanded(
-                  child: TextField(
-                    controller:
-                        TextEditingController(text: widget.locationName),
-                    readOnly: true,
-                    decoration: InputDecoration(
-                      labelText: 'Location Name',
-                        border: OutlineInputBorder(),
-                      labelStyle: TextStyle(fontWeight: FontWeight.bold),
-                      contentPadding: EdgeInsets.fromLTRB(
-                          10.0, 5.0, 16.0, 10.0), // Add left padding
-                      alignLabelWithHint: true,
-                    ),
-                  ),
-                ),
-              ],
-            ),
+           Row(
+  children: [
+    Expanded(
+      child: TextField(
+        controller: TextEditingController(text: widget.amenityType ?? ""),
+        readOnly: true,
+        decoration: InputDecoration(
+          labelText: 'Amenity Type',
+          border: OutlineInputBorder(),
+          labelStyle: TextStyle(fontWeight: FontWeight.bold),
+          contentPadding: EdgeInsets.fromLTRB(10.0, 5.0, 16.0, 10.0),
+          alignLabelWithHint: true,
+        ),
+      ),
+    ),
+    SizedBox(width: 16),
+    Expanded(
+      child: TextField(
+        controller: TextEditingController(text: widget.locationName ?? ""),
+        readOnly: true,
+        decoration: InputDecoration(
+          labelText: 'Location Name',
+          border: OutlineInputBorder(),
+          labelStyle: TextStyle(fontWeight: FontWeight.bold),
+          contentPadding: EdgeInsets.fromLTRB(10.0, 5.0, 16.0, 10.0),
+          alignLabelWithHint: true,
+        ),
+      ),
+    ),
+  ],
+),
+
             SizedBox(height: 16),
             Expanded(
               child: Stack(
