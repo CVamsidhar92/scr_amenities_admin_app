@@ -211,6 +211,7 @@ class _MapsWebviewState extends State<MapsWebview> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(title: Text('Web View'),),
       body: Stack(
         children: [
           if (_markers.isNotEmpty)
