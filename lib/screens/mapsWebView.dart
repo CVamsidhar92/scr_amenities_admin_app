@@ -10,6 +10,7 @@ import 'package:flutter/services.dart' show rootBundle;
 import 'package:image/image.dart' as img; // Add this import
 
 import 'package:scr_amenities_admin/screens/base_url.dart';
+import 'package:scr_amenities_admin/screens/login.dart';
 
 class MapsWebview extends StatefulWidget {
   String stnName;
@@ -211,7 +212,39 @@ class _MapsWebviewState extends State<MapsWebview> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Web View'),),
+      appBar: AppBar(title: Text('Web View'),
+        actions: <Widget>[
+          InkWell(
+            onTap: () {
+              Navigator.of(context).pushReplacement(MaterialPageRoute(
+                builder: (context) =>
+                    Login(), // Replace with the actual login screen widget
+              ));
+            },
+            child: Row(
+              children: <Widget>[
+                Padding(
+                  padding: EdgeInsets.only(right: 8.0),
+                  child: Icon(
+                    Icons.logout_outlined,
+                    color: Colors.white,
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(right: 20.0),
+                  child: Text(
+                    'Logout',
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
       body: Stack(
         children: [
           if (_markers.isNotEmpty)
