@@ -110,19 +110,19 @@ class _HomeState extends State<Home> {
       'id': '13',
       'title': 'Multi Purpose Stall',
       'value': 'Multi Purpose Stall',
-      'image': 'assets/images/Multi Purpose Stall.jpeg',
+      'image': 'assets/images/mps.jpeg',
     },
     {
       'id': '14',
       'title': 'Help Desk',
       'value': 'Help Desk',
-      'image': 'assets/images/help desk.jpeg',
+      'image': 'assets/images/helpdesk.jpeg',
     },
     {
       'id': '15',
       'title': '1 Station 1 Product',
       'value': 'One Station One Product',
-      'image': 'assets/images/OSOP.jpeg',
+      'image': 'assets/images/osop.jpeg',
     },
     {
       'id': '16',

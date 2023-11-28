@@ -163,11 +163,11 @@ class _MapsWebviewState extends State<MapsWebview> {
       } else if (widget.amenityType == 'Cloak Rooms') {
         markerIcon = await _loadMarkerIcon('cr.jpeg', width: 80, height: 80);
       } else if (widget.amenityType == 'Multi Purpose Stall') {
-        markerIcon = await _loadMarkerIcon('Multi Purpose Stall.jpeg',width: 80, height: 80);
+        markerIcon = await _loadMarkerIcon('mps.jpeg',width: 80, height: 80);
       } else if (widget.amenityType == 'Help Desk') {
-        markerIcon = await _loadMarkerIcon('help desk.jpeg', width: 80, height: 80);
+        markerIcon = await _loadMarkerIcon('helpdesk.jpeg', width: 80, height: 80);
       } else if (widget.amenityType == 'One Station One Product') {
-        markerIcon = await _loadMarkerIcon('OSOP.jpeg', width: 80, height: 80);
+        markerIcon = await _loadMarkerIcon('osop.jpeg', width: 80, height: 80);
       } else if (widget.amenityType == 'Drinking Water') {
         markerIcon = await _loadMarkerIcon('dw.jpeg', width: 80, height: 80);
       } else if (widget.amenityType == 'Catering') {
