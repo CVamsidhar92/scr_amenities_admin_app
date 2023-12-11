@@ -157,7 +157,12 @@ class _UsersListState extends State<UsersList> {
     final Size screenSize = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
-        title: Text('Users'),
+        title: Text('Users',
+          style: TextStyle(
+            color: Colors.white, // Set text color to white
+          ),
+        ),
+        backgroundColor: Colors.blue, 
         actions: <Widget>[
           InkWell(
             onTap: () {

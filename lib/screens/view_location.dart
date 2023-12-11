@@ -81,7 +81,12 @@ class _ViewLocationState extends State<ViewLocation> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('View Location'),
+        title: Text('View Location',
+          style: TextStyle(
+            color: Colors.white, // Set text color to white
+          ),
+        ),
+        backgroundColor: Colors.blue, 
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),

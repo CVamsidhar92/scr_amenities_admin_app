@@ -14,6 +14,7 @@ class CreateAmenity extends StatefulWidget {
   final String section;
   final String station;
 
+  // Constructor for CreateAmenity widget
   const CreateAmenity({
     Key? key,
     required this.id,
@@ -29,14 +30,15 @@ class CreateAmenity extends StatefulWidget {
 }
 
 class _CreateAmenityState extends State<CreateAmenity> {
+    // Global key to identify the form
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+    // Controllers for handling text input
   final TextEditingController _zoneController = TextEditingController();
   final TextEditingController _divisionController = TextEditingController();
   final TextEditingController _sectionController = TextEditingController();
   final TextEditingController _stationController = TextEditingController();
   final TextEditingController _locationNameController = TextEditingController();
-  final TextEditingController _locationDetailsController =
-      TextEditingController();
+  final TextEditingController _locationDetailsController = TextEditingController();
   final TextEditingController _stallNameController = TextEditingController();
   final TextEditingController _roomTarrifController = TextEditingController();
   final TextEditingController _latitudeController = TextEditingController();
@@ -48,8 +50,10 @@ class _CreateAmenityState extends State<CreateAmenity> {
     'Paid'
   ]; // Titles for the radio buttons
 
+  // Lists for dropdown menu options
   List<String> managedByOptions = ['By Railway', 'Contractor', 'Cell Kitchen'];
 
+  // Variables to track selected values and visibility of fields
   String? _zoneName;
   String? _divisionName;
   String? _sectionName;
@@ -64,7 +68,7 @@ class _CreateAmenityState extends State<CreateAmenity> {
   String? _locationDetails;
   bool showStallAndNatureFields = false;
   bool showRoomTypeAndRoomTarrifFields = false;
-
+  // Lists for dropdown menu options
   List<Map<String, String>> amenityType = [
     {'amenity_name': '-Select-'}
   ];
@@ -78,22 +82,28 @@ class _CreateAmenityState extends State<CreateAmenity> {
   String? selectedNatureStall;
   String? selectedRoomType;
 
+  // Location instance for handling location data
   final Location location = Location();
 
   @override
   void initState() {
     super.initState();
+        // Initialize text controllers with widget data
     _zoneController.text = widget.zone;
     _divisionController.text = widget.division;
     _sectionController.text = widget.section;
     _stationController.text = widget.station;
+
+        // Fetch amenity, nature stall, and room type data
     getAmenity();
     getNatureStall();
     getRoomType();
 
+    // Check and request location permission
     _checkLocationPermission();
   }
 
+  // Function to fetch amenity data
   Future<void> getAmenity() async {
     final String url = base_url + '/getamenity';
 
@@ -124,6 +134,7 @@ class _CreateAmenityState extends State<CreateAmenity> {
     }
   }
 
+  // Function to fetch nature stall data
   Future<void> getNatureStall() async {
     final String url = base_url + '/getnaturestall';
 
@@ -154,6 +165,7 @@ class _CreateAmenityState extends State<CreateAmenity> {
     }
   }
 
+  // Function to fetch room type data
   Future<void> getRoomType() async {
     final String url = base_url + '/getrrroom';
 
@@ -184,11 +196,16 @@ class _CreateAmenityState extends State<CreateAmenity> {
     }
   }
 
+  // Function to check location permission
   Future<void> _checkLocationPermission() async {
     final hasPermission = await location.requestPermission();
-    if (hasPermission == PermissionStatus.granted) {}
+    if (hasPermission == PermissionStatus.granted) {
+            // Handle permission granted
+    }
+
   }
 
+  // Function to get current location
   void _getCurrentLocation() async {
     try {
       final LocationData? locationData = await location.getLocation();
@@ -207,9 +224,9 @@ class _CreateAmenityState extends State<CreateAmenity> {
     }
   }
 
+  // Function to send data to the backend
   Future<void> sendDataToBackend() async {
-    final String url = base_url +
-        '/postfeedamenities'; // Replace with your actual API endpoint
+    final String url = base_url + '/postfeedamenities';
 
     // Prepare the data to send to the backend
     Map<String, dynamic> data = {
@@ -269,7 +286,12 @@ class _CreateAmenityState extends State<CreateAmenity> {
     final screenSize = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
-        title: Text('Add Amenity'),
+        title: Text('Add Amenity',
+          style: TextStyle(
+            color: Colors.white, // Set text color to white
+          ),
+        ),
+        backgroundColor: Colors.blue, 
         actions: <Widget>[
           InkWell(
             onTap: () {

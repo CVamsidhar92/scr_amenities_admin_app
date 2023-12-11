@@ -1,3 +1,4 @@
+// Import necessary packages and files
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart' as http;
@@ -6,7 +7,9 @@ import 'package:scr_amenities_admin/screens/base_url.dart';
 import 'package:scr_amenities_admin/screens/home.dart';
 import 'package:permission_handler/permission_handler.dart' as permission;
 
+// Define the EditLocation widget
 class EditLocation extends StatefulWidget {
+    // Properties for initial data
   final double initialLatitude;
   final double initialLongitude;
   final int itemId;
@@ -20,6 +23,7 @@ class EditLocation extends StatefulWidget {
   String id;
   String role;
 
+  // Constructor for the widget
   EditLocation(
       {required this.initialLatitude,
       required this.initialLongitude,
@@ -38,12 +42,18 @@ class EditLocation extends StatefulWidget {
   _EditLocationState createState() => _EditLocationState();
 }
 
+// Define the state for the EditLocation widget
 class _EditLocationState extends State<EditLocation> {
+    // Global key for the form
   final _formKey = GlobalKey<FormState>();
+
+    // Controllers for text fields
   TextEditingController latitudeController = TextEditingController();
   TextEditingController longitudeController = TextEditingController();
   TextEditingController locationNameController = TextEditingController();
   TextEditingController locationDetailsController = TextEditingController();
+   
+    // Google Map related variables
   GoogleMapController? mapController;
   Set<Marker> markers = Set();
   double updatedLatitude = 0.0;
@@ -52,10 +62,12 @@ class _EditLocationState extends State<EditLocation> {
   LocationData? currentLocation;
   Location location = Location();
 
+  // Override initState method for initialization
   @override
   void initState() {
     super.initState();
 
+    // Set initial values for text fields and markers
     latitudeController.text = widget.initialLatitude.toString();
     longitudeController.text = widget.initialLongitude.toString();
     updatedLatitude = widget.initialLatitude;
@@ -72,9 +84,11 @@ class _EditLocationState extends State<EditLocation> {
       ),
     );
 
+    // Check and request location permission
     _checkLocationPermission();
   }
 
+  // Function to check location permission
   Future<void> _checkLocationPermission() async {
     final status = await permission.Permission.location.status;
     if (status.isDenied) {
@@ -86,11 +100,17 @@ class _EditLocationState extends State<EditLocation> {
     }
   }
 
+  // Build method for creating the UI
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Edit Location'),
+        title: Text('Edit Location',
+          style: TextStyle(
+            color: Colors.white, // Set text color to white
+          ),
+        ),
+        backgroundColor: Colors.blue, 
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),

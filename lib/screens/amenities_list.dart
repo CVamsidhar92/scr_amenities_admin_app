@@ -16,6 +16,7 @@ class AmenitiesList extends StatefulWidget {
   final String stnName;
   final String amenityType;
 
+  // Properties for the widget
   const AmenitiesList({
     Key? key,
     required this.id,
@@ -31,6 +32,7 @@ class AmenitiesList extends StatefulWidget {
   _AmenitiesListState createState() => _AmenitiesListState();
 }
 
+// Function to parse dynamic values to double
 double parseDouble(dynamic value) {
   if (value is String) {
     return double.tryParse(value) ?? 0.0;
@@ -42,6 +44,7 @@ double parseDouble(dynamic value) {
 }
 
 class _AmenitiesListState extends State<AmenitiesList> {
+    // State variables
   List<Map<String, dynamic>> dataa = [];
   late Future<List<Map<String, dynamic>>> amenitiesData;
   late Future<String> webviewUrl;
@@ -70,6 +73,7 @@ class _AmenitiesListState extends State<AmenitiesList> {
     });
   }
 
+  // Function to fetch the location name
   Future<String> fetchLocationName() async {
     final data = await amenitiesData;
     if (data.isNotEmpty) {
@@ -79,6 +83,7 @@ class _AmenitiesListState extends State<AmenitiesList> {
     }
   }
 
+  // Function to get complete data
   Future<void> getCompleteData(String locationName) async {
     final String url = base_url + '/getstationalldetails';
 
@@ -109,6 +114,7 @@ class _AmenitiesListState extends State<AmenitiesList> {
     }
   }
 
+  // Function to fetch platforms
   Future<List<Map<String, dynamic>>> fetchPlatforms(String station) async {
     final apiUrl = base_url + '/getplatforms';
 
@@ -152,6 +158,7 @@ class _AmenitiesListState extends State<AmenitiesList> {
     }
   }
 
+  // Function to fetch the webview URL
   Future<String> fetchWebviewUrl() async {
     final String url = base_url + '/getmapurl';
     final body = {
@@ -183,6 +190,7 @@ class _AmenitiesListState extends State<AmenitiesList> {
     }
   }
 
+  // Function to fetch data
  Future<List<Map<String, dynamic>>> fetchData() async {
   final String url = base_url + '/getstalldetails';
   final body = {
@@ -224,6 +232,7 @@ class _AmenitiesListState extends State<AmenitiesList> {
   }
 }
 
+  // Function to show a confirmation dialog for navigation
 Future<bool> showConfirmationDialog(BuildContext context) async {
   bool? result = await showDialog<bool>(
     context: context,
@@ -252,7 +261,7 @@ Future<bool> showConfirmationDialog(BuildContext context) async {
   return result ?? false; // Return false if the dialog is dismissed without a choice
 }
 
-
+  // Function to fetch item data
   Future<List<Map<String, dynamic>>> fetchItem() async {
     final String url = base_url + '/getItemsList';
     final body = {
@@ -293,6 +302,7 @@ Future<bool> showConfirmationDialog(BuildContext context) async {
     }
   }
 
+  // Function to delete an item
 Future<void> deleteItem(
   int id,
   String stationName,
@@ -353,7 +363,7 @@ Future<void> deleteItem(
 
 
 
-
+  // Function to show a delete confirmation dialog
   Future<bool> showDeleteConfirmationDialog(BuildContext context) async {
     bool? result = await showDialog<bool>(
       context: context,
@@ -382,6 +392,7 @@ Future<void> deleteItem(
         false; // Return false if the dialog is dismissed without a choice
   }
 
+  // Widget build method
   @override
   Widget build(BuildContext context) {
     String id = widget.id;
@@ -406,10 +417,19 @@ Future<void> deleteItem(
                     fontSize: 18,
                   ),
                 );
+                
               }
             }
-            return Text(
-                "Loading..."); // You can provide a loading state for the title.
+           return Text(
+  "Loading...",
+  style: TextStyle(
+    fontWeight: FontWeight.bold, // Make the text bold
+    color: Colors.white, // Change the text color to blue
+    
+  ),
+  
+); // You can provide a loading state for the title.
+ 
           },
         ),
         actions: <Widget>[

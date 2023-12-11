@@ -1,3 +1,4 @@
+// Import necessary Flutter and Dart packages
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -8,7 +9,9 @@ import 'package:scr_amenities_admin/screens/porterWebview.dart';
 import 'package:scr_amenities_admin/screens/tadWebview.dart';
 import 'package:scr_amenities_admin/screens/create_amenity.dart';
 
+// Define the Home widget
 class Home extends StatefulWidget {
+    // Properties passed to the widget through the constructor
   final String id;
   final String role;
   final String zone;
@@ -16,6 +19,7 @@ class Home extends StatefulWidget {
   final String section;
   final String selectedStation;
 
+  // Constructor to initialize properties
   const Home(
       {Key? key,
       required this.id,
@@ -30,9 +34,11 @@ class Home extends StatefulWidget {
   _HomeState createState() => _HomeState();
 }
 
+// Define the state for the Home widget
 class _HomeState extends State<Home> {
   List<Map<String, dynamic>> dataa = [];
 
+  // Static data for different types of amenities
   final List<Map<String, dynamic>> staticData = [
     {
       'id': '01',
@@ -198,9 +204,12 @@ class _HomeState extends State<Home> {
     },
   ];
 
+  // Function to fetch dynamic amenity data from the API
   Future<void> fetchData() async {
+        // API endpoint URL
     final String url = base_url + '/stnam';
 
+    // Send a POST request to the API
     final response = await http.post(
       Uri.parse(url),
       headers: {
@@ -211,69 +220,96 @@ class _HomeState extends State<Home> {
       }),
     );
 
+    // Check if the API response is successful (status code 200)
     if (response.statusCode == 200) {
+            // Parse the response JSON
       print('API Response: ${response.body}');
       final Map<String, dynamic> responseData = json.decode(response.body);
 
+      // Check the status from the API response
       if (responseData['status'] == 'ok') {
+                // Extract data from the API response
         final List<dynamic> parsedData = responseData['data'];
 
+        // Update the state with the fetched data
         setState(() {
           dataa = List<Map<String, dynamic>>.from(parsedData);
         });
       } else {
+                // Log the API status if not 'ok'
         print('API Status: ${responseData['status']}');
       }
     } else {
+            // Log the API error if the status code is not 200
       print('API Error: ${response.statusCode}');
       // Handle error
     }
   }
 
+  // Function to fetch TAD (Train Arrival/Departure) data
   Future<String> fetchtaddata() async {
+        // TAD API endpoint URL
     final String url = base_url + '/gettadurl';
+
+        // Request body parameters
     final body = {'station': widget.selectedStation, 'amenityType': 'TAD'};
 
     try {
+            // Send a POST request to the TAD API
       final response = await http.post(Uri.parse(url), body: body);
+            // Check if the TAD API response is successful (status code 200)
       if (response.statusCode == 200) {
+                // Decode the JSON data from the TAD API response
         final jsonData = json.decode(response.body);
+                // Check if the data is in the expected format
         if (jsonData is List && jsonData.isNotEmpty) {
+                    // Extract the URL from the first map in the response
           final firstMap = jsonData[0] as Map<String, dynamic>;
           final url = firstMap['url'] as String?;
+                    // Check if the URL is not null or empty
           if (url != null && url.isNotEmpty) {
+                        // Return the fetched URL
             return url;
           } else {
+                        // Throw an exception if the URL is not found in the API response
             throw Exception('URL not found in the API response');
           }
         } else {
+                    // Throw an exception if the data format is invalid
           throw Exception('Invalid data format received from API');
         }
       } else {
+                // Throw an exception if the status code is not 200
         throw Exception(
             'Failed to fetch data from API: ${response.statusCode}');
       }
     } catch (error) {
+            // Return an empty string when the URL is not found or an error occurs
       return ''; // Return a default value when URL is not found
     }
   }
 
+  // Override to perform tasks when the widget is first created
   @override
   void initState() {
     super.initState();
+        // Fetch dynamic amenity data when the widget is initialized
     fetchData();
   }
 
+  // Override to perform tasks when the widget is updated
 @override
 void didUpdateWidget(covariant Home oldWidget) {
   super.didUpdateWidget(oldWidget);
+      // Fetch dynamic amenity data when the widget is updated
   fetchData();
 }
 
 
-
+  // Override to build the UI for the Home widget
   @override
   Widget build(BuildContext context) {
+        // Extract properties from the widget
     String id = widget.id;
     String role = widget.role;
     String zone = widget.zone;
@@ -281,6 +317,7 @@ void didUpdateWidget(covariant Home oldWidget) {
     String section = widget.section;
     String selectedStation = widget.selectedStation;
 
+    // Calculate card dimensions based on screen width
     final screenWidth = MediaQuery.of(context).size.width;
     final cardsPerRow = 3;
     final cardSpacing = 120.0;
@@ -288,12 +325,20 @@ void didUpdateWidget(covariant Home oldWidget) {
         (screenWidth - (cardsPerRow - 1) * cardSpacing) / cardsPerRow;
     final cardHeight = cardWidth + 30;
 
+    // Build the main Scaffold containing the app bar, welcome message, and amenity cards
     return Scaffold(
       appBar: AppBar(
-        title: Text('Home'),
+        title: Text('Home',
+          style: TextStyle(
+            color: Colors.white, // Set text color to white
+          ),
+        ),
+        backgroundColor: Colors.blue, 
         actions: <Widget>[
+     // Logout action in the app bar
           InkWell(
             onTap: () {
+      // Navigate to the login screen when clicked
               Navigator.of(context).pushReplacement(MaterialPageRoute(
                 builder: (context) =>
                     Login(), // Replace with the actual login screen widget

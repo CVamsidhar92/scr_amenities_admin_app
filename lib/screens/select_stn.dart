@@ -206,7 +206,12 @@ class _SelectStnState extends State<SelectStn> {
     return Scaffold(
       key: _scaffoldKey, // Assign the key to the Scaffold
       appBar: AppBar(
-        title: Text('Station Amenities'),
+        title: Text('Station Amenities',
+          style: TextStyle(
+            color: Colors.white, // Set text color to white
+          ),
+        ),
+        backgroundColor: Colors.blue, 
         automaticallyImplyLeading: false,
         actions: <Widget>[
           InkWell(

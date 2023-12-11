@@ -408,7 +408,12 @@ class _StationsListState extends State<StationsList> {
     final Size screenSize = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
-        title: Text('Stations'),
+        title: Text('Stations',
+          style: TextStyle(
+            color: Colors.white, // Set text color to white
+          ),
+        ),
+        backgroundColor: Colors.blue, 
         actions: <Widget>[
           InkWell(
             onTap: () {

@@ -1,3 +1,4 @@
+// Import necessary packages and files
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -5,33 +6,45 @@ import 'package:scr_amenities_admin/screens/base_url.dart';
 import 'package:scr_amenities_admin/screens/login.dart';
 import 'package:scr_amenities_admin/screens/stations_list.dart';
 
+// Define a StatefulWidget for the AddStation screen
 class AddStation extends StatefulWidget {
   final String id;
   final String role;
-  const AddStation({Key? key, required this.id,required this.role}) : super(key: key);
+
+  // Constructor to receive data when navigating to this screen
+  const AddStation({Key? key, required this.id, required this.role})
+      : super(key: key);
 
   @override
   State<AddStation> createState() => _AddStationState();
 }
 
+// Define the state for the AddStation screen
 class _AddStationState extends State<AddStation> {
+  // Global key for the form to access form properties
   final _formKey = GlobalKey<FormState>();
+
+  // Controllers for text fields
   TextEditingController zoneController = TextEditingController();
   TextEditingController divisionController = TextEditingController();
   TextEditingController sectionController = TextEditingController();
   TextEditingController stationNameController = TextEditingController();
   TextEditingController codeController = TextEditingController();
   TextEditingController categoryController = TextEditingController();
+
+  // Selected category and categories list for dropdown
   String selectedCategory = '-Select-'; // Default value
   List<String> categories = ['-Select-']; // Default value
 
-    @override
+  @override
   void initState() {
     super.initState();
+    // Fetch category values when the screen is initialized
     fetchCategories();
   }
 
-   Future<void> fetchCategories() async {
+  // Function to fetch category values from the backend
+  Future<void> fetchCategories() async {
     final String url = base_url + '/getcatgvalues';
 
     try {
@@ -41,26 +54,27 @@ class _AddStationState extends State<AddStation> {
       );
 
       if (response.statusCode == 200) {
+        // Decode the JSON response and update the categories list
         List<dynamic> catgValues = jsonDecode(response.body);
-
         setState(() {
-          // Extract "category" values and set the categories list
-          categories = catgValues.map<String>((value) => value['category'].toString()).toList();
-          // Add the default value
-          categories.insert(0, '-Select-');
+          categories = catgValues
+              .map<String>((value) => value['category'].toString())
+              .toList();
+          categories.insert(0, '-Select-'); // Add the default value
         });
       } else {
-        // Handle the error case
-        print('Failed to fetch categories');
+        print('Failed to fetch categories'); // Handle the error case
       }
     } catch (error) {
-      // Handle any exceptions that may occur during the HTTP request.
-      print('Error: $error');
+      print('Error: $error'); // Handle any exceptions during the HTTP request
     }
   }
 
+  // Function to save station data to the backend
   Future<void> saveStationData() async {
     final String url = base_url + '/poststations';
+
+    // Create a map containing station data
     Map<String, dynamic> data = {
       'zone': zoneController.text,
       'division': divisionController.text,
@@ -71,6 +85,7 @@ class _AddStationState extends State<AddStation> {
       'created_by': widget.id,
     };
 
+    // Send a POST request with station data to the backend
     final response = await http.post(
       Uri.parse(url),
       headers: {'Content-Type': 'application/json'},
@@ -78,61 +93,67 @@ class _AddStationState extends State<AddStation> {
     );
 
     if (response.statusCode == 200) {
-      // Data sent successfully, show a success snackbar
+      // Show a success message and navigate to the StationsList screen
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('Station Created Successfully.'),
-          duration: Duration(seconds: 3), // Adjust the duration as needed
+          duration: Duration(seconds: 3),
         ),
       );
-      // Navigate to the Home Screen
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => StationsList(id: widget.id,role:widget.role)),
+        MaterialPageRoute(
+            builder: (context) =>
+                StationsList(id: widget.id, role: widget.role)),
       );
     } else {
-      // Handle the error case
-      print('Failed to send data to the backend');
-      // You can show an error message to the user or perform error handling as needed
+      print('Failed to send data to the backend'); // Handle the error case
     }
   }
 
   @override
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
+
     return Scaffold(
       appBar: AppBar(
-        title: Text('Add Station'),
-         actions: <Widget>[
+        title: Text(
+          'Add Station',
+          style: TextStyle(
+            color: Colors.white, // Set text color to white
+          ),
+        ),
+        backgroundColor: Colors.blue, // Set background color to blue
+        actions: <Widget>[
           InkWell(
             onTap: () {
+              // Navigate to the Login screen when logout is pressed
               Navigator.of(context).pushReplacement(MaterialPageRoute(
                 builder: (context) => Login(),
               ));
             },
-            child:Row(
-  children: <Widget>[
-    Padding(
-      padding: EdgeInsets.only(right: 8.0),
-      child: Icon(
-        Icons.logout_outlined,
-        color: Colors.white,
-      ),
-    ),
-    Padding(
-      padding: EdgeInsets.only(right: 20.0),
-      child: Text(
-        'Logout',
-        style: TextStyle(
-          color: Colors.white,
-          fontWeight: FontWeight.bold,
-          fontSize: 18,
-        ),
-      ),
-    ),
-  ],
-),
-
+            child: Row(
+              children: <Widget>[
+                Padding(
+                  padding: EdgeInsets.only(right: 8.0),
+                  child: Icon(
+                    Icons.logout_outlined,
+                    color: Colors.white,
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(right: 20.0),
+                  child: Text(
+                    'Logout',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18,
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
         ],
       ),

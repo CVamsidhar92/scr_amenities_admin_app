@@ -14,7 +14,12 @@ class GoogleMapsWebView extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Google Maps'),
+        title: Text('Google Maps',
+          style: TextStyle(
+            color: Colors.white, // Set text color to white
+          ),
+        ),
+        backgroundColor: Colors.blue, 
       ),
       body: WebView(
         initialUrl: modifiedUrl,

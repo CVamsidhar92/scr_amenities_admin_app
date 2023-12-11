@@ -1,23 +1,29 @@
+// Import necessary packages and files
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:scr_amenities_admin/screens/base_url.dart';
 import 'package:scr_amenities_admin/screens/login.dart';
-import 'package:scr_amenities_admin/screens/stations_list.dart';
 import 'package:scr_amenities_admin/screens/users_list.dart';
 
+// Define a StatefulWidget for the AddUsers screen
 class AddUsers extends StatefulWidget {
   final String id;
   final String role;
-  const AddUsers({Key? key, required this.id, required this.role})
-      : super(key: key);
+
+  // Constructor to receive data when navigating to this screen
+  const AddUsers({Key? key, required this.id, required this.role}) : super(key: key);
 
   @override
   State<AddUsers> createState() => _AddUsersState();
 }
 
+// Define the state for the AddUsers screen
 class _AddUsersState extends State<AddUsers> {
+  // Global key for the form to access form properties
   final _formKey = GlobalKey<FormState>();
+
+  // Controllers for text fields
   TextEditingController usernameController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   TextEditingController nameController = TextEditingController();
@@ -28,13 +34,11 @@ class _AddUsersState extends State<AddUsers> {
   TextEditingController divisionController = TextEditingController();
   TextEditingController sectionController = TextEditingController();
 
-  @override
-  void initState() {
-    super.initState();
-  }
-
+  // Function to save user data to the backend
   Future<void> saveUserData() async {
     final String url = base_url + '/postUser';
+
+    // Create a map containing user data
     Map<String, dynamic> data = {
       'username': usernameController.text,
       'password': passwordController.text,
@@ -47,6 +51,7 @@ class _AddUsersState extends State<AddUsers> {
       'section': sectionController.text,
     };
 
+    // Send a POST request with user data to the backend
     final response = await http.post(
       Uri.parse(url),
       headers: {'Content-Type': 'application/json'},
@@ -54,19 +59,17 @@ class _AddUsersState extends State<AddUsers> {
     );
 
     if (response.statusCode == 200) {
-      // Data sent successfully, show a success snackbar
+      // Show a success message and navigate to the UsersList screen
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('Station Created Successfully.'),
-          duration: Duration(seconds: 3), // Adjust the duration as needed
+          content: Text('User Created Successfully.'),
+          duration: Duration(seconds: 3),
         ),
       );
-      // Navigate to the Home Screen
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-            builder: (context) =>
-                UsersList(id: widget.id, role: widget.role)),
+            builder: (context) => UsersList(id: widget.id, role: widget.role)),
       );
     } else {
       // Handle the error case
@@ -78,12 +81,19 @@ class _AddUsersState extends State<AddUsers> {
   @override
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
+
     return Scaffold(
       appBar: AppBar(
-        title: Text('Add User'),
+        title: Text('Add User',
+          style: TextStyle(
+            color: Colors.white, // Set text color to white
+          ),
+        ),
+        backgroundColor: Colors.blue, 
         actions: <Widget>[
           InkWell(
             onTap: () {
+              // Navigate to the Login screen when logout is pressed
               Navigator.of(context).pushReplacement(MaterialPageRoute(
                 builder: (context) => Login(),
               ));
@@ -121,6 +131,7 @@ class _AddUsersState extends State<AddUsers> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                // Text form fields for user details
                 TextFormField(
                   controller: usernameController,
                   decoration: InputDecoration(
