@@ -5,6 +5,8 @@ import 'package:scr_amenities_admin/screens/login.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:location/location.dart';
+import 'package:image_picker/image_picker.dart';
+
 
 class CreateAmenity extends StatefulWidget {
   final String id;
@@ -68,6 +70,8 @@ class _CreateAmenityState extends State<CreateAmenity> {
   String? _locationDetails;
   bool showStallAndNatureFields = false;
   bool showRoomTypeAndRoomTarrifFields = false;
+  XFile? _pickedImage;
+
   // Lists for dropdown menu options
   List<Map<String, String>> amenityType = [
     {'amenity_name': '-Select-'}
@@ -101,6 +105,27 @@ class _CreateAmenityState extends State<CreateAmenity> {
 
     // Check and request location permission
     _checkLocationPermission();
+  }
+
+  // Function to handle image Picking from the Camera
+  Future<void> _pickImageFromCamera() async {
+  final picker = ImagePicker();
+  final pickedImage = await picker.pickImage(source: ImageSource.camera);
+
+  setState(() {
+    _pickedImage = pickedImage;
+  });
+}
+
+  // Function to handle image picking from the gallery
+
+  Future<void> _pickImageFromGallery() async {
+    final picker = ImagePicker();
+    final pickedImage = await picker.pickImage(source: ImageSource.gallery);
+
+    setState(() {
+      _pickedImage = pickedImage;
+    });
   }
 
   // Function to fetch amenity data
@@ -660,7 +685,13 @@ class _CreateAmenityState extends State<CreateAmenity> {
                     _locationName = value;
                   },
                 ),
+                ElevatedButton(onPressed: () => _pickImageFromCamera(), child: Text('Take a Picture'),),
                 SizedBox(height: 16),
+
+                ElevatedButton(onPressed: ()=> _pickImageFromGallery(), child: Text('Upload from Gallery'),),
+                SizedBox(height: 16,),
+
+                // _pickedImage != null ? Image.file(File(_pickedImage!.path)): Container(),
                 TextFormField(
                   readOnly: true,
                   controller: _latitudeController,

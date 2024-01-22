@@ -25,7 +25,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primarySwatch: Colors.blue,
-        visualDensity: VisualDensity.adaptivePlatformDensity,
+        // visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       initialRoute: '/splash',
       routes: {

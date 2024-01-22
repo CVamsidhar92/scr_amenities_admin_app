@@ -6,10 +6,13 @@ import 'package:location/location.dart';
 import 'package:scr_amenities_admin/screens/base_url.dart';
 import 'package:scr_amenities_admin/screens/home.dart';
 import 'package:permission_handler/permission_handler.dart' as permission;
+import 'package:image_picker/image_picker.dart';
+import 'dart:io';
+import 'dart:convert';
 
 // Define the EditLocation widget
 class EditLocation extends StatefulWidget {
-    // Properties for initial data
+  // Properties for initial data
   final double initialLatitude;
   final double initialLongitude;
   final int itemId;
@@ -44,16 +47,16 @@ class EditLocation extends StatefulWidget {
 
 // Define the state for the EditLocation widget
 class _EditLocationState extends State<EditLocation> {
-    // Global key for the form
+  // Global key for the form
   final _formKey = GlobalKey<FormState>();
 
-    // Controllers for text fields
+  // Controllers for text fields
   TextEditingController latitudeController = TextEditingController();
   TextEditingController longitudeController = TextEditingController();
   TextEditingController locationNameController = TextEditingController();
   TextEditingController locationDetailsController = TextEditingController();
-   
-    // Google Map related variables
+
+  // Google Map related variables
   GoogleMapController? mapController;
   Set<Marker> markers = Set();
   double updatedLatitude = 0.0;
@@ -61,6 +64,7 @@ class _EditLocationState extends State<EditLocation> {
   MapType currentMapType = MapType.normal;
   LocationData? currentLocation;
   Location location = Location();
+  XFile? _pickedImage;
 
   // Override initState method for initialization
   @override
@@ -100,17 +104,99 @@ class _EditLocationState extends State<EditLocation> {
     }
   }
 
+  // Function to handle image Picking from the Camera
+  Future<void> _pickImageFromCamera() async {
+    final picker = ImagePicker();
+    final pickedImage = await picker.pickImage(source: ImageSource.camera);
+
+    setState(() {
+      _pickedImage = pickedImage;
+    });
+  }
+
+  Future<void> _pickImageFromGallery() async {
+    final picker = ImagePicker();
+    final pickedImage = await picker.pickImage(source: ImageSource.gallery);
+
+    setState(() {
+      _pickedImage = pickedImage;
+    });
+  }
+
+  // Function to show the image picker dialog
+  Future<void> _showImagePickerDialog() async {
+    return showDialog<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Select Image Source'),
+          contentPadding:
+              EdgeInsets.fromLTRB(16.0, 8.0, 16.0, 8.0), // Adjust the padding
+          content: Column(
+            mainAxisSize: MainAxisSize
+                .min, // Use MainAxisSize.min to make the column take the minimum height needed
+            children: [
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                  _pickImageFromCamera();
+                },
+                child: Text('Take a Picture'),
+              ),
+              SizedBox(height: 8), // Adjust the height between buttons
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                  _pickImageFromGallery();
+                },
+                child: Text('Choose from Gallery'),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+// Function to show the full image
+  void _showFullImage(String imagePath) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Image.file(
+                File(imagePath),
+                fit: BoxFit.cover,
+              ),
+              SizedBox(height: 16),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Text('Close'),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
   // Build method for creating the UI
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Edit Location',
+        title: Text(
+          'Edit Location',
           style: TextStyle(
             color: Colors.white, // Set text color to white
           ),
         ),
-        backgroundColor: Colors.blue, 
+        backgroundColor: Colors.blue,
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -195,7 +281,6 @@ class _EditLocationState extends State<EditLocation> {
                   Expanded(
                     child: TextFormField(
                       controller: locationNameController,
-                      initialValue: widget.locationName ?? '',
                       decoration: InputDecoration(
                         labelText: 'Location Name',
                         border: OutlineInputBorder(),
@@ -217,7 +302,6 @@ class _EditLocationState extends State<EditLocation> {
                   Expanded(
                     child: TextFormField(
                       controller: locationDetailsController,
-                      initialValue: widget.locationDetails ?? '',
                       decoration: InputDecoration(
                         labelText: 'Location Details',
                         border: OutlineInputBorder(),
@@ -237,6 +321,32 @@ class _EditLocationState extends State<EditLocation> {
                   ),
                 ],
               ),
+
+              // Button to trigger image picker dialog
+              Row(
+                children: [
+                  ElevatedButton(
+                    onPressed: _showImagePickerDialog,
+                    child: Text('Select Image Source'),
+                  ),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  if (_pickedImage != null)
+                    TextButton(
+                      onPressed: () {
+                        _showFullImage(_pickedImage!.path);
+                      },
+                      child: Text(
+                        'View Image',
+                        style: TextStyle(
+                            decoration: TextDecoration.underline,
+                            color: Colors.blue[900]),
+                      ),
+                    )
+                ],
+              ),
+
               SizedBox(height: 16),
               Expanded(
                 child: Stack(
@@ -329,6 +439,7 @@ class _EditLocationState extends State<EditLocation> {
                         widget.amenityType,
                         locationNameController,
                         locationDetailsController,
+                        _pickedImage?.path ?? '',
                       );
                     }
                   },
@@ -353,6 +464,62 @@ class _EditLocationState extends State<EditLocation> {
     setState(() {});
   }
 
+// void updateLocation(
+//   int itemId,
+//   double latitude,
+//   double longitude,
+//   String station,
+//   String amenityType,
+//   TextEditingController locationNameController,
+//   TextEditingController locationDetailsController,
+// ) async {
+//   final url = base_url + '/changelocationpin';
+
+//   // Create a multipart request
+//   var request = http.MultipartRequest('POST', Uri.parse(url));
+
+//   // Add form fields
+//   request.fields['itemId'] = itemId.toString();
+//   request.fields['latitude'] = latitude.toString();
+//   request.fields['longitude'] = longitude.toString();
+//   request.fields['locationName'] = locationNameController.text;
+//   request.fields['locationDetails'] = locationDetailsController.text;
+//   request.fields['station'] = station;
+//   request.fields['amenity_type'] = amenityType;
+
+//   // Add the image file to the request
+//   if (_pickedImage != null) {
+//     var file = await http.MultipartFile.fromBytes('image', await _pickedImage!.readAsBytes(), filename: 'image.jpg');
+//     request.files.add(file);
+//   }
+
+//   try {
+//     // Send the request
+//     var response = await request.send();
+
+//     // Check the response status
+//     if (response.statusCode == 200) {
+//       showSnackbar('Location updated successfully');
+//       Navigator.of(context).pushReplacement(
+//         MaterialPageRoute(
+//           builder: (context) => Home(
+//             id: widget.id,
+//             role: widget.role,
+//             zone: widget.zone,
+//             division: widget.division,
+//             section: widget.section,
+//             selectedStation: widget.station,
+//           ),
+//         ),
+//       );
+//     } else {
+//       showSnackbar('Error updating location: ${response.reasonPhrase}');
+//     }
+//   } catch (e) {
+//     showSnackbar('Error updating location: $e');
+//   }
+// }
+
   void updateLocation(
     int itemId,
     double latitude,
@@ -361,37 +528,64 @@ class _EditLocationState extends State<EditLocation> {
     String amenityType,
     TextEditingController locationNameController,
     TextEditingController locationDetailsController,
+    String imagePath,
   ) async {
-    final url = base_url + '/changelocationpin';
-    final response = await http.post(
-      Uri.parse(url),
-      body: {
-        'itemId': itemId.toString(),
-        'latitude': latitude.toString(),
-        'longitude': longitude.toString(),
-        'locationName': locationNameController.text ?? '',
-        'locationDetails': locationDetailsController.text ?? '',
-        'station': station,
-        'amenity_type': amenityType,
-      },
-    );
+    final url = base_url + '/upldlocimg';
+    final request = http.MultipartRequest('POST', Uri.parse(url));
 
-    if (response.statusCode == 200) {
-      showSnackbar('Location updated successfully');
-      Navigator.of(context).pushReplacement(
-        MaterialPageRoute(
-          builder: (context) => Home(
-            id: widget.id,
-            role: widget.role,
-            zone: widget.zone,
-            division: widget.division,
-            section: widget.section,
-            selectedStation: widget.station,
+    // Add form fields
+    request.fields['itemId'] = itemId.toString();
+    request.fields['latitude'] = latitude.toString();
+    request.fields['longitude'] = longitude.toString();
+    request.fields['locationName'] = locationNameController.text;
+    request.fields['locationDetails'] = locationDetailsController.text;
+    request.fields['station'] = station;
+    request.fields['amenity_type'] = amenityType;
+
+    // Add the image file to the request
+    if (imagePath.isNotEmpty) {
+      try {
+        var file = await http.MultipartFile.fromPath(
+          'image/',
+          imagePath,
+        );
+        request.files.add(file);
+      } catch (e) {
+        print('Error adding image file to request: $e');
+        return;
+      }
+    }
+    print("request.files[0].filename");
+    try {
+      // Send the request
+      var response = await request.send();
+
+      String responseData = await response.stream.bytesToString();
+      // Check the response status
+      if (response.statusCode == 200) {
+        // print("file");
+        // print(response);
+        // print("Response Data:");
+        // print(responseData);
+        // print("file");
+        showSnackbar('Location updated successfully');
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(
+            builder: (context) => Home(
+              id: widget.id,
+              role: widget.role,
+              zone: widget.zone,
+              division: widget.division,
+              section: widget.section,
+              selectedStation: widget.station,
+            ),
           ),
-        ),
-      );
-    } else {
-      showSnackbar('Error updating location: ${response.body}');
+        );
+      } else {
+        showSnackbar('Error updating location: ${response.reasonPhrase}');
+      }
+    } catch (e) {
+      showSnackbar('Error updating location: $e');
     }
   }
 

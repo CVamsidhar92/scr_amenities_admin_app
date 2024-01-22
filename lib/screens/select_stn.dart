@@ -27,11 +27,11 @@ class SelectStn extends StatefulWidget {
 
   @override
   State<SelectStn> createState() => _SelectStnState();
-}
+} 
 
 class _SelectStnState extends State<SelectStn> {
   String selectedStation = '';
-  final myVersion = '1.6';
+  final myVersion = '1.7';
   List<dynamic> data = [];
   late BuildContext dialogContext;
   // GlobalKey to access the ScaffoldState

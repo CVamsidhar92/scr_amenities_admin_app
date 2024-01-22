@@ -250,14 +250,24 @@ class _LoginState extends State<Login> {
                   });
                 },
               ),
+Container(
+  width: 50, // Adjust width as needed
+  height: 50, // Adjust height as needed
+  child: ElevatedButton(
+    onPressed: _login,
+    style: ButtonStyle(
+      backgroundColor: MaterialStateProperty.all<Color>(Colors.blue),
+    ),
+    child: Text(
+      'Login',
+      style: TextStyle(fontSize: 16), // Adjust font size if needed
+    ),
+  ),
+)
 
-              ElevatedButton(
-                onPressed: _login,
-                child: Text(
-                  'Login',
-                  style: TextStyle(fontSize: screenSize.width * 0.05),
-                ),
-              ),
+
+
+
             ],
           ),
         ),
