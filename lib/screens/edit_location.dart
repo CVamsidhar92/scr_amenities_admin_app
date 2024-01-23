@@ -8,7 +8,6 @@ import 'package:scr_amenities_admin/screens/home.dart';
 import 'package:permission_handler/permission_handler.dart' as permission;
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
-import 'dart:convert';
 
 // Define the EditLocation widget
 class EditLocation extends StatefulWidget {
@@ -25,6 +24,7 @@ class EditLocation extends StatefulWidget {
   String station;
   String id;
   String role;
+  String? Img_file;
 
   // Constructor for the widget
   EditLocation(
@@ -39,7 +39,8 @@ class EditLocation extends StatefulWidget {
       required this.section,
       required this.station,
       required this.id,
-      required this.role});
+      required this.role,
+      required this.Img_file});
 
   @override
   _EditLocationState createState() => _EditLocationState();
@@ -65,6 +66,8 @@ class _EditLocationState extends State<EditLocation> {
   LocationData? currentLocation;
   Location location = Location();
   XFile? _pickedImage;
+  Image? _image;
+
 
   // Override initState method for initialization
   @override
@@ -90,6 +93,7 @@ class _EditLocationState extends State<EditLocation> {
 
     // Check and request location permission
     _checkLocationPermission();
+     loadNetworkImage(); // Added this line
   }
 
   // Function to check location permission
@@ -183,6 +187,25 @@ class _EditLocationState extends State<EditLocation> {
         );
       },
     );
+  }
+
+   Future<void> loadNetworkImage() async {
+    if (widget.Img_file != null && widget.Img_file!.isNotEmpty) {
+      final imageUrl = base_url + '/images/${widget.Img_file}';
+      try {
+        final response = await http.get(Uri.parse(imageUrl));
+
+        if (response.statusCode == 200) {
+          setState(() {
+            _image = Image.memory(response.bodyBytes);
+          });
+        } else {
+          print('Failed to load image. Status code: ${response.statusCode}');
+        }
+      } catch (error) {
+        print('Error loading image: $error');
+      }
+    }
   }
 
   // Build method for creating the UI
@@ -338,16 +361,30 @@ class _EditLocationState extends State<EditLocation> {
                         _showFullImage(_pickedImage!.path);
                       },
                       child: Text(
-                        'View Image',
+                        'View Selected Image',
                         style: TextStyle(
                             decoration: TextDecoration.underline,
                             color: Colors.blue[900]),
                       ),
-                    )
+                    ),
                 ],
               ),
-
-              SizedBox(height: 16),
+               Visibility(
+              visible: widget.Img_file != null && widget.Img_file!.isNotEmpty,
+              child: TextButton(
+                onPressed: () {
+                  _showImageDialog();
+                },
+                child: Text(
+                  'View Image',
+                  style: TextStyle(
+                    decoration: TextDecoration.underline,
+                    color: Colors.blue[900],
+                  ),
+                ),
+              ),
+            ),
+              SizedBox(height: 5),
               Expanded(
                 child: Stack(
                   alignment: Alignment.bottomLeft,
@@ -453,6 +490,24 @@ class _EditLocationState extends State<EditLocation> {
     );
   }
 
+   void _showImageDialog() {
+    if (_image != null) {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            content: Container(
+              child: _image,
+              height: 200, // Adjust the height as needed
+            ),
+          );
+        },
+      );
+    } else {
+      showSnackbar('Image is not available.');
+    }
+  }
+
   void updateMarker() {
     markers.clear();
     markers.add(
@@ -463,62 +518,6 @@ class _EditLocationState extends State<EditLocation> {
     );
     setState(() {});
   }
-
-// void updateLocation(
-//   int itemId,
-//   double latitude,
-//   double longitude,
-//   String station,
-//   String amenityType,
-//   TextEditingController locationNameController,
-//   TextEditingController locationDetailsController,
-// ) async {
-//   final url = base_url + '/changelocationpin';
-
-//   // Create a multipart request
-//   var request = http.MultipartRequest('POST', Uri.parse(url));
-
-//   // Add form fields
-//   request.fields['itemId'] = itemId.toString();
-//   request.fields['latitude'] = latitude.toString();
-//   request.fields['longitude'] = longitude.toString();
-//   request.fields['locationName'] = locationNameController.text;
-//   request.fields['locationDetails'] = locationDetailsController.text;
-//   request.fields['station'] = station;
-//   request.fields['amenity_type'] = amenityType;
-
-//   // Add the image file to the request
-//   if (_pickedImage != null) {
-//     var file = await http.MultipartFile.fromBytes('image', await _pickedImage!.readAsBytes(), filename: 'image.jpg');
-//     request.files.add(file);
-//   }
-
-//   try {
-//     // Send the request
-//     var response = await request.send();
-
-//     // Check the response status
-//     if (response.statusCode == 200) {
-//       showSnackbar('Location updated successfully');
-//       Navigator.of(context).pushReplacement(
-//         MaterialPageRoute(
-//           builder: (context) => Home(
-//             id: widget.id,
-//             role: widget.role,
-//             zone: widget.zone,
-//             division: widget.division,
-//             section: widget.section,
-//             selectedStation: widget.station,
-//           ),
-//         ),
-//       );
-//     } else {
-//       showSnackbar('Error updating location: ${response.reasonPhrase}');
-//     }
-//   } catch (e) {
-//     showSnackbar('Error updating location: $e');
-//   }
-// }
 
   void updateLocation(
     int itemId,
@@ -542,7 +541,7 @@ class _EditLocationState extends State<EditLocation> {
     request.fields['station'] = station;
     request.fields['amenity_type'] = amenityType;
 
-    // Add the image file to the request
+    // Add the image file to the request only if imagePath is not empty
     if (imagePath.isNotEmpty) {
       try {
         var file = await http.MultipartFile.fromPath(
@@ -555,7 +554,7 @@ class _EditLocationState extends State<EditLocation> {
         return;
       }
     }
-    print("request.files[0].filename");
+
     try {
       // Send the request
       var response = await request.send();
@@ -563,11 +562,6 @@ class _EditLocationState extends State<EditLocation> {
       String responseData = await response.stream.bytesToString();
       // Check the response status
       if (response.statusCode == 200) {
-        // print("file");
-        // print(response);
-        // print("Response Data:");
-        // print(responseData);
-        // print("file");
         showSnackbar('Location updated successfully');
         Navigator.of(context).pushReplacement(
           MaterialPageRoute(

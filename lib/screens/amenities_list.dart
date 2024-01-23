@@ -519,11 +519,6 @@ Future<void> deleteItem(
   },
   child: Text('View On Map'),
 ),
-
-
-
-
-
                           ListView.builder(
                             physics: NeverScrollableScrollPhysics(),
                             shrinkWrap: true,
@@ -631,6 +626,7 @@ Future<void> deleteItem(
                                                       division: division,
                                                       section: section,
                                                       station: station,
+                                                      Img_file: item['img_file']
                                                     ),
                                                   ),
                                                 );
@@ -682,6 +678,7 @@ Future<void> deleteItem(
                                                       division: division,
                                                       section: section,
                                                       station: station,
+                                                       Img_file: item['img_file']
                                                     ),
                                                   ),
                                                 );

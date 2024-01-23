@@ -6,6 +6,8 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:location/location.dart';
 import 'package:image_picker/image_picker.dart';
+import 'dart:io';
+
 
 
 class CreateAmenity extends StatefulWidget {
@@ -72,6 +74,8 @@ class _CreateAmenityState extends State<CreateAmenity> {
   bool showRoomTypeAndRoomTarrifFields = false;
   XFile? _pickedImage;
 
+
+
   // Lists for dropdown menu options
   List<Map<String, String>> amenityType = [
     {'amenity_name': '-Select-'}
@@ -108,13 +112,14 @@ class _CreateAmenityState extends State<CreateAmenity> {
   }
 
   // Function to handle image Picking from the Camera
-  Future<void> _pickImageFromCamera() async {
+Future<XFile?> _pickImage(ImageSource source) async {
   final picker = ImagePicker();
-  final pickedImage = await picker.pickImage(source: ImageSource.camera);
-
-  setState(() {
-    _pickedImage = pickedImage;
-  });
+  try {
+    return await picker.pickImage(source: source);
+  } catch (e) {
+    print('Error picking image: $e');
+    return null;
+  }
 }
 
   // Function to handle image picking from the gallery
@@ -127,7 +132,42 @@ class _CreateAmenityState extends State<CreateAmenity> {
       _pickedImage = pickedImage;
     });
   }
+ // Function to show the image picker dialog
+ Future<void> _showImagePickerDialog() async {
+  XFile? pickedImage = await showDialog<XFile?>(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: Text('Select Image Source'),
+        contentPadding: EdgeInsets.fromLTRB(16.0, 8.0, 16.0, 8.0),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            ElevatedButton(
+              onPressed: () async {
+                Navigator.of(context).pop(await _pickImage(ImageSource.camera));
+              },
+              child: Text('Take a Picture'),
+            ),
+            SizedBox(height: 8),
+            ElevatedButton(
+              onPressed: () async {
+                Navigator.of(context).pop(await _pickImage(ImageSource.gallery));
+              },
+              child: Text('Choose from Gallery'),
+            ),
+          ],
+        ),
+      );
+    },
+  );
 
+  if (pickedImage != null) {
+    setState(() {
+      _pickedImage = pickedImage;
+    });
+  }
+}
   // Function to fetch amenity data
   Future<void> getAmenity() async {
     final String url = base_url + '/getamenity';
@@ -249,9 +289,16 @@ class _CreateAmenityState extends State<CreateAmenity> {
     }
   }
 
-  // Function to send data to the backend
-  Future<void> sendDataToBackend() async {
+    // Function to send data to the backend
+  Future<void> sendDataToBackend(String imagePath) async {
+    // Check if the image is selected
+  // if (imagePath.isEmpty) {
+  //   showSnackbar('Please Upload The Image');
+  //   return;
+  // }
+
     final String url = base_url + '/postfeedamenities';
+    final request = http.MultipartRequest('POST', Uri.parse(url));
 
     // Prepare the data to send to the backend
     Map<String, dynamic> data = {
@@ -273,37 +320,95 @@ class _CreateAmenityState extends State<CreateAmenity> {
       'created_by': widget.id
     };
 
-    final response = await http.post(
-      Uri.parse(url),
-      headers: {'Content-Type': 'application/json'},
-      body: jsonEncode(data),
-    );
+    // Add the image file to the request
+    if (imagePath.isNotEmpty) {
+      try {
+        var file = await http.MultipartFile.fromPath(
+          'image/',
+          imagePath,
+        );
+        request.files.add(file);
+      } catch (e) {
+        print('Error adding image file to request: $e');
+        return;
+      }
+    }
 
-    if (response.statusCode == 200) {
-      // Data sent successfully, show a success snackbar
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Data inserted successfully.'),
-          duration: Duration(seconds: 3), // Adjust the duration as needed
-        ),
-      );
-      // Navigate to the Home Screen
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
+    // Add other form data to the request
+    for (var entry in data.entries) {
+      request.fields[entry.key] = entry.value.toString();
+    }
+
+    try {
+      // Send the request
+      var response = await request.send();
+
+      // Check the response status
+      if (response.statusCode == 200) {
+        // Data sent successfully, show a success snackbar
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Data inserted successfully.'),
+            duration: Duration(seconds: 3),
+          ),
+        );
+        // Navigate to the Home Screen
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
             builder: (context) => Home(
                 id: widget.id,
-                role:widget.role,
+                role: widget.role,
                 zone: widget.zone,
                 division: widget.division,
                 section: widget.section,
-                selectedStation: widget.station)),
-      );
-    } else {
-      // Handle the error case
-      print('Failed to send data to the backend');
-      // You can show an error message to the user or perform error handling as needed
+                selectedStation: widget.station),
+          ),
+        );
+      } else {
+        // Handle the error case
+        print('Failed to send data to the backend');
+        // You can show an error message to the user or perform error handling as needed
+      }
+    } catch (e) {
+      showSnackbar('Error updating location: $e');
     }
+  }
+
+   void showSnackbar(String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+      ),
+    );
+  }
+
+  
+// Function to show the full image
+  void _showFullImage(String imagePath) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Image.file(
+                File(imagePath),
+                fit: BoxFit.cover,
+              ),
+              SizedBox(height: 16),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Text('Close'),
+              ),
+            ],
+          ),
+        );
+      },
+    );
   }
 
   @override
@@ -685,13 +790,31 @@ class _CreateAmenityState extends State<CreateAmenity> {
                     _locationName = value;
                   },
                 ),
-                ElevatedButton(onPressed: () => _pickImageFromCamera(), child: Text('Take a Picture'),),
-                SizedBox(height: 16),
-
-                ElevatedButton(onPressed: ()=> _pickImageFromGallery(), child: Text('Upload from Gallery'),),
-                SizedBox(height: 16,),
-
-                // _pickedImage != null ? Image.file(File(_pickedImage!.path)): Container(),
+                 SizedBox(height: 16),
+                 Row(
+                children: [
+                  ElevatedButton(
+                    onPressed: _showImagePickerDialog,
+                    child: Text('Select Image Source'),
+                  ),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  if (_pickedImage != null)
+                    TextButton(
+                      onPressed: () {
+                        _showFullImage(_pickedImage!.path);
+                      },
+                      child: Text(
+                        'View Image',
+                        style: TextStyle(
+                            decoration: TextDecoration.underline,
+                            color: Colors.blue[900]),
+                      ),
+                    )
+                ],
+              ),
+               SizedBox(height: 16),
                 TextFormField(
                   readOnly: true,
                   controller: _latitudeController,
@@ -735,13 +858,13 @@ class _CreateAmenityState extends State<CreateAmenity> {
                   child: Text('Get Location'),
                 ),
                 SizedBox(height: 16),
-         ElevatedButton(
+       ElevatedButton(
   onPressed: () {
     if (_formKey.currentState!.validate()) {
       if (selectedService?.isNotEmpty == true) {
         // If selectedService is not null and not empty, proceed with form submission.
         _formKey.currentState!.save();
-        sendDataToBackend();
+        sendDataToBackend(_pickedImage?.path ?? '');
       } else {
         // Display an error message for the radio buttons.
         ScaffoldMessenger.of(context).showSnackBar(
@@ -754,7 +877,6 @@ class _CreateAmenityState extends State<CreateAmenity> {
   },
   child: Text('Submit'),
 ),
-
               ],
             ),
           ),

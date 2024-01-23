@@ -18,19 +18,22 @@ class ViewLocation extends StatefulWidget {
   String station;
   String id;
   String role;
+  String? Img_file;
 
-  ViewLocation(
-      {required this.initialLatitude,
-      required this.initialLongitude,
-      required this.itemId,
-      required this.amenityType,
-      required this.locationName,
-      required this.zone,
-      required this.division,
-      required this.section,
-      required this.station,
-      required this.id,
-      required this.role});
+  ViewLocation({
+    required this.initialLatitude,
+    required this.initialLongitude,
+    required this.itemId,
+    required this.amenityType,
+    required this.locationName,
+    required this.zone,
+    required this.division,
+    required this.section,
+    required this.station,
+    required this.id,
+    required this.role,
+    required this.Img_file,
+  });
 
   @override
   _ViewLocationState createState() => _ViewLocationState();
@@ -46,6 +49,7 @@ class _ViewLocationState extends State<ViewLocation> {
   MapType currentMapType = MapType.normal;
   LocationData? currentLocation;
   Location location = Location();
+  Image? _image;
 
   @override
   void initState() {
@@ -64,6 +68,7 @@ class _ViewLocationState extends State<ViewLocation> {
     );
 
     _checkLocationPermission();
+    loadNetworkImage(); // Added this line
   }
 
   Future<void> _checkLocationPermission() async {
@@ -77,54 +82,92 @@ class _ViewLocationState extends State<ViewLocation> {
     }
   }
 
+  Future<void> loadNetworkImage() async {
+    if (widget.Img_file != null && widget.Img_file!.isNotEmpty) {
+      final imageUrl = base_url + '/images/${widget.Img_file}';
+      try {
+        final response = await http.get(Uri.parse(imageUrl));
+
+        if (response.statusCode == 200) {
+          setState(() {
+            _image = Image.memory(response.bodyBytes);
+          });
+        } else {
+          print('Failed to load image. Status code: ${response.statusCode}');
+        }
+      } catch (error) {
+        print('Error loading image: $error');
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('View Location',
+        title: Text(
+          'View Location',
           style: TextStyle(
-            color: Colors.white, // Set text color to white
+            color: Colors.white,
           ),
         ),
-        backgroundColor: Colors.blue, 
+        backgroundColor: Colors.blue,
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-           Row(
-  children: [
-    Expanded(
-      child: TextField(
-        controller: TextEditingController(text: widget.amenityType ?? ""),
-        readOnly: true,
-        decoration: InputDecoration(
-          labelText: 'Amenity Type',
-          border: OutlineInputBorder(),
-          labelStyle: TextStyle(fontWeight: FontWeight.bold),
-          contentPadding: EdgeInsets.fromLTRB(10.0, 5.0, 16.0, 10.0),
-          alignLabelWithHint: true,
-        ),
-      ),
-    ),
-    SizedBox(width: 16),
-    Expanded(
-      child: TextField(
-        controller: TextEditingController(text: widget.locationName ?? ""),
-        readOnly: true,
-        decoration: InputDecoration(
-          labelText: 'Location Name',
-          border: OutlineInputBorder(),
-          labelStyle: TextStyle(fontWeight: FontWeight.bold),
-          contentPadding: EdgeInsets.fromLTRB(10.0, 5.0, 16.0, 10.0),
-          alignLabelWithHint: true,
-        ),
-      ),
-    ),
-  ],
-),
-
+            Row(
+              children: [
+                Expanded(
+                  child: TextField(
+                    controller:
+                        TextEditingController(text: widget.amenityType ?? ""),
+                    readOnly: true,
+                    decoration: InputDecoration(
+                      labelText: 'Amenity Type',
+                      border: OutlineInputBorder(),
+                      labelStyle: TextStyle(fontWeight: FontWeight.bold),
+                      contentPadding:
+                          EdgeInsets.fromLTRB(10.0, 5.0, 16.0, 10.0),
+                      alignLabelWithHint: true,
+                    ),
+                  ),
+                ),
+                SizedBox(width: 16),
+                Expanded(
+                  child: TextField(
+                    controller:
+                        TextEditingController(text: widget.locationName ?? ""),
+                    readOnly: true,
+                    decoration: InputDecoration(
+                      labelText: 'Location Name',
+                      border: OutlineInputBorder(),
+                      labelStyle: TextStyle(fontWeight: FontWeight.bold),
+                      contentPadding:
+                          EdgeInsets.fromLTRB(10.0, 5.0, 16.0, 10.0),
+                      alignLabelWithHint: true,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            Visibility(
+              visible: widget.Img_file != null && widget.Img_file!.isNotEmpty,
+              child: TextButton(
+                onPressed: () {
+                  _showImageDialog();
+                },
+                child: Text(
+                  'View Image',
+                  style: TextStyle(
+                    decoration: TextDecoration.underline,
+                    color: Colors.blue[900],
+                  ),
+                ),
+              ),
+            ),
             SizedBox(height: 16),
             Expanded(
               child: Stack(
@@ -149,14 +192,11 @@ class _ViewLocationState extends State<ViewLocation> {
                     },
                     markers: markers,
                     zoomControlsEnabled: true,
-                    myLocationButtonEnabled:
-                        true, // Enable the default location button
-                    myLocationEnabled:
-                        true, // Show user's location as a blue dot on the map
+                    myLocationButtonEnabled: true,
+                    myLocationEnabled: true,
                   ),
                   Padding(
-                    padding: const EdgeInsets.all(
-                        16.0), // Adjust the padding as needed
+                    padding: const EdgeInsets.all(16.0),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
@@ -200,21 +240,40 @@ class _ViewLocationState extends State<ViewLocation> {
     );
   }
 
- void updateMarker() {
-  markers.clear();
-  markers.add(
-    Marker(
-      markerId: MarkerId('marker_id'),
-      position: LatLng(updatedLatitude, updatedLongitude),
-      draggable: false, // Set draggable to false to make the marker non-movable
-    ),
-  );
+  void _showImageDialog() {
+    if (_image != null) {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            content: Container(
+              child: _image,
+              height: 200, // Adjust the height as needed
+            ),
+          );
+        },
+      );
+    } else {
+      showSnackbar('Image is not available.');
+    }
+  }
 
-  setState(() {});
-}
+  void updateMarker() {
+    markers.clear();
+    markers.add(
+      Marker(
+        markerId: MarkerId('marker_id'),
+        position: LatLng(updatedLatitude, updatedLongitude),
+        draggable:
+            false, // Set draggable to false to make the marker non-movable
+      ),
+    );
 
+    setState(() {});
+  }
 
-  void updateLocation(int itemId, double latitude, double longitude,String station,String amenityType) async {
+  void updateLocation(int itemId, double latitude, double longitude,
+      String station, String amenityType) async {
     final url = base_url + '/changelocationpin';
     final response = await http.post(
       Uri.parse(url),
@@ -222,8 +281,8 @@ class _ViewLocationState extends State<ViewLocation> {
         'itemId': itemId.toString(),
         'latitude': latitude.toString(),
         'longitude': longitude.toString(),
-        'station':widget.station,
-        'amenity_type':widget.amenityType
+        'station': widget.station,
+        'amenity_type': widget.amenityType
       },
     );
 
@@ -232,12 +291,13 @@ class _ViewLocationState extends State<ViewLocation> {
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(
           builder: (context) => Home(
-              id: widget.id,
-              role:widget.role,
-              zone: widget.zone,
-              division: widget.division,
-              section: widget.section,
-              selectedStation: widget.station),
+            id: widget.id,
+            role: widget.role,
+            zone: widget.zone,
+            division: widget.division,
+            section: widget.section,
+            selectedStation: widget.station,
+          ),
         ),
       );
     } else {
