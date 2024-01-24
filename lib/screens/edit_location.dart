@@ -8,6 +8,8 @@ import 'package:scr_amenities_admin/screens/home.dart';
 import 'package:permission_handler/permission_handler.dart' as permission;
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
+
 
 // Define the EditLocation widget
 class EditLocation extends StatefulWidget {
@@ -27,20 +29,21 @@ class EditLocation extends StatefulWidget {
   String? Img_file;
 
   // Constructor for the widget
-  EditLocation(
-      {required this.initialLatitude,
-      required this.initialLongitude,
-      required this.itemId,
-      required this.amenityType,
-      required this.locationName,
-      required this.locationDetails,
-      required this.zone,
-      required this.division,
-      required this.section,
-      required this.station,
-      required this.id,
-      required this.role,
-      required this.Img_file});
+  EditLocation({
+    required this.initialLatitude,
+    required this.initialLongitude,
+    required this.itemId,
+    required this.amenityType,
+    required this.locationName,
+    required this.locationDetails,
+    required this.zone,
+    required this.division,
+    required this.section,
+    required this.station,
+    required this.id,
+    required this.role,
+    required this.Img_file
+  });
 
   @override
   _EditLocationState createState() => _EditLocationState();
@@ -67,7 +70,6 @@ class _EditLocationState extends State<EditLocation> {
   Location location = Location();
   XFile? _pickedImage;
   Image? _image;
-
 
   // Override initState method for initialization
   @override
@@ -111,11 +113,29 @@ class _EditLocationState extends State<EditLocation> {
   // Function to handle image Picking from the Camera
   Future<void> _pickImageFromCamera() async {
     final picker = ImagePicker();
-    final pickedImage = await picker.pickImage(source: ImageSource.camera);
 
-    setState(() {
-      _pickedImage = pickedImage;
-    });
+    try {
+      final pickedImage = await picker.pickImage(
+        source: ImageSource.camera,
+        imageQuality: 70, // Set the image quality (0 to 100)
+      );
+
+      final File imageFile;
+      if (pickedImage != null) {
+        imageFile = File(pickedImage.path);
+
+        setState(() {
+          _pickedImage = XFile(
+            imageFile.path,
+            bytes: File(imageFile.path).readAsBytesSync(),
+          );
+        });
+      } else {
+        print('User canceled the camera capture');
+      }
+    } catch (e) {
+      print('Error picking image from camera: $e');
+    }
   }
 
   Future<void> _pickImageFromGallery() async {
@@ -369,21 +389,21 @@ class _EditLocationState extends State<EditLocation> {
                     ),
                 ],
               ),
-               Visibility(
-              visible: widget.Img_file != null && widget.Img_file!.isNotEmpty,
-              child: TextButton(
-                onPressed: () {
-                  _showImageDialog();
-                },
-                child: Text(
-                  'View Image',
-                  style: TextStyle(
-                    decoration: TextDecoration.underline,
-                    color: Colors.blue[900],
+                 Visibility(
+                visible: widget.Img_file != null && widget.Img_file!.isNotEmpty,
+                child: TextButton(
+                  onPressed: () {
+                    _showImageDialog();
+                  },
+                  child: Text(
+                    'View Image',
+                    style: TextStyle(
+                      decoration: TextDecoration.underline,
+                      color: Colors.blue[900],
+                    ),
                   ),
                 ),
               ),
-            ),
               SizedBox(height: 5),
               Expanded(
                 child: Stack(
@@ -490,7 +510,7 @@ class _EditLocationState extends State<EditLocation> {
     );
   }
 
-   void _showImageDialog() {
+  void _showImageDialog() {
     if (_image != null) {
       showDialog(
         context: context,

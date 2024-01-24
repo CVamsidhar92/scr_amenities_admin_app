@@ -8,8 +8,6 @@ import 'package:location/location.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 
-
-
 class CreateAmenity extends StatefulWidget {
   final String id;
   final String role;
@@ -34,15 +32,16 @@ class CreateAmenity extends StatefulWidget {
 }
 
 class _CreateAmenityState extends State<CreateAmenity> {
-    // Global key to identify the form
+  // Global key to identify the form
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-    // Controllers for handling text input
+  // Controllers for handling text input
   final TextEditingController _zoneController = TextEditingController();
   final TextEditingController _divisionController = TextEditingController();
   final TextEditingController _sectionController = TextEditingController();
   final TextEditingController _stationController = TextEditingController();
   final TextEditingController _locationNameController = TextEditingController();
-  final TextEditingController _locationDetailsController = TextEditingController();
+  final TextEditingController _locationDetailsController =
+      TextEditingController();
   final TextEditingController _stallNameController = TextEditingController();
   final TextEditingController _roomTarrifController = TextEditingController();
   final TextEditingController _latitudeController = TextEditingController();
@@ -73,8 +72,7 @@ class _CreateAmenityState extends State<CreateAmenity> {
   bool showStallAndNatureFields = false;
   bool showRoomTypeAndRoomTarrifFields = false;
   XFile? _pickedImage;
-
-
+  Image? _image;
 
   // Lists for dropdown menu options
   List<Map<String, String>> amenityType = [
@@ -96,13 +94,13 @@ class _CreateAmenityState extends State<CreateAmenity> {
   @override
   void initState() {
     super.initState();
-        // Initialize text controllers with widget data
+    // Initialize text controllers with widget data
     _zoneController.text = widget.zone;
     _divisionController.text = widget.division;
     _sectionController.text = widget.section;
     _stationController.text = widget.station;
 
-        // Fetch amenity, nature stall, and room type data
+    // Fetch amenity, nature stall, and room type data
     getAmenity();
     getNatureStall();
     getRoomType();
@@ -112,15 +110,32 @@ class _CreateAmenityState extends State<CreateAmenity> {
   }
 
   // Function to handle image Picking from the Camera
-Future<XFile?> _pickImage(ImageSource source) async {
-  final picker = ImagePicker();
-  try {
-    return await picker.pickImage(source: source);
-  } catch (e) {
-    print('Error picking image: $e');
-    return null;
+  Future<void> _pickImageFromCamera() async {
+    final picker = ImagePicker();
+
+    try {
+      final pickedImage = await picker.pickImage(
+        source: ImageSource.camera,
+        imageQuality: 70, // Set the image quality (0 to 100)
+      );
+
+      final File imageFile;
+      if (pickedImage != null) {
+        imageFile = File(pickedImage.path);
+
+        setState(() {
+          _pickedImage = XFile(
+            imageFile.path,
+            bytes: File(imageFile.path).readAsBytesSync(),
+          );
+        });
+      } else {
+        print('User canceled the camera capture');
+      }
+    } catch (e) {
+      print('Error picking image from camera: $e');
+    }
   }
-}
 
   // Function to handle image picking from the gallery
 
@@ -132,42 +147,40 @@ Future<XFile?> _pickImage(ImageSource source) async {
       _pickedImage = pickedImage;
     });
   }
- // Function to show the image picker dialog
- Future<void> _showImagePickerDialog() async {
-  XFile? pickedImage = await showDialog<XFile?>(
-    context: context,
-    builder: (BuildContext context) {
-      return AlertDialog(
-        title: Text('Select Image Source'),
-        contentPadding: EdgeInsets.fromLTRB(16.0, 8.0, 16.0, 8.0),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            ElevatedButton(
-              onPressed: () async {
-                Navigator.of(context).pop(await _pickImage(ImageSource.camera));
-              },
-              child: Text('Take a Picture'),
-            ),
-            SizedBox(height: 8),
-            ElevatedButton(
-              onPressed: () async {
-                Navigator.of(context).pop(await _pickImage(ImageSource.gallery));
-              },
-              child: Text('Choose from Gallery'),
-            ),
-          ],
-        ),
-      );
-    },
-  );
 
-  if (pickedImage != null) {
-    setState(() {
-      _pickedImage = pickedImage;
-    });
+  // Function to show the image picker dialog
+  Future<void> _showImagePickerDialog() async {
+    XFile? pickedImage = await showDialog<XFile?>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Select Image Source'),
+          contentPadding: EdgeInsets.fromLTRB(16.0, 8.0, 16.0, 8.0),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                  _pickImageFromCamera();
+                },
+                child: Text('Take a Picture'),
+              ),
+              SizedBox(height: 8), // Adjust the height between buttons
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                  _pickImageFromGallery();
+                },
+                child: Text('Choose from Gallery'),
+              ),
+            ],
+          ),
+        );
+      },
+    );
   }
-}
+
   // Function to fetch amenity data
   Future<void> getAmenity() async {
     final String url = base_url + '/getamenity';
@@ -265,9 +278,8 @@ Future<XFile?> _pickImage(ImageSource source) async {
   Future<void> _checkLocationPermission() async {
     final hasPermission = await location.requestPermission();
     if (hasPermission == PermissionStatus.granted) {
-            // Handle permission granted
+      // Handle permission granted
     }
-
   }
 
   // Function to get current location
@@ -289,14 +301,8 @@ Future<XFile?> _pickImage(ImageSource source) async {
     }
   }
 
-    // Function to send data to the backend
+  // Function to send data to the backend
   Future<void> sendDataToBackend(String imagePath) async {
-    // Check if the image is selected
-  // if (imagePath.isEmpty) {
-  //   showSnackbar('Please Upload The Image');
-  //   return;
-  // }
-
     final String url = base_url + '/postfeedamenities';
     final request = http.MultipartRequest('POST', Uri.parse(url));
 
@@ -375,7 +381,7 @@ Future<XFile?> _pickImage(ImageSource source) async {
     }
   }
 
-   void showSnackbar(String message) {
+  void showSnackbar(String message) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(message),
@@ -383,7 +389,6 @@ Future<XFile?> _pickImage(ImageSource source) async {
     );
   }
 
-  
 // Function to show the full image
   void _showFullImage(String imagePath) {
     showDialog(
@@ -416,12 +421,13 @@ Future<XFile?> _pickImage(ImageSource source) async {
     final screenSize = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
-        title: Text('Add Amenity',
+        title: Text(
+          'Add Amenity',
           style: TextStyle(
             color: Colors.white, // Set text color to white
           ),
         ),
-        backgroundColor: Colors.blue, 
+        backgroundColor: Colors.blue,
         actions: <Widget>[
           InkWell(
             onTap: () {
@@ -699,36 +705,36 @@ Future<XFile?> _pickImage(ImageSource source) async {
                         style: TextStyle(fontWeight: FontWeight.bold),
                       )),
                 ),
-               Row(
-  children: radioTitles.map((title) {
-    return Row(
-      children: [
-        Radio<String>(
-          value: title,
-          groupValue: selectedService,
-          onChanged: (value) {
-            setState(() {
-              selectedService = value;
-            });
-          },
-        ),
-        GestureDetector(
-          onTap: () {
-            setState(() {
-              selectedService = title;
-            });
-          },
-          child: Text(
-            title,
-            style: TextStyle(
-              fontSize: 18,
-            ),
-          ),
-        ),
-      ],
-    );
-  }).toList(),
-),
+                Row(
+                  children: radioTitles.map((title) {
+                    return Row(
+                      children: [
+                        Radio<String>(
+                          value: title,
+                          groupValue: selectedService,
+                          onChanged: (value) {
+                            setState(() {
+                              selectedService = value;
+                            });
+                          },
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              selectedService = title;
+                            });
+                          },
+                          child: Text(
+                            title,
+                            style: TextStyle(
+                              fontSize: 18,
+                            ),
+                          ),
+                        ),
+                      ],
+                    );
+                  }).toList(),
+                ),
                 SizedBox(height: 16),
                 DropdownButtonFormField<String>(
                   items: managedByOptions.map((option) {
@@ -790,31 +796,31 @@ Future<XFile?> _pickImage(ImageSource source) async {
                     _locationName = value;
                   },
                 ),
-                 SizedBox(height: 16),
-                 Row(
-                children: [
-                  ElevatedButton(
-                    onPressed: _showImagePickerDialog,
-                    child: Text('Select Image Source'),
-                  ),
-                  SizedBox(
-                    width: 10,
-                  ),
-                  if (_pickedImage != null)
-                    TextButton(
-                      onPressed: () {
-                        _showFullImage(_pickedImage!.path);
-                      },
-                      child: Text(
-                        'View Image',
-                        style: TextStyle(
-                            decoration: TextDecoration.underline,
-                            color: Colors.blue[900]),
-                      ),
-                    )
-                ],
-              ),
-               SizedBox(height: 16),
+                SizedBox(height: 16),
+                Row(
+                  children: [
+                    ElevatedButton(
+                      onPressed: _showImagePickerDialog,
+                      child: Text('Select Image Source'),
+                    ),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    if (_pickedImage != null)
+                      TextButton(
+                        onPressed: () {
+                          _showFullImage(_pickedImage!.path);
+                        },
+                        child: Text(
+                          'View Image',
+                          style: TextStyle(
+                              decoration: TextDecoration.underline,
+                              color: Colors.blue[900]),
+                        ),
+                      )
+                  ],
+                ),
+                SizedBox(height: 16),
                 TextFormField(
                   readOnly: true,
                   controller: _latitudeController,
@@ -858,25 +864,25 @@ Future<XFile?> _pickImage(ImageSource source) async {
                   child: Text('Get Location'),
                 ),
                 SizedBox(height: 16),
-       ElevatedButton(
-  onPressed: () {
-    if (_formKey.currentState!.validate()) {
-      if (selectedService?.isNotEmpty == true) {
-        // If selectedService is not null and not empty, proceed with form submission.
-        _formKey.currentState!.save();
-        sendDataToBackend(_pickedImage?.path ?? '');
-      } else {
-        // Display an error message for the radio buttons.
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Please select a Service Type'),
-          ),
-        );
-      }
-    }
-  },
-  child: Text('Submit'),
-),
+                ElevatedButton(
+                  onPressed: () {
+                    if (_formKey.currentState!.validate()) {
+                      if (selectedService?.isNotEmpty == true) {
+                        // If selectedService is not null and not empty, proceed with form submission.
+                        _formKey.currentState!.save();
+                        sendDataToBackend(_pickedImage?.path ?? '');
+                      } else {
+                        // Display an error message for the radio buttons.
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text('Please select a Service Type'),
+                          ),
+                        );
+                      }
+                    }
+                  },
+                  child: Text('Submit'),
+                ),
               ],
             ),
           ),

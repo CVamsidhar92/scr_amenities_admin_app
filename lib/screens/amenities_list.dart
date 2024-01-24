@@ -678,7 +678,7 @@ Future<void> deleteItem(
                                                       division: division,
                                                       section: section,
                                                       station: station,
-                                                       Img_file: item['img_file']
+                                                      Img_file: item['img_file']
                                                     ),
                                                   ),
                                                 );

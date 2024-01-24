@@ -82,24 +82,26 @@ class _ViewLocationState extends State<ViewLocation> {
     }
   }
 
-  Future<void> loadNetworkImage() async {
-    if (widget.Img_file != null && widget.Img_file!.isNotEmpty) {
-      final imageUrl = base_url + '/images/${widget.Img_file}';
-      try {
-        final response = await http.get(Uri.parse(imageUrl));
+Future<void> loadNetworkImage() async {
+  if (widget.Img_file != null && widget.Img_file!.isNotEmpty) {
+final imageUrl = base_url + '/images/${widget.Img_file}';
+    
+    try {
+      final response = await http.get(Uri.parse(imageUrl));
 
-        if (response.statusCode == 200) {
-          setState(() {
-            _image = Image.memory(response.bodyBytes);
-          });
-        } else {
-          print('Failed to load image. Status code: ${response.statusCode}');
-        }
-      } catch (error) {
-        print('Error loading image: $error');
+      if (response.statusCode == 200) {
+        setState(() {
+          _image = Image.memory(response.bodyBytes);
+        });
+      } else {
+        print('Failed to load image. Status code: ${response.statusCode}');
       }
+    } catch (error) {
+      print('Error loading image: $error');
     }
   }
+}
+
 
   @override
   Widget build(BuildContext context) {

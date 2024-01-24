@@ -1,0 +1,1 @@
+ D:\\Flutter\\Railway\ Projects\\scr_amenities_admin_app\\.dart_tool\\flutter_build\\a359df66a67aa13eda8749164410118f\\native_assets.yaml: 
