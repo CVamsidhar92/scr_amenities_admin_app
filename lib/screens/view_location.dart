@@ -82,26 +82,78 @@ class _ViewLocationState extends State<ViewLocation> {
     }
   }
 
-Future<void> loadNetworkImage() async {
-  if (widget.Img_file != null && widget.Img_file!.isNotEmpty) {
-final imageUrl = base_url + '/images/${widget.Img_file}';
-    
-    try {
-      final response = await http.get(Uri.parse(imageUrl));
+  Future<void> loadNetworkImage() async {
+    if (widget.Img_file != null && widget.Img_file!.isNotEmpty) {
+      final imageUrl = base_url + '${widget.Img_file}';
 
-      if (response.statusCode == 200) {
-        setState(() {
-          _image = Image.memory(response.bodyBytes);
-        });
-      } else {
-        print('Failed to load image. Status code: ${response.statusCode}');
+      // Replace the base URL in the response
+      final correctedImageUrl =
+          imageUrl.replaceAll('/api/images/', '/storage/app/images/');
+
+      try {
+        final response = await http.get(Uri.parse(correctedImageUrl));
+
+        if (response.statusCode == 200) {
+          setState(() {
+            _image = Image.memory(response.bodyBytes);
+          });
+        } else {
+          print('Failed to load image. Status code: ${response.statusCode}');
+        }
+      } catch (error) {
+        print('Error loading image: $error');
       }
-    } catch (error) {
-      print('Error loading image: $error');
     }
   }
-}
 
+// Function to show the full image loaded from the network
+  void _showFullImageNetwork(String imageUrl) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          content: Container(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Expanded(
+                  child: _image ??
+                      Image.network(
+                        imageUrl,
+                        loadingBuilder: (BuildContext context, Widget child,
+                            ImageChunkEvent? loadingProgress) {
+                          if (loadingProgress == null) {
+                            return child;
+                          } else {
+                            return Center(
+                              child: CircularProgressIndicator(
+                                value: loadingProgress.expectedTotalBytes !=
+                                        null
+                                    ? loadingProgress.cumulativeBytesLoaded /
+                                        (loadingProgress.expectedTotalBytes ??
+                                            1)
+                                    : null,
+                              ),
+                            );
+                          }
+                        },
+                      ),
+                ),
+                // SizedBox(height: 10),
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.of(context).pop(); // Close the AlertDialog
+                  },
+                  child: Text('Close'),
+                ),
+              ],
+            ),
+            height: 500, // Adjust the height as needed
+          ),
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -155,22 +207,17 @@ final imageUrl = base_url + '/images/${widget.Img_file}';
                 ),
               ],
             ),
-            Visibility(
-              visible: widget.Img_file != null && widget.Img_file!.isNotEmpty,
-              child: TextButton(
+            if (widget.Img_file != null && widget.Img_file!.isNotEmpty)
+              ElevatedButton(
                 onPressed: () {
-                  _showImageDialog();
+                  _showFullImageNetwork(
+                      'https://scrly.in/scr_station_amenities/storage/app/${widget.Img_file}');
                 },
                 child: Text(
                   'View Image',
-                  style: TextStyle(
-                    decoration: TextDecoration.underline,
-                    color: Colors.blue[900],
-                  ),
                 ),
               ),
-            ),
-            SizedBox(height: 16),
+            SizedBox(height: 5),
             Expanded(
               child: Stack(
                 alignment: Alignment.bottomLeft,

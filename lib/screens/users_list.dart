@@ -32,7 +32,7 @@ class _UsersListState extends State<UsersList> {
   }
 
   Future<void> getAllUsers() async {
-    final String url = base_url + '/getusers';
+    final String url = base_url + 'getusers';
 
     final res = await http.post(
       Uri.parse(url),
@@ -78,7 +78,7 @@ class _UsersListState extends State<UsersList> {
 
     if (confirmDelete) {
       try {
-        final String url = base_url + '/deleteUser';
+        final String url = base_url + 'deleteUser';
 
         final response = await http.post(
           Uri.parse(url),

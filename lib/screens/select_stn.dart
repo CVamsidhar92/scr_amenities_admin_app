@@ -27,7 +27,7 @@ class SelectStn extends StatefulWidget {
 
   @override
   State<SelectStn> createState() => _SelectStnState();
-} 
+}
 
 class _SelectStnState extends State<SelectStn> {
   String selectedStation = '';
@@ -54,7 +54,7 @@ class _SelectStnState extends State<SelectStn> {
     try {
       final data = {'name': myVersion};
 
-      final String url = base_url + '/appversiondatafeeding';
+      final String url = base_url + 'appversiondatafeeding';
       final response = await http.post(
         Uri.parse(url),
         headers: {"Content-Type": "application/json"},
@@ -118,7 +118,7 @@ class _SelectStnState extends State<SelectStn> {
   }
 
   Future<void> getData() async {
-    final String url = base_url + '/getstationbysec';
+    final String url = base_url + 'getstationbysec';
     final Map<String, dynamic> requestData = {'section': widget.section};
 
     final res = await http.post(
@@ -141,7 +141,7 @@ class _SelectStnState extends State<SelectStn> {
   }
 
   Future<void> getAllStations() async {
-    final String url = base_url + '/getstationbyadmin';
+    final String url = base_url + 'getstationbyadmin';
 
     final res = await http.post(
       Uri.parse(url),
@@ -206,12 +206,13 @@ class _SelectStnState extends State<SelectStn> {
     return Scaffold(
       key: _scaffoldKey, // Assign the key to the Scaffold
       appBar: AppBar(
-        title: Text('Station Amenities',
+        title: Text(
+          'Station Amenities',
           style: TextStyle(
             color: Colors.white, // Set text color to white
           ),
         ),
-        backgroundColor: Colors.blue, 
+        backgroundColor: Colors.blue,
         automaticallyImplyLeading: false,
         actions: <Widget>[
           InkWell(
@@ -362,24 +363,25 @@ class _SelectStnState extends State<SelectStn> {
                     ),
                     controller: TextEditingController(text: selectedStation),
                   ),
-              suggestionsCallback: (pattern) async {
-  await Future.delayed(Duration(seconds: 1));
+                  suggestionsCallback: (pattern) async {
+                    await Future.delayed(Duration(seconds: 1));
 
-  pattern = pattern.toLowerCase(); // Convert the pattern to lowercase
+                    pattern = pattern
+                        .toLowerCase(); // Convert the pattern to lowercase
 
-  return data
-      .where((item) =>
-          item['station_name']
-              .toString()
-              .toLowerCase()
-              .contains(pattern) ||
-          item['code'].toString().toLowerCase().contains(pattern))
-      .map<String>((item) => item['station_name'].toString())
-      .toList();
-},
-
-
-
+                    return data
+                        .where((item) =>
+                            item['station_name']
+                                .toString()
+                                .toLowerCase()
+                                .contains(pattern) ||
+                            item['code']
+                                .toString()
+                                .toLowerCase()
+                                .contains(pattern))
+                        .map<String>((item) => item['station_name'].toString())
+                        .toList();
+                  },
                   itemBuilder: (context, suggestion) {
                     return ListTile(
                       title: Text(suggestion),

@@ -183,7 +183,7 @@ class _CreateAmenityState extends State<CreateAmenity> {
 
   // Function to fetch amenity data
   Future<void> getAmenity() async {
-    final String url = base_url + '/getamenity';
+    final String url = base_url + 'getamenity';
 
     final res = await http.post(
       Uri.parse(url),
@@ -214,7 +214,7 @@ class _CreateAmenityState extends State<CreateAmenity> {
 
   // Function to fetch nature stall data
   Future<void> getNatureStall() async {
-    final String url = base_url + '/getnaturestall';
+    final String url = base_url + 'getnaturestall';
 
     final res = await http.post(
       Uri.parse(url),
@@ -245,7 +245,7 @@ class _CreateAmenityState extends State<CreateAmenity> {
 
   // Function to fetch room type data
   Future<void> getRoomType() async {
-    final String url = base_url + '/getrrroom';
+    final String url = base_url + 'getrrroom';
 
     final res = await http.post(
       Uri.parse(url),
@@ -303,7 +303,7 @@ class _CreateAmenityState extends State<CreateAmenity> {
 
   // Function to send data to the backend
   Future<void> sendDataToBackend(String imagePath) async {
-    final String url = base_url + '/postfeedamenities';
+    final String url = base_url + 'postfeedamenities';
     final request = http.MultipartRequest('POST', Uri.parse(url));
 
     // Prepare the data to send to the backend

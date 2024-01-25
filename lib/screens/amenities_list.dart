@@ -44,7 +44,7 @@ double parseDouble(dynamic value) {
 }
 
 class _AmenitiesListState extends State<AmenitiesList> {
-    // State variables
+  // State variables
   List<Map<String, dynamic>> dataa = [];
   late Future<List<Map<String, dynamic>>> amenitiesData;
   late Future<String> webviewUrl;
@@ -85,7 +85,7 @@ class _AmenitiesListState extends State<AmenitiesList> {
 
   // Function to get complete data
   Future<void> getCompleteData(String locationName) async {
-    final String url = base_url + '/getstationalldetails';
+    final String url = base_url + 'getstationalldetails';
 
     final response = await http.post(
       Uri.parse(url),
@@ -116,7 +116,7 @@ class _AmenitiesListState extends State<AmenitiesList> {
 
   // Function to fetch platforms
   Future<List<Map<String, dynamic>>> fetchPlatforms(String station) async {
-    final apiUrl = base_url + '/getplatforms';
+    final apiUrl = base_url + 'getplatforms';
 
     final response = await http.post(
       Uri.parse(apiUrl),
@@ -134,12 +134,11 @@ class _AmenitiesListState extends State<AmenitiesList> {
       if (responseData.isNotEmpty) {
         final platformsData = responseData.map((item) {
           final platform = item['platform'] as String;
-       final latitudeStr = item['latitude'];
-      final longitudeStr = item['longitude'];
+          final latitudeStr = item['latitude'];
+          final longitudeStr = item['longitude'];
 
-      final latitude = parseDouble(latitudeStr);
-      final longitude = parseDouble(longitudeStr);
-
+          final latitude = parseDouble(latitudeStr);
+          final longitude = parseDouble(longitudeStr);
 
           return {
             'platform': platform,
@@ -160,7 +159,7 @@ class _AmenitiesListState extends State<AmenitiesList> {
 
   // Function to fetch the webview URL
   Future<String> fetchWebviewUrl() async {
-    final String url = base_url + '/getmapurl';
+    final String url = base_url + 'getmapurl';
     final body = {
       'station': widget.stnName,
       'amenityType': widget.amenityType,
@@ -191,79 +190,82 @@ class _AmenitiesListState extends State<AmenitiesList> {
   }
 
   // Function to fetch data
- Future<List<Map<String, dynamic>>> fetchData() async {
-  final String url = base_url + '/getstalldetails';
-  final body = {
-    'stnName': widget.stnName,
-    'amenityType': widget.amenityType,
-  };
+  Future<List<Map<String, dynamic>>> fetchData() async {
+    final String url = base_url + 'getstalldetails';
+    final body = {
+      'stnName': widget.stnName,
+      'amenityType': widget.amenityType,
+    };
 
-  try {
-    final response = await http.post(Uri.parse(url), body: body);
-    if (response.statusCode == 200) {
-      final jsonData = json.decode(response.body);
-      if (jsonData is List) {
-        final data = List<Map<String, dynamic>>.from(jsonData);
+    try {
+      final response = await http.post(Uri.parse(url), body: body);
+      if (response.statusCode == 200) {
+        final jsonData = json.decode(response.body);
+        if (jsonData is List) {
+          final data = List<Map<String, dynamic>>.from(jsonData);
 
-        return data;
+          return data;
+        } else {
+          throw Exception('Invalid data format received from API');
+        }
       } else {
-        throw Exception('Invalid data format received from API');
+        throw Exception(
+            'Failed to fetch data from API: ${response.statusCode}');
       }
-    } else {
-      throw Exception('Failed to fetch data from API: ${response.statusCode}');
+    } catch (error) {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('Error'),
+            content: Text('Failed to fetch data from API: $error'),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(context),
+                child: Text('OK'),
+              ),
+            ],
+          );
+        },
+      );
+      return [];
     }
-  } catch (error) {
-    showDialog(
+  }
+
+  // Function to show a confirmation dialog for navigation
+  Future<bool> showConfirmationDialog(BuildContext context) async {
+    bool? result = await showDialog<bool>(
       context: context,
-      builder: (BuildContext context) {
+      barrierDismissible: false,
+      builder: (context) {
         return AlertDialog(
-          title: Text('Error'),
-          content: Text('Failed to fetch data from API: $error'),
-          actions: [
+          title: Text('Confirm Navigation'),
+          content: Text(
+              'You are about to navigate to a third-party application. Do you want to continue?'),
+          actions: <Widget>[
             TextButton(
-              onPressed: () => Navigator.pop(context),
+              onPressed: () {
+                Navigator.of(context).pop(false); // Cancel navigation
+              },
+              child: Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(true); // Confirm navigation
+              },
               child: Text('OK'),
             ),
           ],
         );
       },
     );
-    return [];
+    return result ??
+        false; // Return false if the dialog is dismissed without a choice
   }
-}
-
-  // Function to show a confirmation dialog for navigation
-Future<bool> showConfirmationDialog(BuildContext context) async {
-  bool? result = await showDialog<bool>(
-    context: context,
-     barrierDismissible:false,
-    builder: (context) {
-      return AlertDialog(
-        title: Text('Confirm Navigation'),
-        content: Text('You are about to navigate to a third-party application. Do you want to continue?'),
-        actions: <Widget>[
-          TextButton(
-            onPressed: () {
-              Navigator.of(context).pop(false); // Cancel navigation
-            },
-            child: Text('Cancel'),
-          ),
-          TextButton(
-            onPressed: () {
-              Navigator.of(context).pop(true); // Confirm navigation
-            },
-            child: Text('OK'),
-          ),
-        ],
-      );
-    },
-  );
-  return result ?? false; // Return false if the dialog is dismissed without a choice
-}
 
   // Function to fetch item data
   Future<List<Map<String, dynamic>>> fetchItem() async {
-    final String url = base_url + '/getItemsList';
+    final String url = base_url + 'getItemsList';
     final body = {
       'amenityType': widget.amenityType,
     };
@@ -303,65 +305,63 @@ Future<bool> showConfirmationDialog(BuildContext context) async {
   }
 
   // Function to delete an item
-Future<void> deleteItem(
-  int id,
-  String stationName,
-  String amenityType,
-  String locationName,
-  dynamic latitude, // Use dynamic type
-  dynamic longitude, // Use dynamic type
-  BuildContext context,
-) async {
-  bool confirmDelete = await showDeleteConfirmationDialog(context);
+  Future<void> deleteItem(
+    int id,
+    String stationName,
+    String amenityType,
+    String locationName,
+    dynamic latitude, // Use dynamic type
+    dynamic longitude, // Use dynamic type
+    BuildContext context,
+  ) async {
+    bool confirmDelete = await showDeleteConfirmationDialog(context);
 
-  if (confirmDelete) {
-    try {
-      final String url = base_url + '/deleteAmenity';
+    if (confirmDelete) {
+      try {
+        final String url = base_url + 'deleteAmenity';
 
-      final response = await http.post(
-        Uri.parse(url),
-        headers: {'Content-Type': 'application/json'},
-        body: jsonEncode({
-          'id': id,
-          'station': stationName,
-          'amenity_type': amenityType,
-          'location_name': locationName,
-          'latitude': parseDouble(latitude), // Convert to double
-          'longitude': parseDouble(longitude), // Convert to double
-        }),
-      );
-
-      if (response.statusCode == 200) {
-        print('Data with ID $id deleted successfully');
-
-        // Show a Snackbar to inform the user about the successful deletion.
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Data deleted successfully'),
-          ),
+        final response = await http.post(
+          Uri.parse(url),
+          headers: {'Content-Type': 'application/json'},
+          body: jsonEncode({
+            'id': id,
+            'station': stationName,
+            'amenity_type': amenityType,
+            'location_name': locationName,
+            'latitude': parseDouble(latitude), // Convert to double
+            'longitude': parseDouble(longitude), // Convert to double
+          }),
         );
 
-        // Update the amenitiesData Future after deletion
-        setState(() {
-          amenitiesData = fetchData();
-        });
-      } else {
-        print('Failed to delete data with ID $id');
-        // Handle the error case or show an error message to the user.
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Unable to Delete Data'),
-          ),
-        );
+        if (response.statusCode == 200) {
+          print('Data with ID $id deleted successfully');
+
+          // Show a Snackbar to inform the user about the successful deletion.
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('Data deleted successfully'),
+            ),
+          );
+
+          // Update the amenitiesData Future after deletion
+          setState(() {
+            amenitiesData = fetchData();
+          });
+        } else {
+          print('Failed to delete data with ID $id');
+          // Handle the error case or show an error message to the user.
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('Unable to Delete Data'),
+            ),
+          );
+        }
+      } catch (error) {
+        print('Error: $error');
+        // Handle any exceptions that may occur during the HTTP request.
       }
-    } catch (error) {
-      print('Error: $error');
-      // Handle any exceptions that may occur during the HTTP request.
     }
   }
-}
-
-
 
   // Function to show a delete confirmation dialog
   Future<bool> showDeleteConfirmationDialog(BuildContext context) async {
@@ -417,19 +417,15 @@ Future<void> deleteItem(
                     fontSize: 18,
                   ),
                 );
-                
               }
             }
-           return Text(
-  "Loading...",
-  style: TextStyle(
-    fontWeight: FontWeight.bold, // Make the text bold
-    color: Colors.white, // Change the text color to blue
-    
-  ),
-  
-); // You can provide a loading state for the title.
- 
+            return Text(
+              "Loading...",
+              style: TextStyle(
+                fontWeight: FontWeight.bold, // Make the text bold
+                color: Colors.white, // Change the text color to blue
+              ),
+            ); // You can provide a loading state for the title.
           },
         ),
         actions: <Widget>[
@@ -466,19 +462,6 @@ Future<void> deleteItem(
       ),
       body: Stack(
         children: [
-          // Background
-          Container(
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage(
-                  "assets/background.jpg",
-                ),
-                fit: BoxFit.cover,
-              ),
-            ),
-          ),
-
-          // Content
           Container(
             padding: EdgeInsets.all(16.0),
             child: FutureBuilder<List<Map<String, dynamic>>>(
@@ -499,26 +482,39 @@ Future<void> deleteItem(
                       );
                     }
 
-                   return SingleChildScrollView(
-                    child: Column(
-                      children: [
-              ElevatedButton(
-  onPressed: () async {
-    bool confirmNavigation = await showConfirmationDialog(context);
+                    return SingleChildScrollView(
+                      child: Column(
+                        children: [
+                          ElevatedButton(
+                            onPressed: () async {
+                              bool confirmNavigation =
+                                  await showConfirmationDialog(context);
 
-    if (confirmNavigation) {
-      Navigator.of(context).push(
-        MaterialPageRoute(
-          builder: (context) => MapsWebview(
-            stnName: widget.stnName,
-            amenityType: widget.amenityType,
-          ),
-        ),
-      );
-    }
-  },
-  child: Text('View On Map'),
-),
+                              if (confirmNavigation) {
+                                List<Map<String, dynamic>> data =
+                                    await amenitiesData;
+
+                                if (data.isNotEmpty) {
+                                  Map<String, dynamic> item = data[
+                                      0]; // Assuming you want the first item
+
+                                  String? imgFile = item[
+                                      'img_file']; // Store the value of img_file in a variable
+                                  Navigator.of(context).push(
+                                    MaterialPageRoute(
+                                      builder: (context) => MapsWebview(
+                                        stnName: widget.stnName,
+                                        amenityType: widget.amenityType,
+                                        imgFile:
+                                            imgFile, // Pass the variable to MapsWebview
+                                      ),
+                                    ),
+                                  );
+                                }
+                              }
+                            },
+                            child: Text("Bird's Eye View"),
+                          ),
                           ListView.builder(
                             physics: NeverScrollableScrollPhysics(),
                             shrinkWrap: true,
@@ -610,24 +606,25 @@ Future<void> deleteItem(
                                                   MaterialPageRoute(
                                                     builder: (context) =>
                                                         ViewLocation(
-                                                      amenityType: data[0][
-                                                          'amenity_type'], // Pass the Amenity type
-                                                      initialLatitude:
-                                                          initialLatitude, // Pass the initial latitude
-                                                      initialLongitude:
-                                                          initialLongitude, // Pass the initial longitude
-                                                      itemId: item[
-                                                          'id'], // Pass the item id
-                                                      locationName: item[
-                                                          'location_name'], // Pass the location_name
-                                                      id: id,
-                                                      role: role,
-                                                      zone: zone,
-                                                      division: division,
-                                                      section: section,
-                                                      station: station,
-                                                      Img_file: item['img_file']
-                                                    ),
+                                                            amenityType: data[0]
+                                                                [
+                                                                'amenity_type'], // Pass the Amenity type
+                                                            initialLatitude:
+                                                                initialLatitude, // Pass the initial latitude
+                                                            initialLongitude:
+                                                                initialLongitude, // Pass the initial longitude
+                                                            itemId: item[
+                                                                'id'], // Pass the item id
+                                                            locationName: item[
+                                                                'location_name'], // Pass the location_name
+                                                            id: id,
+                                                            role: role,
+                                                            zone: zone,
+                                                            division: division,
+                                                            section: section,
+                                                            station: station,
+                                                            Img_file: item[
+                                                                'img_file']),
                                                   ),
                                                 );
                                               },
@@ -661,25 +658,27 @@ Future<void> deleteItem(
                                                   MaterialPageRoute(
                                                     builder: (context) =>
                                                         EditLocation(
-                                                      amenityType: data[0][
-                                                          'amenity_type'], // Pass the Amenity type
-                                                      initialLatitude:
-                                                          initialLatitude, // Pass the initial latitude
-                                                      initialLongitude:
-                                                          initialLongitude, // Pass the initial longitude
-                                                      itemId: item[
-                                                          'id'], // Pass the item id
-                                                      locationName: item[
-                                                          'location_name'], // Pass the location_name
-                                                       locationDetails: item['location_details'],
-                                                      id: id,
-                                                      role: role,
-                                                      zone: zone,
-                                                      division: division,
-                                                      section: section,
-                                                      station: station,
-                                                      Img_file: item['img_file']
-                                                    ),
+                                                            amenityType: data[0]
+                                                                [
+                                                                'amenity_type'], // Pass the Amenity type
+                                                            initialLatitude:
+                                                                initialLatitude, // Pass the initial latitude
+                                                            initialLongitude:
+                                                                initialLongitude, // Pass the initial longitude
+                                                            itemId: item[
+                                                                'id'], // Pass the item id
+                                                            locationName: item[
+                                                                'location_name'], // Pass the location_name
+                                                            locationDetails: item[
+                                                                'location_details'],
+                                                            id: id,
+                                                            role: role,
+                                                            zone: zone,
+                                                            division: division,
+                                                            section: section,
+                                                            station: station,
+                                                            Img_file: item[
+                                                                'img_file']),
                                                   ),
                                                 );
                                               },

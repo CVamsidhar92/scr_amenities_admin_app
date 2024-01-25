@@ -89,7 +89,7 @@ class _SelectNearestAmenityState extends State<SelectNearestAmenity> {
 
   Future<List<GridPoint>> fetchGridPoints() async {
     final String gridPointsUrl =
-        base_url + '/getgridviewpoints'; // Change URL as needed
+        base_url + 'getgridviewpoints'; // Change URL as needed
 
     final body = {
       'station': widget.stnName,
@@ -124,7 +124,7 @@ class _SelectNearestAmenityState extends State<SelectNearestAmenity> {
   }
 
   Future<String> fetchWebviewUrl() async {
-    final String url = base_url + '/getmapurl';
+    final String url = base_url + 'getmapurl';
     final body = {
       'station': widget.stnName,
       'amenityType': widget.amenityType,
@@ -178,7 +178,7 @@ class _SelectNearestAmenityState extends State<SelectNearestAmenity> {
   }
 
   Future<List<Map<String, dynamic>>> fetchData() async {
-    final String url = base_url + '/getstalldetails';
+    final String url = base_url + 'getstalldetails';
     final body = {
       'stnName': widget.stnName,
       'amenityType': widget.amenityType,
@@ -219,7 +219,7 @@ class _SelectNearestAmenityState extends State<SelectNearestAmenity> {
   }
 
   Future<List<Map<String, dynamic>>> fetchItem() async {
-    final String url = base_url + '/getItemsList';
+    final String url = base_url + 'getItemsList';
     final body = {
       'amenityType': widget.amenityType,
     };

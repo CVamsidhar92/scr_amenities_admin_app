@@ -207,7 +207,7 @@ class _HomeState extends State<Home> {
   // Function to fetch dynamic amenity data from the API
   Future<void> fetchData() async {
         // API endpoint URL
-    final String url = base_url + '/stnam';
+    final String url = base_url + 'stnam';
 
     // Send a POST request to the API
     final response = await http.post(
@@ -249,7 +249,7 @@ class _HomeState extends State<Home> {
   // Function to fetch TAD (Train Arrival/Departure) data
   Future<String> fetchtaddata() async {
         // TAD API endpoint URL
-    final String url = base_url + '/gettadurl';
+    final String url = base_url + 'gettadurl';
 
         // Request body parameters
     final body = {'station': widget.selectedStation, 'amenityType': 'TAD'};

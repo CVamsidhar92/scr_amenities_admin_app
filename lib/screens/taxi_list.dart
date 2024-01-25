@@ -29,7 +29,7 @@ class _TaxiListState extends State<TaxiList> {
   }
 
   Future<List<Map<String, dynamic>>> fetchData() async {
-    final String url = base_url + '/gettaxidetails';
+    final String url = base_url + 'gettaxidetails';
     final body = {
       'stnName': widget.stnName,
       'amenityType': widget.amenityType,

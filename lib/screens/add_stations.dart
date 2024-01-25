@@ -45,7 +45,7 @@ class _AddStationState extends State<AddStation> {
 
   // Function to fetch category values from the backend
   Future<void> fetchCategories() async {
-    final String url = base_url + '/getcatgvalues';
+    final String url = base_url + 'getcatgvalues';
 
     try {
       final response = await http.post(
@@ -72,7 +72,7 @@ class _AddStationState extends State<AddStation> {
 
   // Function to save station data to the backend
   Future<void> saveStationData() async {
-    final String url = base_url + '/poststations';
+    final String url = base_url + 'poststations';
 
     // Create a map containing station data
     Map<String, dynamic> data = {

@@ -33,7 +33,7 @@ class _StationsListState extends State<StationsList> {
   }
 
   Future<void> getAllStations() async {
-    final String url = base_url + '/getstationbyadmin';
+    final String url = base_url + 'getstationbyadmin';
 
     final res = await http.post(
       Uri.parse(url),
@@ -74,7 +74,7 @@ class _StationsListState extends State<StationsList> {
   }
 
   Future<List<String>> fetchCatgValues() async {
-    final String url = base_url + '/getcatgvalues';
+    final String url = base_url + 'getcatgvalues';
 
     final res = await http.post(
       Uri.parse(url),
@@ -124,7 +124,7 @@ class _StationsListState extends State<StationsList> {
 
     if (confirmDelete) {
       try {
-        final String url = base_url + '/deleteStation';
+        final String url = base_url + 'deleteStation';
 
         final response = await http.post(
           Uri.parse(url),
@@ -354,7 +354,7 @@ class _StationsListState extends State<StationsList> {
     String catg,
   ) async {
     try {
-      final String url = base_url + '/updateStation';
+      final String url = base_url + 'updateStation';
 
       final response = await http.post(
         Uri.parse(url),

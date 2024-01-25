@@ -36,7 +36,7 @@ class _AddUsersState extends State<AddUsers> {
 
   // Function to save user data to the backend
   Future<void> saveUserData() async {
-    final String url = base_url + '/postUser';
+    final String url = base_url + 'postUser';
 
     // Create a map containing user data
     Map<String, dynamic> data = {

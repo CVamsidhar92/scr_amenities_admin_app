@@ -29,7 +29,7 @@ class _PorterListState extends State<PorterList> {
   }
 
   Future<List<Map<String, dynamic>>> fetchData() async {
-    final String url = base_url + '/getporterdetails';
+    final String url = base_url + 'getporterdetails';
     final body = {
       'stnName': widget.stnName,
       'amenityType': widget.amenityType,

@@ -8,19 +8,19 @@ import 'package:permission_handler/permission_handler.dart';
 import 'dart:typed_data'; // Add this import for Uint8List
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:image/image.dart' as img; // Add this import
-
 import 'package:scr_amenities_admin/screens/base_url.dart';
 import 'package:scr_amenities_admin/screens/login.dart';
 
 class MapsWebview extends StatefulWidget {
   String stnName;
   String amenityType;
+  String? imgFile;
 
-  MapsWebview({
-    Key? key,
-    required this.stnName,
-    required this.amenityType,
-  });
+  MapsWebview(
+      {Key? key,
+      required this.stnName,
+      required this.amenityType,
+      required this.imgFile});
 
   @override
   _MapsWebviewState createState() => _MapsWebviewState();
@@ -49,7 +49,7 @@ class _MapsWebviewState extends State<MapsWebview> {
 
   Future<void> fetchData() async {
     final String url =
-        base_url + '/getstalldetails'; // Replace with your API URL
+        base_url + 'getstalldetails'; // Replace with your API URL
     final body = {
       'stnName': widget.stnName,
       'amenityType': widget.amenityType,
@@ -133,6 +133,7 @@ class _MapsWebviewState extends State<MapsWebview> {
       );
 
       print('Marker Position: $position');
+      print('Image File: ${widget.imgFile}');
 
       Uint8List markerIcon;
 
@@ -151,9 +152,11 @@ class _MapsWebviewState extends State<MapsWebview> {
       } else if (widget.amenityType == 'Divyangjan Facility') {
         markerIcon = await _loadMarkerIcon('dv.jpg', width: 80, height: 80);
       } else if (widget.amenityType == 'Parking') {
-        markerIcon = await _loadMarkerIcon('parking.jpeg', width: 80, height: 80);
+        markerIcon =
+            await _loadMarkerIcon('parking.jpeg', width: 80, height: 80);
       } else if (widget.amenityType == 'Out Gates') {
-        markerIcon = await _loadMarkerIcon('outgate.jpeg', width: 80, height: 80);
+        markerIcon =
+            await _loadMarkerIcon('outgate.jpeg', width: 80, height: 80);
       } else if (widget.amenityType == 'Stair Case') {
         markerIcon = await _loadMarkerIcon('str.jpeg', width: 80, height: 80);
       } else if (widget.amenityType == 'Escalator') {
@@ -163,9 +166,10 @@ class _MapsWebviewState extends State<MapsWebview> {
       } else if (widget.amenityType == 'Cloak Rooms') {
         markerIcon = await _loadMarkerIcon('cr.jpeg', width: 80, height: 80);
       } else if (widget.amenityType == 'Multi Purpose Stall') {
-        markerIcon = await _loadMarkerIcon('mps.jpeg',width: 80, height: 80);
+        markerIcon = await _loadMarkerIcon('mps.jpeg', width: 80, height: 80);
       } else if (widget.amenityType == 'Help Desk') {
-        markerIcon = await _loadMarkerIcon('helpdesk.jpeg', width: 80, height: 80);
+        markerIcon =
+            await _loadMarkerIcon('helpdesk.jpeg', width: 80, height: 80);
       } else if (widget.amenityType == 'One Station One Product') {
         markerIcon = await _loadMarkerIcon('osop.jpeg', width: 80, height: 80);
       } else if (widget.amenityType == 'Drinking Water') {
@@ -177,15 +181,19 @@ class _MapsWebviewState extends State<MapsWebview> {
       } else if (widget.amenityType == 'Bus Stop') {
         markerIcon = await _loadMarkerIcon('bus.jpeg', width: 80, height: 80);
       } else if (widget.amenityType == 'Toilets') {
-        markerIcon = await _loadMarkerIcon('washrooms.jpg', width: 80, height: 80);
+        markerIcon =
+            await _loadMarkerIcon('washrooms.jpg', width: 80, height: 80);
       } else if (widget.amenityType == 'Medical') {
-        markerIcon = await _loadMarkerIcon('medical.jpeg', width: 80, height: 80);
+        markerIcon =
+            await _loadMarkerIcon('medical.jpeg', width: 80, height: 80);
       } else if (widget.amenityType == 'Taxi Stand') {
         markerIcon = await _loadMarkerIcon('taxi.jpeg', width: 80, height: 80);
       } else if (widget.amenityType == 'Book Stall') {
-        markerIcon = await _loadMarkerIcon('Book Stall.png', width: 80, height: 80);
+        markerIcon =
+            await _loadMarkerIcon('Book Stall.png', width: 80, height: 80);
       } else if (widget.amenityType == 'Wheel Chair') {
-        markerIcon = await _loadMarkerIcon('wheelchair.png', width: 80, height: 80);
+        markerIcon =
+            await _loadMarkerIcon('wheelchair.png', width: 80, height: 80);
       } else if (widget.amenityType == 'ATM') {
         markerIcon = await _loadMarkerIcon('atm.png', width: 80, height: 80);
       } else {
@@ -212,7 +220,8 @@ class _MapsWebviewState extends State<MapsWebview> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Web View'),
+      appBar: AppBar(
+        title: Text('Web View'),
         actions: <Widget>[
           InkWell(
             onTap: () {
@@ -298,16 +307,20 @@ class _MapsWebviewState extends State<MapsWebview> {
       if ((markerPosition.latitude - latLng.latitude).abs() < threshold &&
           (markerPosition.longitude - latLng.longitude).abs() < threshold) {
         // Handle marker tap
-        _showCustomInfoWindow(marker.markerId);
+        if (marker.infoWindow != null) {
+          _showCustomInfoWindow(marker);
+        }
         break;
       }
     }
   }
 
-  void _showCustomInfoWindow(MarkerId markerId) {
+  void _showCustomInfoWindow(Marker marker) {
     // Extract the location details from your data
     Map<String, dynamic>
-        locationData = /* Get your location data based on markerId */ {};
+        locationData = /* Get your location data based on marker */ {};
+
+    print('Image File: ${widget.imgFile}');
 
     showModalBottomSheet(
       context: context,

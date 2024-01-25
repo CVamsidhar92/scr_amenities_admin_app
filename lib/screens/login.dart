@@ -18,7 +18,7 @@ class _LoginState extends State<Login> {
   bool _passwordObscureText = true;
   bool _rememberMe = false;
 
-  final String apiUrl = base_url + '/login'; // Define your API endpoint
+  final String apiUrl = base_url + 'login'; // Define your API endpoint
 
   @override
   void initState() {

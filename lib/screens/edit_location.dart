@@ -8,8 +8,6 @@ import 'package:scr_amenities_admin/screens/home.dart';
 import 'package:permission_handler/permission_handler.dart' as permission;
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
-import 'package:flutter_image_compress/flutter_image_compress.dart';
-
 
 // Define the EditLocation widget
 class EditLocation extends StatefulWidget {
@@ -29,21 +27,20 @@ class EditLocation extends StatefulWidget {
   String? Img_file;
 
   // Constructor for the widget
-  EditLocation({
-    required this.initialLatitude,
-    required this.initialLongitude,
-    required this.itemId,
-    required this.amenityType,
-    required this.locationName,
-    required this.locationDetails,
-    required this.zone,
-    required this.division,
-    required this.section,
-    required this.station,
-    required this.id,
-    required this.role,
-    required this.Img_file
-  });
+  EditLocation(
+      {required this.initialLatitude,
+      required this.initialLongitude,
+      required this.itemId,
+      required this.amenityType,
+      required this.locationName,
+      required this.locationDetails,
+      required this.zone,
+      required this.division,
+      required this.section,
+      required this.station,
+      required this.id,
+      required this.role,
+      required this.Img_file});
 
   @override
   _EditLocationState createState() => _EditLocationState();
@@ -95,7 +92,7 @@ class _EditLocationState extends State<EditLocation> {
 
     // Check and request location permission
     _checkLocationPermission();
-     loadNetworkImage(); // Added this line
+    loadNetworkImage(); // Added this line
   }
 
   // Function to check location permission
@@ -209,11 +206,16 @@ class _EditLocationState extends State<EditLocation> {
     );
   }
 
-   Future<void> loadNetworkImage() async {
+  Future<void> loadNetworkImage() async {
     if (widget.Img_file != null && widget.Img_file!.isNotEmpty) {
-      final imageUrl = base_url + '/images/${widget.Img_file}';
+      final imageUrl = base_url + '${widget.Img_file}';
+
+      // Replace the base URL in the response
+      final correctedImageUrl =
+          imageUrl.replaceAll('/api/images/', '/storage/app/images/');
+
       try {
-        final response = await http.get(Uri.parse(imageUrl));
+        final response = await http.get(Uri.parse(correctedImageUrl));
 
         if (response.statusCode == 200) {
           setState(() {
@@ -226,6 +228,55 @@ class _EditLocationState extends State<EditLocation> {
         print('Error loading image: $error');
       }
     }
+  }
+
+  // Function to show the full image loaded from the network
+  void _showFullImageNetwork(String imageUrl) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          content: Container(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Expanded(
+                  child: _image ??
+                      Image.network(
+                        imageUrl,
+                        loadingBuilder: (BuildContext context, Widget child,
+                            ImageChunkEvent? loadingProgress) {
+                          if (loadingProgress == null) {
+                            return child;
+                          } else {
+                            return Center(
+                              child: CircularProgressIndicator(
+                                value: loadingProgress.expectedTotalBytes !=
+                                        null
+                                    ? loadingProgress.cumulativeBytesLoaded /
+                                        (loadingProgress.expectedTotalBytes ??
+                                            1)
+                                    : null,
+                              ),
+                            );
+                          }
+                        },
+                      ),
+                ),
+                // SizedBox(height: 10),
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.of(context).pop(); // Close the AlertDialog
+                  },
+                  child: Text('Close'),
+                ),
+              ],
+            ),
+            height: 500, // Adjust the height as needed
+          ),
+        );
+      },
+    );
   }
 
   // Build method for creating the UI
@@ -389,21 +440,16 @@ class _EditLocationState extends State<EditLocation> {
                     ),
                 ],
               ),
-                 Visibility(
-                visible: widget.Img_file != null && widget.Img_file!.isNotEmpty,
-                child: TextButton(
+              if (widget.Img_file != null && widget.Img_file!.isNotEmpty)
+                ElevatedButton(
                   onPressed: () {
-                    _showImageDialog();
+                    _showFullImageNetwork(
+                        'https://scrly.in/scr_station_amenities/storage/app/${widget.Img_file}');
                   },
                   child: Text(
                     'View Image',
-                    style: TextStyle(
-                      decoration: TextDecoration.underline,
-                      color: Colors.blue[900],
-                    ),
                   ),
                 ),
-              ),
               SizedBox(height: 5),
               Expanded(
                 child: Stack(
@@ -549,7 +595,7 @@ class _EditLocationState extends State<EditLocation> {
     TextEditingController locationDetailsController,
     String imagePath,
   ) async {
-    final url = base_url + '/upldlocimg';
+    final url = base_url + 'upldlocimg';
     final request = http.MultipartRequest('POST', Uri.parse(url));
 
     // Add form fields
