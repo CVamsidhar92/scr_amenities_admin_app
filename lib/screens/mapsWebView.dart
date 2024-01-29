@@ -132,8 +132,8 @@ class _MapsWebviewState extends State<MapsWebview> {
         double.parse(location['longitude']),
       );
 
-      print('Marker Position: $position');
-      print('Image File: ${widget.imgFile}');
+      // print('Marker Position: $position');
+      // print('Image File: ${widget.imgFile}');
 
       Uint8List markerIcon;
 
@@ -315,37 +315,64 @@ class _MapsWebviewState extends State<MapsWebview> {
     }
   }
 
-  void _showCustomInfoWindow(Marker marker) {
-    // Extract the location details from your data
-    Map<String, dynamic>
-        locationData = /* Get your location data based on marker */ {};
+void _showCustomInfoWindow(Marker marker) async {
+  // Extract the location details from your data
+  Map<String, dynamic> locationData = /* Get your location data based on marker */ {};
 
-    print('Image File: ${widget.imgFile}');
+  print('Image File1: ${widget.imgFile}');
 
-    showModalBottomSheet(
-      context: context,
-      builder: (BuildContext context) {
-        return Container(
-          width: 200, // Set the width of the InfoWindow
-          height: 100, // Set the height of the InfoWindow
-          padding: EdgeInsets.all(16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                locationData['location_name'],
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+  showModalBottomSheet(
+    context: context,
+    builder: (BuildContext context) {
+      return Container(
+        width: 200, // Set the width of the InfoWindow
+        height: 200, // Set the height of the InfoWindow
+        padding: EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              locationData['location_name'] ?? '',
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            ),
+            SizedBox(height: 8.0),
+            Text(
+              locationData['location_details'] ?? '',
+              style: TextStyle(fontSize: 16),
+            ),
+            SizedBox(height: 8.0),
+            // Show image if available
+            if (widget.imgFile != null)
+              Image(
+                image: NetworkImage(base_url + widget.imgFile!),
+                width: 150, // Set the width of the image
+                height: 100, // Set the height of the image
+                fit: BoxFit.cover,
+                loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent? loadingProgress) {
+                  if (loadingProgress == null) {
+                    return child;
+                  }
+                  return Center(
+                    child: CircularProgressIndicator(
+                      value: loadingProgress.expectedTotalBytes != null
+                          ? loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes!
+                          : null,
+                    ),
+                  );
+                },
+                errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
+                  return Center(
+                    child: Text('Failed to load image'),
+                  );
+                },
               ),
-              SizedBox(height: 8.0),
-              Text(
-                locationData['location_details'],
-                style: TextStyle(fontSize: 16),
-              ),
-              // Add more details or widgets as needed
-            ],
-          ),
-        );
-      },
-    );
-  }
+            // Add more details or widgets as needed
+          ],
+        ),
+      );
+    },
+  );
+}
+
+
 }
